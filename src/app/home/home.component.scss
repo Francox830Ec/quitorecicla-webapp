@@ -1,0 +1,30 @@
+//.card2 {
+//  .flex{
+//    .justify-content-center {
+//      background-image: url("../../assets/img/pixeled/FONDO_Mesadetrabajo1.png");
+//      padding: 2rem;
+//      border-radius: 10px;
+//      margin-bottom: 1rem;
+//    }
+//  }
+//}
+
+//.mycard{
+//  height: 400px;
+//  background-image: url("../../assets/img/pixeled/FONDO_Mesadetrabajo1.png");
+//}
+
+.ngx-color {
+  &.p-card {
+    border-radius: 1rem;
+    overflow: hidden;
+  }
+
+  .p-card-title {
+  }
+  .p-card-body {
+    padding: 2rem !important;
+    background: #a6120d;
+    color: #fff;
+  }
+}
