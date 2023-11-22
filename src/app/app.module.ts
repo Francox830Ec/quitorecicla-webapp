@@ -24,6 +24,7 @@ import {PanelModule} from "primeng/panel";
 import {HomeComponent} from './home/home.component';
 import {RecycleComponent} from './recycle/recycle.component';
 import { QuitoEpsCarouselComponent } from './quito-eps-carousel/quito-eps-carousel.component';
+import {ImageModule} from "primeng/image";
 
 
 @NgModule({
@@ -33,21 +34,22 @@ import { QuitoEpsCarouselComponent } from './quito-eps-carousel/quito-eps-carous
     RecycleComponent,
     QuitoEpsCarouselComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    ButtonModule,
-    BrowserAnimationsModule,
-    CarouselModule,
-    TagModule,
-    GalleriaModule,
-    FormsModule,
-    TableModule,
-    RouterModule.forRoot([{path: '', component: HomeComponent}]),
-    CardModule,
-    AvatarModule,
-    PanelModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        ButtonModule,
+        BrowserAnimationsModule,
+        CarouselModule,
+        TagModule,
+        GalleriaModule,
+        FormsModule,
+        TableModule,
+        RouterModule.forRoot([{path: '', component: HomeComponent}]),
+        CardModule,
+        AvatarModule,
+        PanelModule,
+        ImageModule
+    ],
   providers: [ProductService, ProductService2, PhotoService],
   bootstrap: [HomeComponent]
 })

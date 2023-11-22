@@ -1,4 +1,4 @@
-<!--<div class="card flex justify-content-center">-->
+<!--<div class="flex justify-content-center">-->
 <!--  <p-card [style]="{ width: '360px' }">-->
 <!--    <p-table #table [value]="[{}]">-->
 <!--      <ng-template pTemplate="body" let-rowData>-->
@@ -31,42 +31,24 @@
 <!--  </p-card>-->
 <!--</div>-->
 
-
-<!--&lt;!&ndash;<div class="flex justify-content-center">&ndash;&gt;-->
-<!--&lt;!&ndash;  <p-card styleClass="ngx-color" header="Simple Card" >&ndash;&gt;-->
-<!--&lt;!&ndash;    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt&ndash;&gt;-->
-<!--&lt;!&ndash;      quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque quas!</p>&ndash;&gt;-->
-<!--&lt;!&ndash;  </p-card>&ndash;&gt;-->
-<!--&lt;!&ndash;</div>&ndash;&gt;-->
-
-<div class="card flex justify-content-center">
-  <p-card header="Advanced Card" subheader="Card Subheader" [style]="{ width: '360px' }">
+<div class="flex justify-content-center">
+  <p-card [style]="{ width: '360px' }">
     <ng-template pTemplate="header">
-<!--      <img alt="Card" src="https://primefaces.org/cdn/primeng/images/usercard.png" />-->
       <img alt="Card" src="./assets/img/pixeled/FONDO_MesadetrabajoBanner1.png" />
     </ng-template>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque
-      quas!
-    </p>
+
+    <ng-template pTemplate="body">
+      <div class="flex justify-content-center">
+        <p-image src="./assets/img/pixeled/quiero-saber01.png" alt="Image" width="250"></p-image>
+      </div>
+      <div class="p-fluid m-4">
+        <p-button label="Recicla a domicilio" icon="pi pi-home" styleClass="p-button-info p-button-lg"></p-button>
+        <p-button label="Acércate a un punto" icon="pi pi-map-marker" styleClass="p-button-info p-button-lg mt-3"></p-button>
+      </div>
+    </ng-template>
+
     <ng-template pTemplate="footer">
-      <p-button label="Save" icon="pi pi-check"></p-button>
-      <p-button label="Cancel" icon="pi pi-times" styleClass="p-button-secondary" [style]="{ 'margin-left': '.5em' }"></p-button>
+        <img alt="Card" src="./assets/img/pixeled/logostodas-empre04.png" alt="Image" width="320" />
     </ng-template>
   </p-card>
 </div>
-
-
-<!--<p-card header="Advanced Card" subheader="Card Subheader" styleClass="ngx-color">-->
-<!--  <ng-template pTemplate="header">-->
-<!--&lt;!&ndash;    <img alt="Card" src="https://primefaces.org/cdn/primeng/images/usercard.png" />&ndash;&gt;-->
-<!--  </ng-template>-->
-<!--  <p>-->
-<!--    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque-->
-<!--    quas!-->
-<!--  </p>-->
-<!--  <ng-template pTemplate="footer">-->
-<!--    <p-button label="Save" icon="pi pi-check"></p-button>-->
-<!--    <p-button label="Cancel" icon="pi pi-times" styleClass="p-button-secondary" [style]="{ 'margin-left': '.5em' }"></p-button>-->
-<!--  </ng-template>-->
-<!--</p-card>-->
