@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -25,6 +25,7 @@ import {HomeComponent} from './home/home.component';
 import {RecycleComponent} from './recycle/recycle.component';
 import { QuitoEpsCarouselComponent } from './quito-eps-carousel/quito-eps-carousel.component';
 import {ImageModule} from "primeng/image";
+import {CheckboxModule} from "primeng/checkbox";
 
 
 @NgModule({
@@ -34,22 +35,24 @@ import {ImageModule} from "primeng/image";
     RecycleComponent,
     QuitoEpsCarouselComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        ButtonModule,
-        BrowserAnimationsModule,
-        CarouselModule,
-        TagModule,
-        GalleriaModule,
-        FormsModule,
-        TableModule,
-        RouterModule.forRoot([{path: '', component: HomeComponent}]),
-        CardModule,
-        AvatarModule,
-        PanelModule,
-        ImageModule
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    ButtonModule,
+    BrowserAnimationsModule,
+    CarouselModule,
+    TagModule,
+    GalleriaModule,
+    FormsModule,
+    TableModule,
+    RouterModule.forRoot([{path: '', component: HomeComponent}]),
+    CardModule,
+    AvatarModule,
+    PanelModule,
+    ImageModule,
+    ReactiveFormsModule,
+    CheckboxModule
+  ],
   providers: [ProductService, ProductService2, PhotoService],
   bootstrap: [HomeComponent]
 })
