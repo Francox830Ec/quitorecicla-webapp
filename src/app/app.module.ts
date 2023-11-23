@@ -17,7 +17,7 @@ import {ProductService} from 'src/service/productservice';
 import {ProductService2} from 'src/service/productservice2';
 import {PhotoService} from 'src/service/photoservice';
 import {TableModule} from "primeng/table";
-import {RouterModule} from '@angular/router';
+import {RouterModule, Routes} from '@angular/router';
 import {CardModule} from "primeng/card";
 import {AvatarModule} from "primeng/avatar";
 import {PanelModule} from "primeng/panel";
@@ -26,14 +26,21 @@ import {RecycleComponent} from './recycle/recycle.component';
 import { QuitoEpsCarouselComponent } from './quito-eps-carousel/quito-eps-carousel.component';
 import {ImageModule} from "primeng/image";
 import {CheckboxModule} from "primeng/checkbox";
+import { RegisterFormComponent } from './register-form/register-form.component';
 
+const routes: Routes = [
+  {path: '', component: HomeComponent},
+  {path: 'home', component: HomeComponent},
+  {path: 'register-form', component: RegisterFormComponent},
+];
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     RecycleComponent,
-    QuitoEpsCarouselComponent
+    QuitoEpsCarouselComponent,
+    RegisterFormComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +52,7 @@ import {CheckboxModule} from "primeng/checkbox";
     GalleriaModule,
     FormsModule,
     TableModule,
-    RouterModule.forRoot([{path: '', component: HomeComponent}]),
+    RouterModule.forRoot(routes, { useHash: true }),
     CardModule,
     AvatarModule,
     PanelModule,
@@ -54,6 +61,6 @@ import {CheckboxModule} from "primeng/checkbox";
     CheckboxModule
   ],
   providers: [ProductService, ProductService2, PhotoService],
-  bootstrap: [HomeComponent]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

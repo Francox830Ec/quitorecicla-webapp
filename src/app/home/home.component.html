@@ -1,57 +1,59 @@
-<!--<div class="flex justify-content-center">-->
-<!--  <p-card [style]="{ width: '360px' }">-->
-<!--    <p-table #table [value]="[{}]">-->
-<!--      <ng-template pTemplate="body" let-rowData>-->
-<!--        <tr>-->
-<!--          <td>-->
-<!--            <div>-->
-<!--              <app-quito-eps-carousel></app-quito-eps-carousel>-->
-<!--            </div>-->
-<!--          </td>-->
-<!--        </tr>-->
-<!--        <tr>-->
-<!--          <td>-->
-<!--            <div class="flex justify-content-center flex-wrap gap-3">-->
-<!--              <i class="pi pi-facebook" style="font-size: 2rem; color: #4267B2"></i>-->
-<!--              <i class="pi pi-twitter" style="font-size: 2rem; color: #1DA1F2"></i>-->
-<!--              <i class="pi pi-instagram" style="font-size: 2rem; color: #D43089"></i>-->
-<!--            </div>-->
-<!--          </td>-->
-<!--        </tr>-->
-<!--        <tr>-->
-<!--          <td class="flex justify-content-center flex-wrap gap-3">-->
-<!--            <div>-->
-<!--              <button pButton label="Ingresar" class="p-button p-button-rounded p-button-lg" icon="pi pi-sign-in"-->
-<!--                      pTooltip="Aceptar"></button>-->
-<!--            </div>-->
-<!--          </td>-->
-<!--        </tr>-->
-<!--      </ng-template>-->
-<!--    </p-table>-->
-<!--  </p-card>-->
-<!--</div>-->
-
 <div class="flex justify-content-center">
   <p-card [style]="{ width: '360px' }">
-    <ng-template pTemplate="header">
-      <img alt="Card" src="./assets/img/pixeled/FONDO_MesadetrabajoBanner1.png" />
-    </ng-template>
-
-    <ng-template pTemplate="body">
-      <div class="flex justify-content-center">
-        <p-image src="./assets/img/pixeled/quiero-saber01.png" alt="Image" width="250"></p-image>
-      </div>
-      <div class="p-fluid m-4">
-        <p-button label="Recicla a domicilio" icon="pi pi-home" styleClass="p-button-info p-button-lg"></p-button>
-        <p-button label="Acércate a un punto" icon="pi pi-map-marker" styleClass="p-button-info p-button-lg mt-3"></p-button>
-      </div>
-    </ng-template>
-
-    <ng-template pTemplate="footer">
-        <img alt="Card" src="./assets/img/pixeled/logostodas-empre04.png" alt="Image" width="320" />
-    </ng-template>
+    <p-table #table [value]="[{}]">
+      <ng-template pTemplate="body" let-rowData>
+        <tr>
+          <td>
+            <div>
+              <app-quito-eps-carousel></app-quito-eps-carousel>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="flex justify-content-center flex-wrap gap-3">
+              <i class="pi pi-facebook" style="font-size: 2rem; color: #4267B2"></i>
+              <i class="pi pi-twitter" style="font-size: 2rem; color: #1DA1F2"></i>
+              <i class="pi pi-instagram" style="font-size: 2rem; color: #D43089"></i>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="flex justify-content-center flex-wrap gap-3">
+            <div>
+              <button routerLink="/register-form" pButton label="Ingresar" class="p-button p-button-rounded p-button-lg" icon="pi pi-sign-in"
+                      pTooltip="Aceptar"></button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
   </p-card>
 </div>
+
+
+
+<!--<div class="flex justify-content-center">-->
+<!--  <p-card [style]="{ width: '360px' }">-->
+<!--    <ng-template pTemplate="header">-->
+<!--      <img alt="Card" src="./assets/img/pixeled/FONDO_MesadetrabajoBanner1.png" />-->
+<!--    </ng-template>-->
+
+<!--    <ng-template pTemplate="body">-->
+<!--      <div class="flex justify-content-center">-->
+<!--        <p-image src="./assets/img/pixeled/quiero-saber01.png" alt="Image" width="250"></p-image>-->
+<!--      </div>-->
+<!--      <div class="p-fluid m-4">-->
+<!--        <p-button label="Recicla a domicilio" icon="pi pi-home" styleClass="p-button-info p-button-lg"></p-button>-->
+<!--        <p-button label="Acércate a un punto" icon="pi pi-map-marker" styleClass="p-button-info p-button-lg mt-3"></p-button>-->
+<!--      </div>-->
+<!--    </ng-template>-->
+
+<!--    <ng-template pTemplate="footer">-->
+<!--        <img alt="Card" src="./assets/img/pixeled/logostodas-empre04.png" alt="Image" width="320" />-->
+<!--    </ng-template>-->
+<!--  </p-card>-->
+<!--</div>-->
 
 <!--<div class="flex justify-content-center">-->
 <!--  <p-card header="Recicla a domicilio" [style]="{ width: '360px' }">-->

@@ -9,17 +9,6 @@ import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 export class HomeComponent implements OnInit{
   styleOBJ = { width: '360px', 'background':'lightblue'}
 
-  // form: FormGroup<any> | undefined;
-
-  profileForm = new FormGroup({
-    firstName: new FormControl(''),
-    lastName: new FormControl(''),
-  });
-
-  // form = this.formBuilder.group({
-  //   nombreProducto: new FormControl(false),
-  //
-  // });
 
   form = new FormGroup({
     nombreProducto: new FormControl(false),
@@ -47,12 +36,4 @@ export class HomeComponent implements OnInit{
       nombreProducto: new FormControl(false),
     });
   }
-
-  // initForms() {
-  //   this.form = this.formBuilder.group({
-  //     nombreProducto: new FormControl(false),
-  //
-  //   });
-  // }
-
 }

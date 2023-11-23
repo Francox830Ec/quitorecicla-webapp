@@ -1,38 +1,4 @@
-<div class="card flex justify-content-center">
-  <p-card [style]="{ width: '360px' }">
-    <p-table #table [value]="[{}]">
-      <ng-template pTemplate="body" let-rowData>
-        <tr>
-          <td>
-            <div>
-              <p-galleria [value]="products2" [showIndicators]="true" [showThumbnails]="false" [circular]="true"
-                          [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '640px' }"
-                          [autoPlay]="true">
-                <ng-template pTemplate="item" let-item>
-                  <img src="./assets/img/pixeled/{{item.image}}" style="width: 100%; display: block;" />
-                </ng-template>
-              </p-galleria>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <div class="flex justify-content-center flex-wrap gap-3">
-              <i class="pi pi-facebook" style="font-size: 2rem; color: #4267B2"></i>
-              <i class="pi pi-twitter" style="font-size: 2rem; color: #1DA1F2"></i>
-              <i class="pi pi-instagram" style="font-size: 2rem; color: #D43089"></i>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td class="flex justify-content-center flex-wrap gap-3">
-            <div>
-              <button pButton label="Ingresar" class="p-button p-button-rounded p-button-lg" icon="pi pi-sign-in"
-                      pTooltip="Aceptar"></button>
-            </div>
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </p-card>
-</div>
+<router-outlet></router-outlet>
+
+
+
