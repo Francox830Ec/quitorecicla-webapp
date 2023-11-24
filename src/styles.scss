@@ -25,7 +25,7 @@ body {
   margin-bottom: 1rem;
 }
 
-.ngx-color {
+.ngx-ws-bg {
   &.p-card {
     border-radius: 1rem;
     overflow: hidden;
@@ -37,8 +37,16 @@ body {
     padding: 2rem !important;
     //background: #a6120d;
     //color: #fff;
-
     background-image: url("assets/img/pixeled/FONDO_Mesadetrabajo1.png");
   }
 }
 
+.ngx-emgirs-dark-blue {
+  background: #28367f;
+  border-color: #28367f;
+}
+
+.ngx-emgirs-dark-light {
+  background: #1275bb;
+  border-color: #1275bb;
+}
