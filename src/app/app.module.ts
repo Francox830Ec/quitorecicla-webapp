@@ -27,9 +27,13 @@ import { QuitoEpsCarouselComponent } from './quito-eps-carousel/quito-eps-carous
 import {ImageModule} from "primeng/image";
 import {CheckboxModule} from "primeng/checkbox";
 import { RegisterFormComponent } from './register-form/register-form.component';
+import { LoginComponent } from './login/login.component';
+import {PasswordModule} from "primeng/password";
+import {SidebarModule} from "primeng/sidebar";
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
+  {path: 'login', component: LoginComponent},
   {path: 'home', component: HomeComponent},
   {path: 'register-form', component: RegisterFormComponent},
   {path: 'recycle', component: RecycleComponent},
@@ -41,7 +45,8 @@ const routes: Routes = [
     HomeComponent,
     RecycleComponent,
     QuitoEpsCarouselComponent,
-    RegisterFormComponent
+    RegisterFormComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -53,13 +58,15 @@ const routes: Routes = [
     GalleriaModule,
     FormsModule,
     TableModule,
-    RouterModule.forRoot(routes, { useHash: true }),
+    RouterModule.forRoot(routes, {useHash: true}),
     CardModule,
     AvatarModule,
     PanelModule,
     ImageModule,
     ReactiveFormsModule,
-    CheckboxModule
+    CheckboxModule,
+    PasswordModule,
+    SidebarModule
   ],
   providers: [ProductService, ProductService2, PhotoService],
   bootstrap: [AppComponent]
