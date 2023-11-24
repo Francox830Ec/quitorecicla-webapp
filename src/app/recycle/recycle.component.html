@@ -1,1 +1,17 @@
-<p>recycle works!</p>
+<div class="flex justify-content-center">
+  <p-card [style]="{ width: '360px' }">
+    <ng-template pTemplate="header">
+      <img alt="Card" src="./assets/img/pixeled/FONDO_MesadetrabajoBanner1.png" />
+    </ng-template>
+
+    <ng-template pTemplate="body">
+      <div class="flex justify-content-center">
+        <p-image src="./assets/img/pixeled/quiero-saber01.png" alt="Image" width="250"></p-image>
+      </div>
+      <div class="p-fluid m-4">
+        <p-button label="Recicla a domicilio" icon="pi pi-home" styleClass="p-button-info p-button-lg"></p-button>
+        <p-button label="Acércate a un punto" icon="pi pi-map-marker" styleClass="p-button-info p-button-lg mt-3"></p-button>
+      </div>
+    </ng-template>
+  </p-card>
+</div>
