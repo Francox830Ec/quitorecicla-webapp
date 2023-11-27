@@ -30,6 +30,9 @@ import { RegisterFormComponent } from './register-form/register-form.component';
 import { LoginComponent } from './login/login.component';
 import {PasswordModule} from "primeng/password";
 import {SidebarModule} from "primeng/sidebar";
+import {OverlayModule} from "primeng/overlay";
+import {DropdownModule} from "primeng/dropdown";
+import {DividerModule} from "primeng/divider";
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -66,7 +69,10 @@ const routes: Routes = [
     ReactiveFormsModule,
     CheckboxModule,
     PasswordModule,
-    SidebarModule
+    SidebarModule,
+    OverlayModule,
+    DropdownModule,
+    DividerModule
   ],
   providers: [ProductService, ProductService2, PhotoService],
   bootstrap: [AppComponent]

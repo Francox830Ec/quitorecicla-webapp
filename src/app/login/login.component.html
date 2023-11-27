@@ -1,37 +1,82 @@
-<div _nghost-ccs-c42="" class="ng-star-inserted">
-  <div _ngcontent-ccs-c42="" class="flex h-screen">
-    <div _ngcontent-ccs-c42="" class="w-full lg:w-4 h-full text-center px-6 py-6 flex flex-column justify-content-between">
-      <img _ngcontent-ccs-c42="" alt="diamond-layout" class="h-4rem mt-4" src="https://www.primefaces.org/diamond-ng/assets/layout/images/logo-dark.svg">
-      <div _ngcontent-ccs-c42="" class="flex flex-column align-items-center gap-4">
-        <div _ngcontent-ccs-c42="" class="mb-3">
-          <h2 _ngcontent-ccs-c42="">Login to your account</h2>
-          <p _ngcontent-ccs-c42="">Forgot password? <a _ngcontent-ccs-c42="" class="text-primary hover:underline cursor-pointer font-medium">Click here</a> to reset. </p>
-        </div>
-        <input _ngcontent-ccs-c42="" pinputtext="" id="email" placeholder="Email" class="p-inputtext p-component p-element w-20rem">
-        <p-password _ngcontent-ccs-c42="" id="password" placeholder="Password" inputstyleclass="w-20rem" class="p-element p-inputwrapper ng-tns-c41-96 ng-star-inserted">
-          <div class="ng-tns-c41-96 p-password p-component p-inputwrapper">
-            <input pinputtext="" class="p-inputtext p-component p-element ng-tns-c41-96 w-20rem p-password-input" type="password" placeholder="Password">
-            <!---->
-            <!---->
-            <!---->
+  <div  class="flex h-auto">
+    <div  class="w-full lg:w-4 h-full text-center px-6 py-6 flex flex-column justify-content-between">
+      <div class="flex justify-content-center flex-wrap gap-3">
+        <img src="./assets/img/pixeled/logo-quitorecicla001.png" width="265">
+      </div>
+      <div class="grid">
+        <div class="col-12">
+          <div class="card">
+            <div>
+              <h2 >Ingresa a tu cuenta</h2>
+              <p >¿Olvidaste tu contraseña? <a  class="text-primary hover:underline cursor-pointer font-medium">Click aquí</a> para resetear. </p>
+            </div>
+
+            <div class="p-fluid p-formgrid grid mt-5">
+              <div class="col-12 md:col-12">
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon">
+                      <i class="pi pi-envelope"></i>
+                    </span>
+                  <input type="text" pinputtext="" placeholder="Correo" class="p-inputtext p-component p-element">
+                </div>
+              </div>
+            </div>
+
+            <div class="p-fluid p-formgrid grid">
+              <div class="mt-3 col-12 md:col-12">
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon">
+                      <i class="pi pi-lock"></i>
+                    </span>
+                  <input type="text" pinputtext="" placeholder="Contraseña" class="p-inputtext p-component p-element">
+                </div>
+              </div>
+            </div>
+            <button pripple="" label="INGRESAR"
+                    class="ngx-emgirs-dark-light p-element p-ripple w-full mt-3 mb-4 p-button p-component">
+              <span class="p-button-label">INGRESAR</span>
+            </button>
           </div>
-        </p-password>
-        <button _ngcontent-ccs-c42="" pbutton="" label="CONTINUE" type="button" class="p-element w-20rem p-button p-component">
-          <span class="p-button-label">CONTINUE</span>
-        </button>
+        </div>
       </div>
-      <p _ngcontent-ccs-c42="" class="text-color-secondary font-semibold">A problem? <a _ngcontent-ccs-c42="" class="text-primary hover:underline cursor-pointer font-medium">Click here</a> and let us help you. </p>
+      <p  class="text-color-secondary font-semibold">¿Algún problema? <a  class="text-primary hover:underline cursor-pointer font-medium">Click aquí</a> y permítenos ayudarte.</p>
     </div>
-    <div _ngcontent-ccs-c42="" class="w-8 hidden lg:flex flex-column justify-content-between align-items-center px-6 py-6 bg-cover bg-norepeat" style="background-image: url('https://www.primefaces.org/diamond-ng/assets/demo/images/auth/bg-login.jpg');">
-      <div _ngcontent-ccs-c42="" class="mt-auto mb-auto">
-        <span _ngcontent-ccs-c42="" class="block text-white text-7xl font-semibold">Access to your <br _ngcontent-ccs-c42="">Diamond <br _ngcontent-ccs-c42="">Account </span>
-        <span _ngcontent-ccs-c42="" class="block text-white text-3xl mt-4">Lorem ipsum dolor sit amet, consectetur <br _ngcontent-ccs-c42=""> adipiscing elit. Donec posuere velit nec enim <br _ngcontent-ccs-c42=""> sodales, nec placerat erat tincidunt. </span>
+
+    <div  class="w-8 hidden lg:flex flex-column justify-content-between align-items-center px-4 py-8 bg-cover bg-norepeat">
+      <div  class="mt-auto mb-auto">
+        <div class="grid">
+          <div class="col-12">
+              <div class="flex justify-content-center">
+                <p-card>
+                  <p-table #table [value]="[{}]">
+                    <ng-template pTemplate="body" let-rowData>
+                      <tr>
+                        <td>
+                          <div>
+                            <app-quito-eps-carousel></app-quito-eps-carousel>
+                          </div>
+                        </td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                  <div class="flex justify-content-center align-items-center flex-wrap gap-5 mt-4">
+                    <span  class="font-semibold">Síguenos en nuestras redes sociales.</span>
+                    <i  class="pi pi-facebook text-3xl p-1 surface-overlay border-circle cursor-pointer" style="color: #4267B2"></i>
+                    <i  class="pi pi-twitter text-3xl p-1 surface-overlay border-circle cursor-pointer" style="color: #1DA1F2"></i>
+                    <i  class="pi pi-instagram text-3xl p-1 surface-overlay border-circle cursor-pointer" style="color: #D43089"></i>
+                  </div>
+                </p-card>
+              </div>
+
+          </div>
+        </div>
       </div>
-      <div _ngcontent-ccs-c42="" class="flex align-items-center gap-5">
-        <span _ngcontent-ccs-c42="" class="text-white font-semibold">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span>
-        <i _ngcontent-ccs-c42="" class="pi pi-github text-3xl p-1 surface-overlay border-circle cursor-pointer"></i>
-        <i _ngcontent-ccs-c42="" class="pi pi-twitter text-3xl p-1 surface-overlay border-circle cursor-pointer"></i>
-      </div>
+<!--      <div  class="flex align-items-center gap-5">-->
+<!--        <span  class="text-white font-semibold">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span>-->
+<!--        <i  class="pi pi-github text-3xl p-1 surface-overlay border-circle cursor-pointer"></i>-->
+<!--        <i  class="pi pi-twitter text-3xl p-1 surface-overlay border-circle cursor-pointer"></i>-->
+<!--      </div>-->
     </div>
+
+
   </div>
-</div>
