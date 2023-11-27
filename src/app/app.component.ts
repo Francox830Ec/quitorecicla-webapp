@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { Product } from '../domain/product';
 import { ProductService } from '../service/productservice';
 import { ProductService2 } from '../service/productservice2';
@@ -14,7 +14,7 @@ export interface Tutorial {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   title = 'quitorecicla-webapp2';
   products: Product[] = [];
   products2: Product[] = [];
@@ -22,6 +22,15 @@ export class AppComponent {
   // responsiveOptions: any[] | undefined;
   cols: any[] | undefined;
   tutorials: Tutorial[] = [];
+
+  display: any;
+  center: google.maps.LatLngLiteral = {
+    lat: 22.2736308,
+    lng: 70.7512555
+  };
+  zoom = 6;
+
+  options: any;
 
 
   responsiveOptions: any[] = [
@@ -46,6 +55,46 @@ export class AppComponent {
   ) {}
 
   ngOnInit() {
+
+
+    // Initialize and add the map
+    let map;
+    async function initMap(): Promise<void> {
+      // The location of Uluru
+      const position = { lat: -25.344, lng: 131.031 };
+
+      // Request needed libraries.
+      //@ts-ignore
+      const { Map } = await google.maps.importLibrary("maps") as google.maps.MapsLibrary;
+      const { AdvancedMarkerView } = await google.maps.importLibrary("marker") as google.maps.MarkerLibrary;
+
+      // The map, centered at Uluru
+      map = new Map(
+        document.getElementById('map') as HTMLElement,
+        {
+          zoom: 4,
+          center: position,
+          mapId: 'DEMO_MAP_ID',
+        }
+      );
+
+      // The marker, positioned at Uluru
+      const marker = new AdvancedMarkerView({
+        map: map,
+        position: position,
+        title: 'Uluru'
+      });
+    }
+
+    initMap();
+
+
+
+    this.options = {
+      center: { lat: 22.72105, lng: 88.373459 },
+      zoom: 12,
+    };
+
     this.tutorials = [
       {
         title: "Queue",
@@ -111,5 +160,23 @@ export class AppComponent {
       case 'OUTOFSTOCK':
         return 'danger';
     }
+  }
+
+  /*------------------------------------------
+--------------------------------------------
+moveMap()
+--------------------------------------------
+--------------------------------------------*/
+  moveMap(event: google.maps.MapMouseEvent) {
+    if (event.latLng != null) this.center = (event.latLng.toJSON());
+  }
+
+  /*------------------------------------------
+  --------------------------------------------
+  move()
+  --------------------------------------------
+  --------------------------------------------*/
+  move(event: google.maps.MapMouseEvent) {
+    if (event.latLng != null) this.display = event.latLng.toJSON();
   }
 }

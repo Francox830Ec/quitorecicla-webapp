@@ -5,17 +5,18 @@ import {RegisterFormComponent} from "./register-form/register-form.component";
 import {HomeComponent} from "./home/home.component";
 import {RecycleComponent} from "./recycle/recycle.component";
 import {LoginComponent} from "./login/login.component";
+import { GoogleMapsModule } from '@angular/google-maps';
 
 const routes: Routes = [
-  {path: '', component: HomeComponent},
-  {path: 'login', component: LoginComponent},
+  {path: '', component: LoginComponent},
+  // {path: 'login', component: LoginComponent},
   {path: 'home', component: HomeComponent},
   {path: 'register-form', component: RegisterFormComponent},
   {path: 'recycle', component: RecycleComponent},
 ];
 
 @NgModule({
-  imports: [CommonModule, RouterModule.forRoot(routes, { useHash: true })],
+  imports: [CommonModule, GoogleMapsModule, RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

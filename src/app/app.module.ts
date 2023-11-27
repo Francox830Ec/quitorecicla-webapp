@@ -33,10 +33,13 @@ import {SidebarModule} from "primeng/sidebar";
 import {OverlayModule} from "primeng/overlay";
 import {DropdownModule} from "primeng/dropdown";
 import {DividerModule} from "primeng/divider";
+import {MenuModule} from "primeng/menu";
+import { GoogleMapsModule } from '@angular/google-maps';
+
 
 const routes: Routes = [
-  {path: '', component: HomeComponent},
-  {path: 'login', component: LoginComponent},
+  {path: '', component: LoginComponent},
+  // {path: 'login', component: LoginComponent},
   {path: 'home', component: HomeComponent},
   {path: 'register-form', component: RegisterFormComponent},
   {path: 'recycle', component: RecycleComponent},
@@ -53,6 +56,7 @@ const routes: Routes = [
   ],
   imports: [
     BrowserModule,
+    GoogleMapsModule,
     AppRoutingModule,
     ButtonModule,
     BrowserAnimationsModule,
@@ -72,7 +76,8 @@ const routes: Routes = [
     SidebarModule,
     OverlayModule,
     DropdownModule,
-    DividerModule
+    DividerModule,
+    MenuModule
   ],
   providers: [ProductService, ProductService2, PhotoService],
   bootstrap: [AppComponent]
