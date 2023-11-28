@@ -35,7 +35,7 @@ import {DropdownModule} from "primeng/dropdown";
 import {DividerModule} from "primeng/divider";
 
 const routes: Routes = [
-  {path: '', component: HomeComponent},
+  {path: '', component: LoginComponent},
   {path: 'login', component: LoginComponent},
   {path: 'home', component: HomeComponent},
   {path: 'register-form', component: RegisterFormComponent},
