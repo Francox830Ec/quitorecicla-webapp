@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "quitorecicla-webapp2": {
+    "quitorecicla-webapp": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/quitorecicla-webapp2",
+            "outputPath": "dist/quitorecicla-webapp",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -65,10 +65,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "quitorecicla-webapp2:build:production"
+              "browserTarget": "quitorecicla-webapp:build:production"
             },
             "development": {
-              "browserTarget": "quitorecicla-webapp2:build:development"
+              "browserTarget": "quitorecicla-webapp:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -76,7 +76,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "quitorecicla-webapp2:build"
+            "browserTarget": "quitorecicla-webapp:build"
           }
         },
         "test": {

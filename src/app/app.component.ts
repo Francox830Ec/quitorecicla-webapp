@@ -15,7 +15,7 @@ export interface Tutorial {
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'quitorecicla-webapp2';
+  title = 'quitorecicla-webapp';
   products: Product[] = [];
   products2: Product[] = [];
   images: any[] | undefined;
