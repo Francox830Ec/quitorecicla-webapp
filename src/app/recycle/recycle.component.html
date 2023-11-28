@@ -1,28 +1,47 @@
-<div class="h-full col-12 xl:col-12">
-    <p-card styleClass="ngx-ws-bg">
-<!--      <div class="flex flex-column md:flex-row md:justify-content-between align-items-center mb-2">-->
-<!--        <h4 class="white-space-nowrap">Recent Transactions</h4>-->
-<!--        <button pbutton="" pripple="" type="button" label="See All Transactions" class="p-element p-ripple p-button-text p-button p-component">-->
-<!--          <span class="p-button-label">See All Transactions</span>-->
-<!--          <span class="p-link"></span>-->
-<!--        </button>-->
+<!--<div class="flex justify-content-center">-->
+<!--  <p-card [style]="{ width: '360px' }">-->
+<!--    <ng-template pTemplate="header">-->
+<!--      <img alt="Card" src="./assets/img/pixeled/FONDO_MesadetrabajoBanner1.png" />-->
+<!--    </ng-template>-->
+
+<!--    <ng-template pTemplate="body">-->
+<!--      <div class="flex justify-content-center">-->
+<!--        <p-image src="./assets/img/pixeled/quiero-saber01.png" alt="Image" width="250"></p-image>-->
 <!--      </div>-->
+<!--      <div class="p-fluid m-4">-->
+<!--        <p-button label="Recicla a domicilio" icon="pi pi-home" styleClass="p-button-info p-button-lg"></p-button>-->
+<!--        <p-button label="Acércate a un punto" icon="pi pi-map-marker" styleClass="p-button-info p-button-lg mt-3"></p-button>-->
+<!--      </div>-->
+<!--    </ng-template>-->
+<!--    <ng-template pTemplate="footer">-->
+<!--        <img alt="Card" src="./assets/img/pixeled/logostodas-empre04.png" alt="Image" width="320" />-->
+<!--    </ng-template>-->
+<!--  </p-card>-->
+<!--</div>-->
 
-        <ng-template pTemplate="body">
-              <div class="flex justify-content-center">
-<!--                <p-image src="./assets/img/pixeled/quiero-saber01.png" width="300" ></p-image>-->
-                <img src="./assets/img/pixeled/quiero-saber01.png" style="width: 33%; display: block;" />
-              </div>
 
-          <div class="flex justify-content-center">
-<!--            <div class="my-google-map">-->
-<!--              <google-map></google-map>-->
+<p-card styleClass="ngx-ws-bg">
+    <ng-template pTemplate="header">
+    </ng-template>
+  <ng-template pTemplate="body">
+<!--        <ul class="list-none p-0 m-4">-->
+<!--          <li  class="p-2 flex align-items-center justify-content-between cursor-pointer border-round ngx-emgirs-dark-blue text-white">-->
+<!--            <div class="flex align-items-center">-->
+<!--              <span class="ext-lg font-medium">¿QUIERES SABER CÓMO RECICLAR?</span>-->
 <!--            </div>-->
+<!--          </li>-->
+<!--        </ul>-->
 
-          </div>
+        <div class="flex justify-content-center">
+          <p-image src="./assets/img/pixeled/quiero-saber01.png" alt="Image" width="260"></p-image>
+        </div>
 
-
-        </ng-template>
-
-    </p-card>
-</div>
+        <div class="p-fluid m-5">
+          <p-button label="Recicla a domicilio" icon="pi pi-home" styleClass="ngx-emgirs-dark-blue p-button-rounded p-button-lg"></p-button>
+          <p-button label="Acércate a un punto" icon="pi pi-map-marker" styleClass="ngx-emgirs-dark-blue p-button-rounded p-button-lg mt-3"></p-button>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="footer">
+          <img alt="Card" src="./assets/img/pixeled/logostodas-empre04.png" alt="Image" width="310" />
+      </ng-template>
+</p-card>
