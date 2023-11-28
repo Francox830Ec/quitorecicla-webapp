@@ -33,6 +33,9 @@ import {SidebarModule} from "primeng/sidebar";
 import {OverlayModule} from "primeng/overlay";
 import {DropdownModule} from "primeng/dropdown";
 import {DividerModule} from "primeng/divider";
+import {GoogleMapsModule} from "@angular/google-maps";
+import {ToastModule} from "primeng/toast";
+import {SplitterModule} from "primeng/splitter";
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
@@ -72,7 +75,10 @@ const routes: Routes = [
     SidebarModule,
     OverlayModule,
     DropdownModule,
-    DividerModule
+    DividerModule,
+    GoogleMapsModule,
+    ToastModule,
+    SplitterModule
   ],
   providers: [ProductService, ProductService2, PhotoService],
   bootstrap: [AppComponent]

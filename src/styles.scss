@@ -60,3 +60,36 @@ body {
   background: #1275bb;
   border-color: #1275bb;
 }
+
+.my-google-map{
+  .map-container{
+    width: 200px;
+    height: 600px;
+  }
+}
+
+.no-header .ui-panel-titlebar{
+  display: none !important;
+}
+
+body .p-panel .p-panel-content {
+  border-top: 0 none;
+}
+
+.p-card .p-card-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  background: #1275bb;
+  vertical-align: middle !important;
+}
+
+.footer img {
+  border: none !important;
+  width: auto !important;
+  height:auto;
+  max-width:100%;
+  max-height: 28px !important;
+  cursor: pointer;
+}
+

@@ -1,18 +1,33 @@
 <p-card styleClass="ngx-ws-bg">
-    <ng-template pTemplate="header"></ng-template>
+
     <ng-template pTemplate="body">
+
         <div class="flex justify-content-center">
-            <img src="./assets/img/pixeled/quiero-saber01.png" style="width: 33%; display: block;" />
+<!--            <img src="./assets/img/pixeled/quiero-saber01.png" width="200" />-->
+            <img src="./assets/img/pixeled/quiero-saber01.png" style="
+          border: none !important;
+          width: auto !important;
+          max-width:100%;
+          height:auto;
+          max-height: 150px !important;
+          cursor: pointer;" />
         </div>
 
-        <div class="p-fluid m-5">
-            <p-button label="Recicla a domicilio" icon="pi pi-home" styleClass="ngx-emgirs-dark-blue p-button-rounded p-button-lg"></p-button>
-            <p-button label="Acércate a un punto" icon="pi pi-map-marker" styleClass="ngx-emgirs-dark-blue p-button-rounded p-button-lg mt-3"></p-button>
-        </div>
+        <google-map class="flex justify-content-center"></google-map>
+
     </ng-template>
+
     <ng-template pTemplate="footer">
       <div class="flex justify-content-center">
-          <img src="./assets/img/pixeled/logostodas-empre04.png" style="width: 80%; display: block;" />
+<!--          <img src="./assets/img/pixeled/logostodas-empre04.png" style="width: 75%; display: block;" />-->
+          <img src="./assets/img/pixeled/logostodas-empre04.png" style="
+          border: none !important;
+          width: auto !important;
+          max-width:100%;
+          height:auto;
+          max-height: 100px !important;
+          cursor: pointer;"/>
       </div>
     </ng-template>
+
 </p-card>
