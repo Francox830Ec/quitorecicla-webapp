@@ -36,6 +36,7 @@ import {DividerModule} from "primeng/divider";
 import {GoogleMapsModule} from "@angular/google-maps";
 import {ToastModule} from "primeng/toast";
 import {SplitterModule} from "primeng/splitter";
+import {DialogModule} from "primeng/dialog";
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
@@ -78,7 +79,8 @@ const routes: Routes = [
     DividerModule,
     GoogleMapsModule,
     ToastModule,
-    SplitterModule
+    SplitterModule,
+    DialogModule
   ],
   providers: [ProductService, ProductService2, PhotoService],
   bootstrap: [AppComponent]
