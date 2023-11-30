@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { Product } from '../domain/product';
 import { ProductService } from '../service/productservice';
 import { ProductService2 } from '../service/productservice2';
@@ -14,7 +14,7 @@ export interface Tutorial {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   title = 'quitorecicla-webapp';
   products: Product[] = [];
   products2: Product[] = [];
@@ -39,13 +39,15 @@ export class AppComponent {
     }
   ];
 
-
   constructor(private productService: ProductService,
               private productService2: ProductService2,
               private photoService: PhotoService
   ) {}
 
   ngOnInit() {
+
+    console.info("app.component");
+
     this.tutorials = [
       {
         title: "Queue",
@@ -111,5 +113,23 @@ export class AppComponent {
       case 'OUTOFSTOCK':
         return 'danger';
     }
+  }
+
+  initMap() {
+    const map = new google.maps.Map(document.getElementById("map"), {
+      center: { lat: 40.749933, lng: -73.98633 },
+      zoom: 13,
+      mapTypeControl: false,
+    });
+    const card = document.getElementById("pac-card");
+    const input = document.getElementById("pac-input");
+    const biasInputElement = document.getElementById("use-location-bias");
+    const strictBoundsInputElement = document.getElementById("use-strict-bounds");
+    const options = {
+      fields: ["formatted_address", "geometry", "name"],
+      strictBounds: false,
+    };
+
+    map.controls[google.maps.ControlPosition.TOP_LEFT].push(card);
   }
 }

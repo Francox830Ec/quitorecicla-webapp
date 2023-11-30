@@ -1,5 +1,4 @@
-<p-card styleClass="ngx-ws-bg">
-
+<p-card class="ngx-ws-bg">
   <p-dialog header="Recicla a Domicilio" [(visible)]="visible" [style]="{width: '50vw'}">
     <div class="flex flex-column gap-2">
       <div *ngFor="let category of categories" class="field-checkbox">
@@ -21,7 +20,13 @@
           cursor: pointer;" />
         </div>
 
-      <google-map class="flex justify-content-center" [options]="mapOptions">
+      <div *ngIf="mapLoaded" class="p-fluid p-formgrid grid mt-1 flex flex-wrap justify-content-center gap-3" id="searchBox">
+          <div class="p-inputgroup">
+              <input type="text" id="address" placeholder="Ingrese una localizacion" class="p-inputtext p-component p-element">
+          </div>
+      </div>
+
+      <google-map *ngIf="mapLoaded" class="flex justify-content-center" width="100%" (tilesloaded)="handleOnTilesLoaded()" [options]="mapOptions">
             <map-marker *ngFor="let position of markers" #marker="mapMarker" [position]="position" (mapClick)="openInfoWindow(marker, position.label)">
             </map-marker>
             <map-info-window>
@@ -33,6 +38,8 @@
               </div>
             </map-info-window>
       </google-map>
+      <button (click)="logCenter()">Log center</button>
+
     </ng-template>
 
     <ng-template pTemplate="footer">
