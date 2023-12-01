@@ -46,8 +46,6 @@ export class AppComponent implements OnInit{
 
   ngOnInit() {
 
-    console.info("app.component");
-
     this.tutorials = [
       {
         title: "Queue",

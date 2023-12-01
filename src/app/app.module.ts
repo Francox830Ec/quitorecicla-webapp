@@ -37,6 +37,12 @@ import {GoogleMapsModule} from "@angular/google-maps";
 import {ToastModule} from "primeng/toast";
 import {SplitterModule} from "primeng/splitter";
 import {DialogModule} from "primeng/dialog";
+import {ConfirmationService, MessageService} from "primeng/api";
+import {ConfirmDialogModule} from "primeng/confirmdialog";
+import {SitioReciclajeLaDeliciaservice} from "../service/sitioreciclajeLaDeliciaservice";
+import {SitioReciclajeEloyAlfaroService} from "../service/sitioreciclajeEloyAlfaroservice";
+import {SitioReciclajeTumbacoservice} from "../service/sitioreciclajeTumbacoservice";
+import {SitioReciclajeManuelitaSaenzservice} from "../service/sitioreciclajeManuelitaSaenzservice";
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
@@ -80,9 +86,15 @@ const routes: Routes = [
     GoogleMapsModule,
     ToastModule,
     SplitterModule,
-    DialogModule
+    DialogModule,
+    ConfirmDialogModule
   ],
-  providers: [ProductService, ProductService2, PhotoService],
+  providers: [ProductService, ProductService2, PhotoService, ConfirmationService, MessageService,
+      SitioReciclajeLaDeliciaservice,
+      SitioReciclajeEloyAlfaroService,
+      SitioReciclajeTumbacoservice,
+      SitioReciclajeManuelitaSaenzservice
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
