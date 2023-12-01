@@ -6,10 +6,14 @@ import {GoogleMap, MapInfoWindow, MapMarker} from '@angular/google-maps';
   templateUrl: './recycle.component.html',
   styleUrls: ['./recycle.component.scss']
 })
-export class RecycleComponent {
+export class RecycleComponent implements OnInit{
   @ViewChild(MapInfoWindow) infoWindow: MapInfoWindow;
   @ViewChild(GoogleMap, { static: false }) map: GoogleMap;
 
+  heighInitial = "200px";
+  mapLoading = false;
+  mapLoaded = false;
+  searchBoxLoaded = false;
   selectedCategories: any[] = [];
 
   categories: any[] = [
@@ -22,17 +26,8 @@ export class RecycleComponent {
     { name: 'Textiles', key: 'R' }
   ];
 
-
   visible: boolean = false;
 
-  logCenter() {
-    console.log(JSON.stringify(this.map.getCenter()))
-    console.info("map", this.map);
-  }
-
-  showDialog() {
-    this.visible = true;
-  }
 
   mapOptions: google.maps.MapOptions = {
     center: { lat: -0.1443723, lng: -78.4929763 },
@@ -81,29 +76,25 @@ export class RecycleComponent {
     this.markerPositions.push(event.latLng.toJSON());
   }
 
+    logCenter() {
+        console.log(JSON.stringify(this.map.getCenter()))
+        console.info("map", this.map);
+    }
+
+    showDialog() {
+        this.visible = true;
+    }
+
   openInfoWindow(marker: MapMarker, content: string) {
     this.infoContent = content;
     this.infoWindow.open(marker);
   }
 
-
-
-  options: any;
-
-  overlays: any[] | undefined;
-
-
-  map22: google.maps.Map;
-  async initMap(): Promise<void> {
-    const { Map } = await google.maps.importLibrary("maps") as google.maps.MapsLibrary;
-    this.map22 = new Map(document.getElementById("map") as HTMLElement, {
-      center: { lat: -34.397, lng: 150.644 },
-      zoom: 8,
-    });
+  calculateScreenHeight(){
+    var body = document.body, html = document.documentElement;
+    var height = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
+    this.heighInitial = (height - 50) + "px";
   }
-
-  mapLoading = false;
-  mapLoaded = false;
 
   loadMap() {
     if (this.mapLoaded || this.mapLoading) {
@@ -113,13 +104,18 @@ export class RecycleComponent {
     // One way of doing this: dynamically load a script tag.
     this.mapLoading = true;
     const mapsScript = document.createElement('script')
-    mapsScript.setAttribute('async', '');
+    mapsScript.async = true;
     mapsScript.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyA1BZLKzN8I1ApAr4BDliNHFf9vpBZMxas&libraries=places";
     mapsScript.addEventListener('load', () => {
+      this.calculateScreenHeight();
+      // this.addSearcBoxOnMap();
       this.mapLoaded = true;
       this.mapLoading = false;
+
+
     })
     document.head.appendChild(mapsScript);
+
   }
 
   ngOnInit() {
@@ -130,8 +126,8 @@ export class RecycleComponent {
   }
 
 
-  handleOnTilesLoaded(){
-    console.log("Tiles have loaded.");
+  addSearcBoxOnMap(){
+    console.log("addSearcBoxOnMap..");
     const options = {
       fields: ["formatted_address", "geometry", "name"],
       strictBounds: false,
@@ -140,8 +136,9 @@ export class RecycleComponent {
     const searchBox = document.getElementById("searchBox") as HTMLElement;
     var address = document.getElementById('address') as HTMLInputElement;
 
-    this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(searchBox);
+    this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(searchBox);
     const autocomplete = new google.maps.places.Autocomplete(address, options);
+    this.searchBoxLoaded = true;
 
     autocomplete.addListener("place_changed", () => {
       const place = autocomplete.getPlace();

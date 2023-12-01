@@ -1,57 +1,22 @@
-<p-card class="ngx-ws-bg">
-  <p-dialog header="Recicla a Domicilio" [(visible)]="visible" [style]="{width: '50vw'}">
-    <div class="flex flex-column gap-2">
-      <div *ngFor="let category of categories" class="field-checkbox">
-        <p-checkbox name="group" [value]="category" [(ngModel)]="selectedCategories" [inputId]="category.key"></p-checkbox>
-        <label [for]="category.key">{{ category.name }}</label>
-      </div>
+<div *ngIf="!searchBoxLoaded" class="flex p-fluid m-2 col-8 md:col-3" id="searchBox">
+  <span class="p-input-icon-right">
+    <i class="pi pi-search"></i>
+    <input type="text" id="address" class="p-inputtext" placeholder="Ingrese un lugar">
+  </span>
+</div>
+
+<google-map *ngIf="mapLoaded" class="flex justify-content-center"  (tiltChanged)="addSearcBoxOnMap()" [height]="heighInitial"
+            width="100%" [options]="mapOptions">
+  <map-marker *ngFor="let position of markers" #marker="mapMarker" [position]="position"
+              (mapClick)="openInfoWindow(marker, position.label)">
+  </map-marker>
+  <map-info-window>
+    <div class="card">
+      <p><b>{{ infoContent }}</b></p>
+      <p>Horario de atención: 8am a 12pm - 1pm a 5pm </p>
+      <br><br>
+      <p-button (click)="showDialog()" label="Recicla a domicilio" icon="pi pi-home" styleClass="ngx-emgirs-dark-blue
+      p-button-sm"></p-button>
     </div>
-  </p-dialog>
-
-    <ng-template pTemplate="body">
-
-        <div class="flex justify-content-center">
-            <img src="./assets/img/pixeled/quiero-saber01.png" style="
-          border: none !important;
-          width: auto !important;
-          max-width:100%;
-          height:auto;
-          max-height: 150px !important;
-          cursor: pointer;" />
-        </div>
-
-      <div *ngIf="mapLoaded" class="p-fluid p-formgrid grid mt-1 flex flex-wrap justify-content-center gap-3" id="searchBox">
-          <div class="p-inputgroup">
-              <input type="text" id="address" placeholder="Ingrese una localizacion" class="p-inputtext p-component p-element">
-          </div>
-      </div>
-
-      <google-map *ngIf="mapLoaded" class="flex justify-content-center" width="100%" (tilesloaded)="handleOnTilesLoaded()" [options]="mapOptions">
-            <map-marker *ngFor="let position of markers" #marker="mapMarker" [position]="position" (mapClick)="openInfoWindow(marker, position.label)">
-            </map-marker>
-            <map-info-window>
-              <div class="card">
-                <p><b>{{ infoContent }}</b></p>
-                <p>Horario de atención: 8am a 12pm - 1pm a 5pm </p>
-                <br><br>
-                <p-button (click)="showDialog()" label="Recicla a domicilio" icon="pi pi-home" styleClass="ngx-emgirs-dark-blue p-button-sm"></p-button>
-              </div>
-            </map-info-window>
-      </google-map>
-      <button (click)="logCenter()">Log center</button>
-
-    </ng-template>
-
-    <ng-template pTemplate="footer">
-      <div class="flex justify-content-center">
-          <img src="./assets/img/pixeled/logostodas-empre04.png" style="
-          border: none !important;
-          width: auto !important;
-          max-width:100%;
-          height:auto;
-          max-height: 100px !important;
-          cursor: pointer;"/>
-      </div>
-    </ng-template>
-
-</p-card>
+  </map-info-window>
+</google-map>
