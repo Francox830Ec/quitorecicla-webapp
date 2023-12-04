@@ -18,7 +18,7 @@
   </span>
 </div>
 
-<google-map *ngIf="mapLoaded" class="flex justify-content-center" (tiltChanged)="addSearcBoxOnMap()" [height]="heighInitial"
+<google-map *ngIf="mapLoaded" class="flex justify-content-center" (tiltChanged)="addSearchBoxOnMap()" [height]="heighInitial"
             width="100%" [options]="mapOptions">
   <p-toast></p-toast>
   <p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
@@ -39,15 +39,9 @@
 <!--              (mapClick)="openInfoWindow(marker, position.label)">-->
 <!--  </map-marker>-->
 
-  <map-marker
-    *ngFor="let marker of orderMarker"
-    [position]="marker.position"
-    [label]="marker.label"
-    [title]="marker.title"
-    [options]="marker.options"
-  >
+  <map-marker #marker *ngFor="let marker of orderMarker" [position]="marker.position" [label]="marker.label" [title]="marker.title"
+    [options]="marker.options">
   </map-marker>
-
 
   <map-info-window>
     <div class="card">

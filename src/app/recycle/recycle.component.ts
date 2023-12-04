@@ -5,6 +5,7 @@ import {SitioReciclajeLaDeliciaservice} from "../../service/sitioreciclajeLaDeli
 import {SitioReciclajeTumbacoservice} from "../../service/sitioreciclajeTumbacoservice";
 import {SitioReciclajeEloyAlfaroService} from "../../service/sitioreciclajeEloyAlfaroservice";
 import {SitioReciclajeManuelitaSaenzservice} from "../../service/sitioreciclajeManuelitaSaenzservice";
+import Animation = google.maps.Animation;
 
 @Component({
   selector: 'app-recycle',
@@ -14,15 +15,17 @@ import {SitioReciclajeManuelitaSaenzservice} from "../../service/sitioreciclajeM
 export class RecycleComponent implements OnInit{
   @ViewChild(GoogleMap, { static: false }) map: GoogleMap;
   @ViewChild(MapInfoWindow) infoWindow: MapInfoWindow;
-
   // @ViewChild(MapMarker, { static: false }) mapMarker: MapMarker;
 
   heighInitial = "200px";
   mapLoading = false;
   mapLoaded = false;
   searchBoxLoaded = false;
+  geolocationButonLoaded = false;
   selectedCategories: any[] = [];
   zoom = 14;
+  myCurrentPosition: any;
+
 
   orderMarker = [];
 
@@ -40,7 +43,7 @@ export class RecycleComponent implements OnInit{
   visible: boolean = false;
   siteNoAvailable: string = "";
 
-
+  buttonPosition: google.maps.ControlPosition.TOP_LEFT;
 
   mapOptions: google.maps.MapOptions = {
     center: { lat: -0.1443723, lng: -78.4929763 },
@@ -86,24 +89,56 @@ export class RecycleComponent implements OnInit{
     this.listSitioReciclajeTumbacoService();
   }
 
-  addMarker() {
-        this.orderMarker.push({
-            position: {
-                lat: this.center.lat,
-                lng: this.center.lng,
-            },
-            // label: {
-            //     color: 'red',
-            //     text: 'Marker label ' + (this.orderMarker.length + 1),
-            // },
-            title: 'Marker title ' + (this.orderMarker.length + 1),
-            info: 'Marker info ' + (this.orderMarker.length + 1),
-            options: {
-                animation: google.maps.Animation.BOUNCE,
-                draggable: true,
-            },
-        });
+  addMarker(position: any) {
+        // this.orderMarker.push({
+        //     position: {
+        //         lat: this.center.lat,
+        //         lng: this.center.lng,
+        //     },
+        //     /* label: {
+        //          color: 'red',
+        //          text: 'Marker label ' + (this.orderMarker.length + 1),
+        //      },*/
+        //     title: 'Marker title ' + (this.orderMarker.length + 1),
+        //     info: 'Marker info ' + (this.orderMarker.length + 1),
+        //     options: {
+        //         animation: google.maps.Animation.BOUNCE,
+        //         draggable: true,
+        //     },
+        // });
+
+
+      this.orderMarker.push({
+        position: {
+          lat: position.lat,
+          lng: position.lng,
+        },
+        //position: position,
+
+        /* label: {
+             color: 'red',
+             text: 'Marker label ' + (this.orderMarker.length + 1),
+         },*/
+        title: 'Marker title ',
+        info: 'Marker info ' ,
+        options: {
+          animation: google.maps.Animation.BOUNCE,
+          draggable: true,
+        },
+      });
+
+      let newCenter = new google.maps.LatLng({lat: position.lat, lng: position.lng});
+      // this.map.center = newCenter;
+      this.map.googleMap.setCenter(newCenter);
   }
+
+  private fillPosition(lat: number, lng: number){
+    return {
+      lat: lat,
+      lng: lng,
+    };
+  }
+
 
   getCurrentPosition(){
       // Try HTML5 geolocation.
@@ -114,6 +149,8 @@ export class RecycleComponent implements OnInit{
                       lat: position.coords.latitude,
                       lng: position.coords.longitude,
                   };
+
+                this.myCurrentPosition = this.fillPosition(position.coords.latitude, position.coords.longitude);
 
               },
               () => {
@@ -235,12 +272,57 @@ export class RecycleComponent implements OnInit{
       this.calculateScreenHeight();
       this.mapLoaded = true;
       this.mapLoading = false;
-      this.addMarker();
     })
     document.head.appendChild(mapsScript);
 
   }
-  addSearcBoxOnMap(){
+
+  createCenterControl(map) {
+    const controlButton = document.createElement('button');
+
+    // Set CSS for the control.
+    controlButton.style.backgroundColor = '#fff';
+    controlButton.style.border = '2px solid #fff';
+    controlButton.style.borderRadius = '3px';
+    controlButton.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+    controlButton.style.color = 'rgb(25,25,25)';
+    controlButton.style.cursor = 'pointer';
+    controlButton.style.fontFamily = 'Roboto,Arial,sans-serif';
+    controlButton.style.fontSize = '16px';
+    controlButton.style.lineHeight = '38px';
+    controlButton.style.margin = '8px 0 22px';
+    controlButton.style.padding = '0 5px';
+    controlButton.style.textAlign = 'center';
+
+    controlButton.textContent = 'GL     ';
+    controlButton.title = 'Click to recenter the map';
+    controlButton.type = 'button';
+
+    return controlButton;
+  }
+
+
+  addSearchBoxOnMap(){
+
+    const markerPosition = new google.maps.Marker({
+      anchorPoint: new google.maps.Point(0, -29),
+      map: this.map.googleMap,
+      draggable: true,
+      animation: google.maps.Animation.BOUNCE,
+      label: {
+        color: 'yellow',
+        text: ' '
+      },
+      // icon: "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
+    });
+
+    if(this.myCurrentPosition != undefined){
+      this.map.googleMap.setCenter(this.myCurrentPosition);
+      markerPosition.setPosition(this.fillPosition(this.myCurrentPosition.lat, this.myCurrentPosition.lng));
+      markerPosition.setVisible(true);
+    }
+
+
     const options = {
       componentRestrictions: { country: 'EC' },
       fields: ["formatted_address", "geometry", "name"],
@@ -249,15 +331,31 @@ export class RecycleComponent implements OnInit{
 
     const searchBox = document.getElementById("searchBox") as HTMLElement;
     var address = document.getElementById('address') as HTMLInputElement;
+    //const geolocationButon = document.getElementById("geolocationButon") as HTMLElement;
 
     this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(searchBox);
+    // this.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(geolocationButon);
     const autocomplete = new google.maps.places.Autocomplete(address, options);
     this.searchBoxLoaded = true;
+    // this.geolocationButonLoaded = true;
+
+
+
+    // Create the DIV to hold the control.
+    const centerControlDiv = document.createElement('div');
+    // Create the control.
+    const centerControl = this.createCenterControl(this.map.googleMap);
+    // Append the control to the DIV.
+    centerControlDiv.appendChild(centerControl);
+    this.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(centerControlDiv);
+
 
     autocomplete.addListener("place_changed", () => {
       const place = autocomplete.getPlace();
 
       // console.info("place_changed: ", place);
+
+      markerPosition.setVisible(false);
 
       if (!place.geometry || !place.geometry.location) {
         // User entered the name of a Place that was not suggested and
@@ -270,13 +368,25 @@ export class RecycleComponent implements OnInit{
 
       // If the place has a geometry, then present it on a map.
       if (place.geometry.viewport) {
-        // console.info("place.geometry.viewport");
-        this.map.fitBounds(place.geometry.viewport);
+        // this.map.fitBounds(place.geometry.viewport);
+        this.map.googleMap.fitBounds(place.geometry.viewport);
+
+        console.info("place.geometry.viewport: ", place.geometry.viewport);
+        console.info("place.geometry.location.lat(): ", place.geometry.location.lat());
+        console.info("place.geometry.location.lng(): ", place.geometry.location.lng());
+
       } else {
-        // console.info("NOT place.geometry.viewport");
+        console.info("NOT place.geometry.viewport");
         this.map.center = place.geometry.location;
         this.map.zoom = 17;
       }
+
+      var position = this.fillPosition(place.geometry.location.lat(), place.geometry.location.lng());
+      console.info("position of searchBox", position);
+      //this.addMarker(position);
+
+      markerPosition.setPosition(place.geometry.location);
+      markerPosition.setVisible(true);
     });
 
 
@@ -285,6 +395,7 @@ export class RecycleComponent implements OnInit{
 
 
   }
+
 
   showNoAvailableDetailsDialog(message: string) {
     this.confirmationService.confirm({
