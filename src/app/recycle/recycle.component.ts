@@ -5,7 +5,9 @@ import {SitioReciclajeLaDeliciaservice} from "../../service/sitioreciclajeLaDeli
 import {SitioReciclajeTumbacoservice} from "../../service/sitioreciclajeTumbacoservice";
 import {SitioReciclajeEloyAlfaroService} from "../../service/sitioreciclajeEloyAlfaroservice";
 import {SitioReciclajeManuelitaSaenzservice} from "../../service/sitioreciclajeManuelitaSaenzservice";
-import Animation = google.maps.Animation;
+// import GeolocationMarker from "geolocation-marker";
+import {GeolocationService} from '@ng-web-apis/geolocation';
+
 
 @Component({
   selector: 'app-recycle',
@@ -22,9 +24,13 @@ export class RecycleComponent implements OnInit{
   mapLoaded = false;
   searchBoxLoaded = false;
   geolocationButonLoaded = false;
+  divSearchPR = false;
   selectedCategories: any[] = [];
   zoom = 14;
   myCurrentPosition: any;
+  myFirstGeoPosition: any;
+  // userLocation: {current: any};
+
 
 
   orderMarker = [];
@@ -77,16 +83,73 @@ export class RecycleComponent implements OnInit{
               private sitioReciclajeEloyAlfaroService: SitioReciclajeEloyAlfaroService,
               private sitioReciclajeManuelitaSaenzservice: SitioReciclajeManuelitaSaenzservice,
               private sitioReciclajeTumbacoservice: SitioReciclajeTumbacoservice,
+              private readonly geolocation$: GeolocationService
               ) {
   }
 
   ngOnInit() {
-    this.getCurrentPosition();
+    this.getFirstGeoPosition();
     this.loadMap();
     this.listSitioReciclajeLaDeliciaService();
     this.listSitioReciclajeManuelitaSaenzService();
     this.listSitioReciclajeEloyAlfaroService();
     this.listSitioReciclajeTumbacoService();
+  }
+
+  addYourLocationButton(map, marker)
+  {
+      var controlDiv = document.createElement('div');
+      var firstChild = document.createElement('button');
+
+      firstChild.style.backgroundColor = '#fff';
+      firstChild.style.border = 'none';
+      firstChild.style.outline = 'none';
+      firstChild.style.width = '40px';
+      firstChild.style.height = '40px';
+      firstChild.style.borderRadius = '2px';
+      firstChild.style.boxShadow = '0 1px 4px rgba(0,0,0,0.3)';
+      firstChild.style.cursor = 'pointer';
+      firstChild.style.marginRight = '10px';
+      firstChild.style.padding = '0';
+      firstChild.title = 'Tu localización';
+      controlDiv.appendChild(firstChild);
+
+      var secondChild = document.createElement('div');
+      secondChild.style.margin = '5px';
+      secondChild.style.width = '30px';
+      secondChild.style.height = '30px';
+      secondChild.style.backgroundImage = 'url(https://maps.gstatic.com/tactile/mylocation/mylocation-sprite-2x.png)';
+      secondChild.style.backgroundSize = '300px 30px';
+      secondChild.style.backgroundPosition = '0 0';
+      secondChild.style.backgroundRepeat = 'no-repeat';
+      firstChild.appendChild(secondChild);
+
+      google.maps.event.addListener(this.map.googleMap, 'center_changed', function () {
+          secondChild.style['background-position'] = '0 0';
+      });
+
+      firstChild.addEventListener('click', function () {
+          var imgX = '0',
+              animationInterval = setInterval(function () {
+                  imgX = imgX === '-30' ? '0' : '-30';
+                  secondChild.style['background-position'] = imgX+'px 0';
+              }, 500);
+
+          if(navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition(function(position) {
+                  var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                  map.googleMap.setCenter(latlng);
+                  clearInterval(animationInterval);
+                  secondChild.style['background-position'] = '-240px 0';
+                  marker.setPosition(latlng);
+              });
+          } else {
+              clearInterval(animationInterval);
+              secondChild.style['background-position'] = '0 0';
+          }
+      });
+
+      map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(controlDiv);
   }
 
   addMarker(position: any) {
@@ -140,7 +203,7 @@ export class RecycleComponent implements OnInit{
   }
 
 
-  getCurrentPosition(){
+  getFirstGeoPosition(){
       // Try HTML5 geolocation.
       if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(
@@ -150,8 +213,10 @@ export class RecycleComponent implements OnInit{
                       lng: position.coords.longitude,
                   };
 
-                this.myCurrentPosition = this.fillPosition(position.coords.latitude, position.coords.longitude);
+                // this.myCurrentPosition = this.fillPosition(position.coords.latitude, position.coords.longitude);
+                this.myFirstGeoPosition = this.fillPosition(position.coords.latitude, position.coords.longitude);
 
+                console.info("this.myFirstGeoPosition: ", this.myFirstGeoPosition);
               },
               () => {
                   //handleLocationError(true, infoWindow, map.getCenter()!);
@@ -258,6 +323,20 @@ export class RecycleComponent implements OnInit{
     this.heighInitial = (height - 45) + "px";
   }
 
+    loadGeolocationMarker() {
+        // One way of doing this: dynamically load a script tag.
+        this.mapLoading = true;
+        const mapsScript = document.createElement('script')
+        mapsScript.async = true;
+        mapsScript.src = "https://github.com/ChadKillingsworth/geolocation-marker/releases/download/v2.0.5/geolocation-marker.js";
+        mapsScript.addEventListener('load', () => {
+            console.info("*** loadGeolocationMarker is loaded");
+            // var GeoMarker = new GeolocationMarker(this.map.googleMap);
+        })
+
+        document.head.appendChild(mapsScript);
+    }
+
   loadMap() {
     if (this.mapLoaded || this.mapLoading) {
       return;
@@ -281,7 +360,7 @@ export class RecycleComponent implements OnInit{
     const controlButton = document.createElement('button');
 
     // Set CSS for the control.
-    controlButton.style.backgroundColor = '#fff';
+    controlButton.style.backgroundColor = '#28367f';
     controlButton.style.border = '2px solid #fff';
     controlButton.style.borderRadius = '3px';
     controlButton.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
@@ -301,6 +380,88 @@ export class RecycleComponent implements OnInit{
     return controlButton;
   }
 
+  addGeoLocationButtoOnMap(){
+    // // Create the DIV to hold the control.
+    // const centerControlDiv = document.createElement('div');
+    // // Create the control.
+    // const centerControl = this.createCenterControl(this.map.googleMap);
+    // // Append the control to the DIV.
+    // centerControlDiv.appendChild(centerControl);
+    // this.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(centerControlDiv);
+
+
+    const geolocationButon = document.getElementById("divGeolocation") as HTMLElement;
+    this.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(geolocationButon);
+    this.geolocationButonLoaded = true;
+
+
+  }
+
+    convertToDegrees(radian) {
+        return (radian * 180) / Math.PI;
+    }
+
+    getCurrentDirection(previousCoordinates, currentCoordinates) {
+        const diffLat = currentCoordinates.lat - previousCoordinates.lat;
+        const diffLng = currentCoordinates.lng - previousCoordinates.lng;
+        const anticlockwiseAngleFromEast = this.convertToDegrees(
+            Math.atan2(diffLat, diffLng)
+        );
+        const clockwiseAngleFromNorth = 90 - anticlockwiseAngleFromEast;
+        return clockwiseAngleFromNorth;
+        // helper function
+
+    }
+
+    userLocationTrack(){
+        // Keep track of user location
+
+        // var userLocation = {current: any};
+        //var userLocation = {current: null};
+        var userLocation = {current: this.myFirstGeoPosition};
+
+        console.info("inside userLocationTrack before watchPosition (is this.myFirstGeoPosition): ", userLocation.current);
+
+
+        navigator.geolocation.watchPosition(position => {
+            // Record the previous user location
+            const previousCoordinates = userLocation.current;
+
+            // Update the user location
+            userLocation.current = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            };
+
+            console.info("**** watchPosition: ", userLocation.current);
+            this.myCurrentPosition = userLocation.current;
+
+            // Calculate the direction
+            const userDirection = this.getCurrentDirection(   // ADDED
+                previousCoordinates,                       // ADDED
+                userLocation.current
+            );                                           // ADDED
+
+            // Construct marker
+            const markerNew = new google.maps.Marker({
+                icon: {
+                    fillColor: 'blue',
+                    fillOpacity: 1,
+                    path: google.maps.SymbolPath.CIRCLE,
+                    rotation: userDirection,               // ADDED
+                    scale: 8,
+                    // strokeColor: color['white 100'],
+                    strokeColor: 'white',
+                    strokeWeight: 2,
+                },
+                position:  userLocation.current,
+                title: 'You are here!',
+            });
+            // Mark the current location
+            markerNew.setMap(this.map.googleMap);
+        });
+
+    }
 
   addSearchBoxOnMap(){
 
@@ -316,11 +477,11 @@ export class RecycleComponent implements OnInit{
       // icon: "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
     });
 
-    if(this.myCurrentPosition != undefined){
-      this.map.googleMap.setCenter(this.myCurrentPosition);
-      markerPosition.setPosition(this.fillPosition(this.myCurrentPosition.lat, this.myCurrentPosition.lng));
-      markerPosition.setVisible(true);
-    }
+    // if(this.myCurrentPosition != undefined){
+    //   this.map.googleMap.setCenter(this.myCurrentPosition);
+    //   markerPosition.setPosition(this.fillPosition(this.myCurrentPosition.lat, this.myCurrentPosition.lng));
+    //   markerPosition.setVisible(true);
+    // }
 
 
     const options = {
@@ -331,23 +492,27 @@ export class RecycleComponent implements OnInit{
 
     const searchBox = document.getElementById("searchBox") as HTMLElement;
     var address = document.getElementById('address') as HTMLInputElement;
-    //const geolocationButon = document.getElementById("geolocationButon") as HTMLElement;
-
     this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(searchBox);
-    // this.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(geolocationButon);
     const autocomplete = new google.maps.places.Autocomplete(address, options);
     this.searchBoxLoaded = true;
     // this.geolocationButonLoaded = true;
 
+    // ----------------------------------
+    this.addYourLocationButton(this.map, markerPosition);
+
+    // this.geolocation$.subscribe(position => {
+    //     var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+    //     console.info("geolocation$.subscribe: ", position.coords.latitude + ", " + position.coords.longitude );
+    //     markerPosition.setPosition(latlng);
+    // });
+
+      // var GeoMarker = new GeolocationMarker(this.map.googleMap);
+      // this.loadGeolocationMarker();
+
+      this.userLocationTrack();
 
 
-    // Create the DIV to hold the control.
-    const centerControlDiv = document.createElement('div');
-    // Create the control.
-    const centerControl = this.createCenterControl(this.map.googleMap);
-    // Append the control to the DIV.
-    centerControlDiv.appendChild(centerControl);
-    this.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(centerControlDiv);
+
 
 
     autocomplete.addListener("place_changed", () => {
