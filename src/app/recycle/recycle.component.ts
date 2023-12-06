@@ -32,6 +32,7 @@ export class RecycleComponent implements OnInit{
   // userLocation: {current: any};
   markerOrder: any;
   markerPosition: any;
+  acum = 0;
 
   orderMarker = [];
 
@@ -146,10 +147,10 @@ export class RecycleComponent implements OnInit{
                   secondChild.style['background-position'] = imgX+'px 0';
               }, 500);
 
-          let currentLocation2 = that.getCurrentLocation2(animationInterval, secondChild);
-          console.info("Result of getCurrentLocation2: ", currentLocation2);
+           that.getCurrentLocation2(animationInterval, secondChild);
+          // console.info("Result of getCurrentLocation2: ", currentLocation2);
 
-          //that.userLocationTrack(animationInterval, secondChild);
+        //that.userLocationTrack(animationInterval, secondChild);
       });
 
       map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(controlDiv);
@@ -244,24 +245,25 @@ export class RecycleComponent implements OnInit{
     var that = this;
     var is_echo = false;
 
+    // this.geolocation$.subscribe(position => {
+    //   var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+    //   console.info("geolocation$.subscribe: ", position.coords.latitude + ", " + position.coords.longitude + ", "
+    //     + position.coords.accuracy + ' meters.');
+    // });
+
+
+
     // Try HTML5 geolocation.
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function(position: GeolocationPosition){
+          that.acum++;
           const pos = {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           };
 
           console.info( "geolocation.getCurrentPosition2 ->-> ", pos.lat + ", " + pos.lng + ", : ", position.coords.accuracy + ' meters.');
-          // that.map.googleMap.setCenter(pos);
-          // that.map.googleMap.setZoom(17);
-          // clearInterval(animationInterval);
-          // secondChild.style['background-position'] = '-240px 0';
-          // that.markerOrder.setPosition(pos);
-
           that.myCurrentPosition = pos;
-          // that.userLocationTrack();
-
         /*------------------------------------------------*/
 
           that.markerPosition.setPosition(pos);
@@ -276,14 +278,23 @@ export class RecycleComponent implements OnInit{
 
           /*------------------------------------------------*/
 
+          if(that.acum <= 1){
+            console.info("--- Fecha Hora de inicio: ", new Date())
+          }
 
+            /*validate accuracy*/
+          if(position.coords.accuracy <= 300){
+            console.warn("Only here must put the maker position")
+            console.warn("--- Fecha Hora de fin: ", new Date())
+          }else{
+            that.getCurrentLocation2(animationInterval, secondChild);
+          }
 
-          return pos;
 
         },
         () => {
           this.handleLocationError(true, this.infoWindow.infoWindow, this.map.getCenter()!);
-        }, {enableHighAccuracy: true, timeout: 5000, maximumAge: 60000}
+        }, {enableHighAccuracy: true, timeout: 10000, maximumAge: 60000}
 
       );
 
@@ -295,7 +306,7 @@ export class RecycleComponent implements OnInit{
       this.handleLocationError(false, this.infoWindow.infoWindow, this.map.getCenter()!);
     }
 
-    return null;
+
   }
 
   getCurrentLocation(animationInterval, secondChild){
@@ -325,7 +336,9 @@ export class RecycleComponent implements OnInit{
                 // that.userLocationTrack();
 
               },
-              () => {
+              (err) => {
+                  console.error("Error en Geolocation: ", err);
+
                   this.handleLocationError(true, this.infoWindow.infoWindow, this.map.getCenter()!);
               }, {enableHighAccuracy: true, timeout: 5000, maximumAge: 60000}
 
