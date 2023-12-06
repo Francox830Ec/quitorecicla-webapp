@@ -24,7 +24,7 @@ export class RecycleComponent implements OnInit{
   mapLoaded = false;
   searchBoxLoaded = false;
   geolocationButonLoaded = false;
-  divSearchPR = false;
+  divSearchPRLoeaded = false;
   selectedCategories: any[] = [];
   zoom = 14;
   myCurrentPosition: any;
@@ -96,6 +96,14 @@ export class RecycleComponent implements OnInit{
     this.listSitioReciclajeTumbacoService();
   }
 
+  addSearchPRButton()
+  {
+    const searchPRDiv = document.getElementById("divSearchPR") as HTMLElement;
+    this.map.controls[google.maps.ControlPosition.RIGHT_TOP].push(searchPRDiv);
+    this.divSearchPRLoeaded = true;
+
+  }
+
   addYourLocationButton(map, marker)
   {
       var that = this;
@@ -138,8 +146,10 @@ export class RecycleComponent implements OnInit{
                   secondChild.style['background-position'] = imgX+'px 0';
               }, 500);
 
-          // that.getCurrentLocation(animationInterval, secondChild);
-          that.userLocationTrack(animationInterval, secondChild);
+          let currentLocation2 = that.getCurrentLocation2(animationInterval, secondChild);
+          console.info("Result of getCurrentLocation2: ", currentLocation2);
+
+          //that.userLocationTrack(animationInterval, secondChild);
       });
 
       map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(controlDiv);
@@ -211,6 +221,7 @@ export class RecycleComponent implements OnInit{
 
   }
   setMarkerOrder(){
+    var that = this;
     this.markerOrder = new google.maps.Marker({
       anchorPoint: new google.maps.Point(0, -29),
       map: this.map.googleMap,
@@ -223,6 +234,68 @@ export class RecycleComponent implements OnInit{
       // icon: "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
     });
 
+    google.maps.event.addListener(this.markerOrder, 'dragend', function() {
+      console.info("this.markerOrder -> dragend: ", that.markerOrder.getPosition().lat() + ", " + that.markerOrder.getPosition().lng());
+    });
+
+  }
+
+  getCurrentLocation2(animationInterval, secondChild){
+    var that = this;
+    var is_echo = false;
+
+    // Try HTML5 geolocation.
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position: GeolocationPosition){
+          const pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+
+          console.info( "geolocation.getCurrentPosition2 ->-> ", pos.lat + ", " + pos.lng + ", : ", position.coords.accuracy + ' meters.');
+          // that.map.googleMap.setCenter(pos);
+          // that.map.googleMap.setZoom(17);
+          // clearInterval(animationInterval);
+          // secondChild.style['background-position'] = '-240px 0';
+          // that.markerOrder.setPosition(pos);
+
+          that.myCurrentPosition = pos;
+          // that.userLocationTrack();
+
+        /*------------------------------------------------*/
+
+          that.markerPosition.setPosition(pos);
+          that.markerPosition.setMap(that.map.googleMap);
+
+
+          that.map.googleMap.setCenter(pos);
+          that.map.googleMap.setZoom(17);
+          clearInterval(animationInterval);
+          secondChild.style['background-position'] = '-240px 0';
+          that.markerOrder.setPosition(pos);
+
+          /*------------------------------------------------*/
+
+
+
+          return pos;
+
+        },
+        () => {
+          this.handleLocationError(true, this.infoWindow.infoWindow, this.map.getCenter()!);
+        }, {enableHighAccuracy: true, timeout: 5000, maximumAge: 60000}
+
+      );
+
+
+    } else {
+      // Browser doesn't support Geolocation
+      clearInterval(animationInterval);
+      secondChild.style['background-position'] = '0 0';
+      this.handleLocationError(false, this.infoWindow.infoWindow, this.map.getCenter()!);
+    }
+
+    return null;
   }
 
   getCurrentLocation(animationInterval, secondChild){
@@ -518,8 +591,7 @@ export class RecycleComponent implements OnInit{
         );
     }
 
-  addSearchBoxOnMap(){
-
+  addElementsOnMap(){
     // const markerPosition = new google.maps.Marker({
     //   anchorPoint: new google.maps.Point(0, -29),
     //   map: this.map.googleMap,
@@ -541,7 +613,6 @@ export class RecycleComponent implements OnInit{
     this.setMarkerOrder();
     this.setMarkerPosition();
 
-
     const options = {
       componentRestrictions: { country: 'EC' },
       fields: ["formatted_address", "geometry", "name"],
@@ -557,21 +628,18 @@ export class RecycleComponent implements OnInit{
 
     // ----------------------------------
     this.addYourLocationButton(this.map, this.markerOrder);
+    this.addSearchPRButton();
 
-    this.geolocation$.subscribe(position => {
-        var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        console.info("geolocation$.subscribe: ", position.coords.latitude + ", " + position.coords.longitude + ", "
-            + position.coords.accuracy + ' meters.');
-    });
+    // this.geolocation$.subscribe(position => {
+    //     var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+    //     console.info("geolocation$.subscribe: ", position.coords.latitude + ", " + position.coords.longitude + ", "
+    //         + position.coords.accuracy + ' meters.');
+    // });
 
       // var GeoMarker = new GeolocationMarker(this.map.googleMap);
       // this.loadGeolocationMarker();
 
       // this.userLocationTrack();
-
-
-
-
 
     autocomplete.addListener("place_changed", () => {
       const place = autocomplete.getPlace();
