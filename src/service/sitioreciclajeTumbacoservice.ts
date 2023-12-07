@@ -454,6 +454,27 @@ export class SitioReciclajeTumbacoservice {
         }
     ];
   }
+
+  getPolygon() {
+    return {
+      "name": "CEGAM TUMBACO",
+      "Placemark": {
+        "name": "ÁREA DE COBERTURA",
+        "styleUrl": "#poly-FFEA00-1200-77-nodesc",
+        "Polygon": {
+          "outerBoundaryIs": {
+            "LinearRing": {
+              "tessellate": "1",
+              "coordinates": "-78.4618042,-0.197403|-78.4575556,-0.2116937|-78.4476421,-0.2242678|-78.4085462,-0.2260274|-78.3766601,-0.2185173|-78.3438728,-0.2048703|-78.34177,-0.1680919|-78.3556316,-0.1119159|-78.3693215,-0.1098131|-78.3544513,-0.1958796|-78.3881613,-0.1830694|-78.4330937,-0.1843998|-78.4500239,-0.1887556|-78.4618042,-0.197403,0"
+            }
+          }
+        }
+      }
+    };
+  }
+  getZona() {
+    return Promise.resolve(this.getPolygon());
+  }
   getSitios() {
     return Promise.resolve(this.getItems());
   }

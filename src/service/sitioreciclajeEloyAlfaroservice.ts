@@ -328,6 +328,28 @@ export class SitioReciclajeEloyAlfaroService {
         }
     ];
   }
+
+  getPolygon() {
+    return {
+      "name": "CEGAM ELOY ALFARO",
+      "Placemark": {
+        "name": "ÁREA DE COBERTURA",
+        "styleUrl": "#poly-FFD600-1200-77-nodesc",
+        "Polygon": {
+          "outerBoundaryIs": {
+            "LinearRing": {
+              "tessellate": "1",
+              "coordinates": "-78.5325665,-0.2399975|-78.5510629,-0.2554469|-78.554539,-0.2616695|-78.5558265,-0.2711108|-78.5558695,-0.2808524|-78.5598177,-0.2910662|-78.5632509,-0.2989626|-78.5572427,-0.3029965|-78.5502047,-0.2973747|-78.5399049,-0.2942419|-78.514499,-0.26094|-78.5193055,-0.2398259|-78.5325665,-0.2399975,0"
+            }
+          }
+        }
+      }
+    };
+  }
+
+  getZona() {
+    return Promise.resolve(this.getPolygon());
+  }
   getSitios() {
     return Promise.resolve(this.getItems());
   }

@@ -517,7 +517,28 @@ export class SitioReciclajeManuelitaSaenzservice {
         }
     ];
   }
+
+  getPolygon() {
+    return {
+      "name": "CEGAM MANUELA SÁENZ",
+      "Placemark": {
+        "name": "ÁREA DE COBERTURA",
+        "styleUrl": "#poly-FFD600-1200-77-nodesc",
+        "Polygon": {
+          "outerBoundaryIs": {
+            "LinearRing": {
+              "tessellate": "1",
+              "coordinates": "-78.5180658,-0.2258657|-78.5144825,-0.2312086|-78.5069509,-0.2344487|-78.4923596,-0.2247499|-78.4833903,-0.2209734|-78.4813732,-0.2172398|-78.4717387,-0.1788951|-78.4680695,-0.1687242|-78.4634346,-0.1648082|-78.4568901,-0.1626518|-78.4515042,-0.1586607|-78.486287,-0.1664712|-78.5008997,-0.1757301|-78.5121649,-0.1884223|-78.5137421,-0.203861|-78.5180658,-0.2258657,0"
+            }
+          }
+        }
+      }
+    };
+  }
   getSitios() {
     return Promise.resolve(this.getItems());
+  }
+  getZona() {
+    return Promise.resolve(this.getPolygon());
   }
 };

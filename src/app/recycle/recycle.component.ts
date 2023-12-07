@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {GoogleMap, MapInfoWindow, MapMarker} from '@angular/google-maps';
 import {ConfirmationService, MessageService} from 'primeng/api';
 import {SitioReciclajeLaDeliciaservice} from "../../service/sitioreciclajeLaDeliciaservice";
@@ -13,7 +13,7 @@ import {GeolocationService} from '@ng-web-apis/geolocation';
   templateUrl: './recycle.component.html',
   styleUrls: ['./recycle.component.scss']
 })
-export class RecycleComponent implements OnInit{
+export class RecycleComponent implements OnInit, OnDestroy{
   @ViewChild(GoogleMap, { static: false }) map: GoogleMap;
   @ViewChild(MapInfoWindow) infoWindow: MapInfoWindow;
   // @ViewChild(MapMarker, { static: false }) mapMarker: MapMarker;
@@ -35,8 +35,9 @@ export class RecycleComponent implements OnInit{
   circlePosition: any;
   acum = 0;
   sidebarVisible4: boolean = false;
-
+  idWatchPosition : number;
   orderMarker = [];
+  arrayPolygons = [];
 
 
   categories: any[] = [
@@ -91,49 +92,62 @@ export class RecycleComponent implements OnInit{
               ) {
   }
 
-  ngOnInit() {
-      // this.geolocation$.subscribe(position => {
-      //   console.info("geolocation$.subscribe: ", position.coords.latitude + ", " + position.coords.longitude + ", "
-      //     + position.coords.accuracy + ' meters.');
-      // });
+    ngOnDestroy() {
+        navigator.geolocation.clearWatch(this.idWatchPosition);
+        console.info("navigator.geolocation.clearWatch");
+    }
 
-      // this.getCurrentLocation();
+  ngOnInit() {
     this.loadMap();
     this.listSitioReciclajeLaDeliciaService();
     this.listSitioReciclajeManuelitaSaenzService();
     this.listSitioReciclajeEloyAlfaroService();
     this.listSitioReciclajeTumbacoService();
+
+    this.getPolygonEloyAlfaroService();
+    this.getPolygonLaDeliciaService();
+    this.getPolygonManuelitaSaenzService();
+    this.getPolygonTumbacoService();
   }
 
 
   formatDistance (accurancy) {
     if (accurancy >= 1000) {
-      return Math.round(accurancy / 1000) + " km"
+      return Math.round(accurancy / 1000) + " Km."
     } else if (accurancy >= 100) {
-      return Math.round(accurancy) + " m"
+      return Math.round(accurancy) + " m."
     } else {
-      return accurancy.toFixed(1) + " m"
+      return accurancy.toFixed(1) + " m."
     }
   };
 
   showLifeLong(accuracy) {
-    this.messageService.add({ severity: 'info', summary: 'Exactitud del dispositivo', detail: 'El dispostivo actualmente tiene una exactitud de ' +
+    this.messageService.add({ severity: 'info', summary: 'Localización del dispositivo', detail: 'El dispostivo actualmente tiene una exactitud de ' +
        this.formatDistance(accuracy) + ' a la redonda.', life: 20000 });
   }
+
+  // clickOnSearchPR(that: any){
+  //     // that.deleteMarkerPosition();
+  //     that.sidebarVisible4 = true;
+  //     console.info("that.arrayPolygons: ", that.arrayPolygons)
+  // }
 
   addSearchPRButton()
   {
     var that = this;
     const searchPRDiv = document.getElementById("divSearchPR") as HTMLElement;
 
-    searchPRDiv.addEventListener('click', function () {
-      // that.deleteMarkerPosition();
-      that.sidebarVisible4 = true;
+    // searchPRDiv.addEventListener('click', this.clickOnSearchPR);
+    searchPRDiv.addEventListener('click', function (){
+        that.sidebarVisible4 = true;
+        console.info("that.arrayPolygons: ", that.arrayPolygons)
+
+       console.info("that.markerPosition:", that.markerPosition.getPosition());
+        console.info("that.markerPosition:", that.markerPosition.lat);
     });
 
     this.map.controls[google.maps.ControlPosition.RIGHT_TOP].push(searchPRDiv);
     this.divSearchPRLoeaded = true;
-
   }
 
   addGeoLocationButton(map, marker)
@@ -254,6 +268,7 @@ export class RecycleComponent implements OnInit{
               strokeColor: 'white',
               strokeWeight: 2,
           },
+          // visible: false
       });
   }
 
@@ -385,6 +400,49 @@ export class RecycleComponent implements OnInit{
         this.infoWindow.infoWindow.open(this.map.googleMap);
     }
 
+    private setArrayPolygon(items: any){
+        const arrayCoord = items.Placemark.Polygon.outerBoundaryIs.LinearRing.coordinates.split("|");
+        let arrayCoordPolygon = [];
+        arrayCoord.map(value => {
+            arrayCoordPolygon.push({
+                lat: parseFloat(value.split(",")[1]),
+                lng: parseFloat(value.split(",")[0])
+            })
+        })
+
+        this.arrayPolygons.push({id: null, name: items.name, polygon: arrayCoordPolygon});
+    }
+
+    getPolygonTumbacoService(){
+        this.sitioReciclajeTumbacoservice.getZona().then((items) => {
+
+            this.setArrayPolygon(items);
+            console.info("sitioReciclajeTumbacoservice.getZona(): ", items.Placemark.Polygon.outerBoundaryIs.LinearRing.coordinates);
+        });
+    }
+
+    getPolygonManuelitaSaenzService(){
+        this.sitioReciclajeManuelitaSaenzservice.getZona().then((items) => {
+
+            this.setArrayPolygon(items);
+            console.info("sitioReciclajeManuelitaSaenzservice.getZona(): ", items.Placemark.Polygon.outerBoundaryIs.LinearRing.coordinates);
+        });
+    }
+
+    getPolygonEloyAlfaroService(){
+        this.sitioReciclajeEloyAlfaroService.getZona().then((items) => {
+            this.setArrayPolygon(items);
+            console.info("sitioReciclajeEloyAlfaroService.getZona(): ", items.Placemark.Polygon.outerBoundaryIs.LinearRing.coordinates);
+        });
+    }
+
+
+    getPolygonLaDeliciaService(){
+        this.sitioReciclajeLaDeliciaservice.getZona().then((items) => {
+            this.setArrayPolygon(items);
+            console.info("sitioReciclajeLaDeliciaservice.getZona(): ", items.Placemark.Polygon.outerBoundaryIs.LinearRing.coordinates);
+        });
+    }
   listSitioReciclajeLaDeliciaService(){
       this.sitioReciclajeLaDeliciaservice.getSitios().then((items) => {
         items.forEach(item => {
@@ -567,7 +625,12 @@ export class RecycleComponent implements OnInit{
           strokeColor: 'white',
           strokeWeight: 2,
         },
+        // visible: true
       });
+    }
+
+    private validatePertinencePolygon(){
+
     }
 
     validatePosition(animationInterval, secondChild, position: GeolocationPosition){
@@ -620,7 +683,7 @@ export class RecycleComponent implements OnInit{
         var that = this;
 
         if(!this.positionIsWatched){
-          navigator.geolocation.watchPosition(position => {
+          that.idWatchPosition = navigator.geolocation.watchPosition(position => {
               that.positionIsWatched = true;
               console.info("**** watchPosition: ", position.coords + ", " + position.coords.accuracy + ' meters.');
               that.validatePosition(animationInterval, secondChild, position);
@@ -671,7 +734,8 @@ export class RecycleComponent implements OnInit{
 
     autocomplete.addListener("place_changed", () => {
       const place = autocomplete.getPlace();
-      this.markerOrder.setVisible(false);
+      // this.markerOrder.setVisible(false);
+      // this.markerOrder.setMap(null);
 
       if (!place.geometry || !place.geometry.location) {
         // User entered the name of a Place that was not suggested and
@@ -684,7 +748,6 @@ export class RecycleComponent implements OnInit{
 
       // If the place has a geometry, then present it on a map.
       if (place.geometry.viewport) {
-        // this.map.fitBounds(place.geometry.viewport);
         this.map.googleMap.fitBounds(place.geometry.viewport);
 
         console.info("place.geometry.viewport: ", place.geometry.viewport);
@@ -700,8 +763,15 @@ export class RecycleComponent implements OnInit{
       var position = this.fillPosition(place.geometry.location.lat(), place.geometry.location.lng());
       console.info("position of searchBox", position);
 
-      this.markerOrder.setPosition(place.geometry.location);
-      this.markerOrder.setVisible(true);
+        const latLng = {
+            lat: place.geometry.location.lat(),
+            lng: place.geometry.location.lng()
+        }
+
+       console.info("latLng:", latLng);
+
+      this.markerOrder.setPosition(latLng);
+      // this.markerOrder.setVisible(true);
     });
   }
 

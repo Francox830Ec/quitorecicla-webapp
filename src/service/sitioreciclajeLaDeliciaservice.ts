@@ -528,10 +528,26 @@ export class SitioReciclajeLaDeliciaservice {
   }
 
   getPolygon() {
-        return [
-        ]
+    return {
+      "name": "CEGAM LA DELICIA",
+      "Placemark": {
+        "name": "ÁREA DE COBERTURA",
+        "styleUrl": "#poly-FFEA00-1200-77-nodesc",
+        "Polygon": {
+          "outerBoundaryIs": {
+            "LinearRing": {
+              "tessellate": "1",
+              "coordinates": "-78.4911267,-0.0924467|-78.4960619,-0.1077245|-78.5065762,-0.1187109|-78.5036687,-0.1263605|-78.5016195,-0.1389025|-78.4972636,-0.162184|-78.5017697,-0.172269|-78.4746472,-0.1769039|-78.4647338,-0.1563046|-78.4588544,-0.1189683|-78.4470955,-0.0977681|-78.4496276,-0.0633286|-78.4365384,-0.021336|-78.4540478,0.001495|-78.4538117,-0.0284707|-78.4577814,-0.0462484|-78.4614507,-0.0636827|-78.4816853,-0.0741648|-78.4853761,-0.0832628|-78.4911267,-0.0924467,0"
+            }
+          }
+        }
+      }
+    };
   }
 
+  getZona() {
+    return Promise.resolve(this.getPolygon());
+  }
   getSitios() {
     return Promise.resolve(this.getItems());
   }
