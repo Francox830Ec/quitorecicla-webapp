@@ -5,7 +5,7 @@ import {SitioReciclajeLaDeliciaservice} from "../../service/sitioreciclajeLaDeli
 import {SitioReciclajeTumbacoservice} from "../../service/sitioreciclajeTumbacoservice";
 import {SitioReciclajeEloyAlfaroService} from "../../service/sitioreciclajeEloyAlfaroservice";
 import {SitioReciclajeManuelitaSaenzservice} from "../../service/sitioreciclajeManuelitaSaenzservice";
-// import GeolocationMarker from "geolocation-marker";
+import { MessageService } from 'primeng/api';
 import {GeolocationService} from '@ng-web-apis/geolocation';
 
 
@@ -86,7 +86,8 @@ export class RecycleComponent implements OnInit{
               private sitioReciclajeEloyAlfaroService: SitioReciclajeEloyAlfaroService,
               private sitioReciclajeManuelitaSaenzservice: SitioReciclajeManuelitaSaenzservice,
               private sitioReciclajeTumbacoservice: SitioReciclajeTumbacoservice,
-              private readonly geolocation$: GeolocationService
+              private readonly geolocation$: GeolocationService,
+              private messageService: MessageService
               ) {
   }
 
@@ -104,32 +105,48 @@ export class RecycleComponent implements OnInit{
     this.listSitioReciclajeTumbacoService();
   }
 
+  showLifeDefault() {
+    this.messageService.add({ severity: 'info', summary: 'Life', detail: 'I show for 10000ms' });
+  }
+
+  showLifeLong(accuracy) {
+    this.messageService.add({ severity: 'info', summary: 'Exactitud del dispositivo', detail: 'El dispostivo actualmente tiene una exactitud de ' +
+        Math.round((accuracy + Number.EPSILON) * 100) / 100  + ' metros a la redonda.', life: 20000 });
+    // this.messageService.add({ key: 'bc', severity: 'success', summary: 'Success', detail: 'Message Content' });
+  }
+
   addSearchPRButton()
   {
+    var that = this;
     const searchPRDiv = document.getElementById("divSearchPR") as HTMLElement;
+
+    searchPRDiv.addEventListener('click', function () {
+      that.deleteMarkerPosition();
+    });
+
     this.map.controls[google.maps.ControlPosition.RIGHT_TOP].push(searchPRDiv);
     this.divSearchPRLoeaded = true;
 
   }
 
-  addYourLocationButton(map, marker)
+  addGeoLocationButton(map, marker)
   {
       var that = this;
-      var controlDiv = document.createElement('div');
-      var firstChild = document.createElement('button');
+      var divGeoLocation = document.createElement('div');
 
-      firstChild.style.backgroundColor = '#fff';
-      firstChild.style.border = 'none';
-      firstChild.style.outline = 'none';
-      firstChild.style.width = '40px';
-      firstChild.style.height = '40px';
-      firstChild.style.borderRadius = '2px';
-      firstChild.style.boxShadow = '0 1px 4px rgba(0,0,0,0.3)';
-      firstChild.style.cursor = 'pointer';
-      firstChild.style.marginRight = '10px';
-      firstChild.style.padding = '0';
-      firstChild.title = 'Tu localización';
-      controlDiv.appendChild(firstChild);
+      var buttonGeoLocation = document.createElement('button');
+      buttonGeoLocation.style.backgroundColor = '#fff';
+      buttonGeoLocation.style.border = 'none';
+      buttonGeoLocation.style.outline = 'none';
+      buttonGeoLocation.style.width = '40px';
+      buttonGeoLocation.style.height = '40px';
+      buttonGeoLocation.style.borderRadius = '2px';
+      buttonGeoLocation.style.boxShadow = '0 1px 4px rgba(0,0,0,0.3)';
+      buttonGeoLocation.style.cursor = 'pointer';
+      buttonGeoLocation.style.marginRight = '10px';
+      buttonGeoLocation.style.padding = '0';
+      buttonGeoLocation.title = 'Tu localización';
+      divGeoLocation.appendChild(buttonGeoLocation);
 
       var secondChild = document.createElement('div');
       secondChild.style.margin = '5px';
@@ -139,7 +156,7 @@ export class RecycleComponent implements OnInit{
       secondChild.style.backgroundSize = '300px 30px';
       secondChild.style.backgroundPosition = '0 0';
       secondChild.style.backgroundRepeat = 'no-repeat';
-      firstChild.appendChild(secondChild);
+      buttonGeoLocation.appendChild(secondChild);
 
       google.maps.event.addListener(this.map.googleMap, 'center_changed', function () {
           secondChild.style['background-position'] = '0 0';
@@ -147,7 +164,7 @@ export class RecycleComponent implements OnInit{
 
 
 
-      firstChild.addEventListener('click', function () {
+      buttonGeoLocation.addEventListener('click', function () {
           var imgX = '0',
               animationInterval = setInterval(function () {
                   imgX = imgX === '-30' ? '0' : '-30';
@@ -160,7 +177,7 @@ export class RecycleComponent implements OnInit{
         //that.userLocationTrack(animationInterval, secondChild);
       });
 
-      map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(controlDiv);
+      map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(divGeoLocation);
   }
 
   addMarker(position: any) {
@@ -213,10 +230,17 @@ export class RecycleComponent implements OnInit{
     };
   }
 
+  deleteMarkerPosition(){
+    // this.markerPosition.setMap(null);
+
+    this.messageService.clear();
+  }
+
   setMarkerPosition(){
+    // #757575  #616161 #607D8B
       this.markerPosition = new google.maps.Marker({
           icon: {
-              fillColor: 'blue',
+              fillColor: '#607D8B',
               fillOpacity: 1,
               path: google.maps.SymbolPath.CIRCLE,
               // rotation: userDirection,               // ADDED
@@ -226,7 +250,6 @@ export class RecycleComponent implements OnInit{
               strokeWeight: 2,
           },
       });
-
   }
 
   setCirclePosition() {
@@ -528,6 +551,20 @@ export class RecycleComponent implements OnInit{
 
     }
 
+    private setMarkerPositionExact(){
+      this.deleteMarkerPosition();
+      this.markerPosition = new google.maps.Marker({
+        icon: {
+          fillColor: 'blue',
+          fillOpacity: 1,
+          path: google.maps.SymbolPath.CIRCLE,
+          scale: 8,
+          strokeColor: 'white',
+          strokeWeight: 2,
+        },
+      });
+    }
+
     validatePosition(animationInterval, secondChild, position: GeolocationPosition){
       this.acum++;
 
@@ -536,10 +573,14 @@ export class RecycleComponent implements OnInit{
       }
 
       /*validate accuracy*/
-      if(this.acum <= 1 || position.coords.accuracy <= 300){
-        if(position.coords.accuracy <= 300){
+      if(this.acum <= 1 || position.coords.accuracy <= 35){
+        if(position.coords.accuracy <= 35){//in meters
+          this.messageService.clear();
           console.warn("Only here must put the maker position")
           console.warn("--------> Fecha Hora de fin: ", new Date())
+          this.setMarkerPositionExact();
+        }else{
+          this.showLifeLong(position.coords.accuracy);
         }
 
         const latLng = {
@@ -615,7 +656,7 @@ export class RecycleComponent implements OnInit{
     // this.geolocationButonLoaded = true;
 
     // ----------------------------------
-    this.addYourLocationButton(this.map, this.markerOrder);
+    this.addGeoLocationButton(this.map, this.markerOrder);
     this.addSearchPRButton();
 
     // this.geolocation$.subscribe(position => {
