@@ -89,7 +89,14 @@ export class RecycleComponent implements OnInit{
   }
 
   ngOnInit() {
-    // this.getCurrentLocation();
+
+      this.geolocation$.subscribe(position => {
+        console.info("geolocation$.subscribe: ", position.coords.latitude + ", " + position.coords.longitude + ", "
+          + position.coords.accuracy + ' meters.');
+      });
+
+
+      // this.getCurrentLocation();
     this.loadMap();
     this.listSitioReciclajeLaDeliciaService();
     this.listSitioReciclajeManuelitaSaenzService();
@@ -147,7 +154,7 @@ export class RecycleComponent implements OnInit{
                   secondChild.style['background-position'] = imgX+'px 0';
               }, 500);
 
-           that.getCurrentLocation2(animationInterval, secondChild);
+           that.userLocationTrack(animationInterval, secondChild);
           // console.info("Result of getCurrentLocation2: ", currentLocation2);
 
         //that.userLocationTrack(animationInterval, secondChild);
@@ -245,14 +252,6 @@ export class RecycleComponent implements OnInit{
     var that = this;
     var is_echo = false;
 
-    // this.geolocation$.subscribe(position => {
-    //   var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-    //   console.info("geolocation$.subscribe: ", position.coords.latitude + ", " + position.coords.longitude + ", "
-    //     + position.coords.accuracy + ' meters.');
-    // });
-
-
-
     // Try HTML5 geolocation.
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function(position: GeolocationPosition){
@@ -287,14 +286,14 @@ export class RecycleComponent implements OnInit{
             console.warn("Only here must put the maker position")
             console.warn("--- Fecha Hora de fin: ", new Date())
           }else{
-            that.getCurrentLocation2(animationInterval, secondChild);
+            // that.getCurrentLocation2(animationInterval, secondChild);
           }
 
 
         },
         () => {
           this.handleLocationError(true, this.infoWindow.infoWindow, this.map.getCenter()!);
-        }, {enableHighAccuracy: true, timeout: 10000, maximumAge: 60000}
+        }, {enableHighAccuracy: true, timeout: 10000, maximumAge: 0}
 
       );
 
@@ -551,6 +550,7 @@ export class RecycleComponent implements OnInit{
 
 
         navigator.geolocation.watchPosition(position => {
+          that.acum++;
             // Record the previous user location
             // const previousCoordinates = userLocation.current;
 
@@ -560,6 +560,10 @@ export class RecycleComponent implements OnInit{
                 lng: position.coords.longitude
             };
 
+
+            if(that.acum <= 1){
+                console.info("--------> Fecha Hora de inicio: ", new Date())
+            }
 
             console.info("**** watchPosition: ", userLocation.current + ", " + position.coords.accuracy + ' meters.');
             // this.myCurrentPosition = userLocation.current;
@@ -585,21 +589,33 @@ export class RecycleComponent implements OnInit{
                 //     position:  userLocation.current,
                 //     title: 'You are here!',
                 // });
-                // Mark the current location
-                that.markerPosition.setPosition(userLocation.current);
-                that.markerPosition.setMap(this.map.googleMap);
 
 
-              that.map.googleMap.setCenter(userLocation.current);
-              that.map.googleMap.setZoom(17);
-              clearInterval(animationInterval);
-              secondChild.style['background-position'] = '-240px 0';
-              that.markerOrder.setPosition(userLocation.current);
+
+
+                /*validate accuracy*/
+                if(position.coords.accuracy <= 300){
+                    console.warn("Only here must put the maker position")
+                    console.warn("--------> Fecha Hora de fin: ", new Date())
+
+                    // Mark the current location
+                    that.markerPosition.setPosition(userLocation.current);
+                    that.markerPosition.setMap(this.map.googleMap);
+
+
+                    that.map.googleMap.setCenter(userLocation.current);
+                    that.map.googleMap.setZoom(17);
+                    clearInterval(animationInterval);
+                    secondChild.style['background-position'] = '-240px 0';
+                    that.markerOrder.setPosition(userLocation.current);
+                }
+
+
 
         },
             () => {
                 // this.handleLocationError(true, this.infoWindow.infoWindow, this.map.getCenter()!);
-            }, {enableHighAccuracy: true, timeout: 10000, maximumAge: 60000}
+            }, {enableHighAccuracy: true, timeout: 5000, maximumAge: 0}
 
         );
     }
