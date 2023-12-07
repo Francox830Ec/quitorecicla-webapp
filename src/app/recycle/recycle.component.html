@@ -25,12 +25,16 @@
 
 <google-map *ngIf="mapLoaded" class="flex justify-content-center" (tiltChanged)="addElementsOnMap()" [height]="heighInitial"
             width="100%" [options]="mapOptions">
-  <p-toast [life]="10000" [breakpoints]="{'920px': {width: '100%', right: '0', left: '0'}}"></p-toast>
+  <p-toast  [showTransformOptions]="'translateY(100%)'" [showTransitionOptions]="'1000ms'" [hideTransitionOptions]="'1000ms'" [showTransformOptions]="'translateX(100%)'" class="custom-toast-emgirs" [life]="10000" [breakpoints]="{'920px': {width: '100%', right: '0', left: '0'}}"></p-toast>
   <p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
 
   <div *ngIf="!divSearchPRLoeaded" id="divSearchPR" class="m-2" >
-    <p-button icon="pi pi-map-marker" styleClass="ngx-emgirs-light-blue"></p-button>
+    <p-button icon="pi pi-map-marker" styleClass="ngx-emgirs-dark-blue"></p-button>
   </div>
+
+  <p-sidebar [(visible)]="sidebarVisible4" position="bottom">
+    <h3>Bottom Sidebar</h3>
+  </p-sidebar>
 
   <!--  <map-marker id="laDeliciaMarkers" *ngFor="let position of laDeliciaMarkers" #marker="mapMarker" [position]="position"-->
 <!--              (mapClick)="openInfoWindow(marker, position.label)">-->

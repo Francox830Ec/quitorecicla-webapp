@@ -182,3 +182,14 @@ body .p-panel .p-panel-content {
   margin-top: auto;
   margin-bottom: auto;
 }
+
+.custom-toast-emgirs .p-toast .p-toast-message.p-toast-message-info {
+  background: #6ebce9;
+  border: solid #28367f;
+  border-width: 0 0 0 6px;
+  color: #28367f;
+}
+.custom-toast-emgirs .p-toast .p-toast-message.p-toast-message-info .p-toast-message-icon,
+.p-toast .p-toast-message.p-toast-message-info .p-toast-icon-close {
+  color: #28367f;
+}

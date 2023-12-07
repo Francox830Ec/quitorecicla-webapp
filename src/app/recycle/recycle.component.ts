@@ -1,11 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {GoogleMap, MapInfoWindow, MapMarker} from '@angular/google-maps';
-import {ConfirmationService} from 'primeng/api';
+import {ConfirmationService, MessageService} from 'primeng/api';
 import {SitioReciclajeLaDeliciaservice} from "../../service/sitioreciclajeLaDeliciaservice";
 import {SitioReciclajeTumbacoservice} from "../../service/sitioreciclajeTumbacoservice";
 import {SitioReciclajeEloyAlfaroService} from "../../service/sitioreciclajeEloyAlfaroservice";
 import {SitioReciclajeManuelitaSaenzservice} from "../../service/sitioreciclajeManuelitaSaenzservice";
-import { MessageService } from 'primeng/api';
 import {GeolocationService} from '@ng-web-apis/geolocation';
 
 
@@ -35,6 +34,7 @@ export class RecycleComponent implements OnInit{
   markerPosition: any;
   circlePosition: any;
   acum = 0;
+  sidebarVisible4: boolean = false;
 
   orderMarker = [];
 
@@ -105,14 +105,20 @@ export class RecycleComponent implements OnInit{
     this.listSitioReciclajeTumbacoService();
   }
 
-  showLifeDefault() {
-    this.messageService.add({ severity: 'info', summary: 'Life', detail: 'I show for 10000ms' });
-  }
+
+  formatDistance (accurancy) {
+    if (accurancy >= 1000) {
+      return Math.round(accurancy / 1000) + " km"
+    } else if (accurancy >= 100) {
+      return Math.round(accurancy) + " m"
+    } else {
+      return accurancy.toFixed(1) + " m"
+    }
+  };
 
   showLifeLong(accuracy) {
     this.messageService.add({ severity: 'info', summary: 'Exactitud del dispositivo', detail: 'El dispostivo actualmente tiene una exactitud de ' +
-        Math.round((accuracy + Number.EPSILON) * 100) / 100  + ' metros a la redonda.', life: 20000 });
-    // this.messageService.add({ key: 'bc', severity: 'success', summary: 'Success', detail: 'Message Content' });
+       this.formatDistance(accuracy) + ' a la redonda.', life: 20000 });
   }
 
   addSearchPRButton()
@@ -121,7 +127,8 @@ export class RecycleComponent implements OnInit{
     const searchPRDiv = document.getElementById("divSearchPR") as HTMLElement;
 
     searchPRDiv.addEventListener('click', function () {
-      that.deleteMarkerPosition();
+      // that.deleteMarkerPosition();
+      that.sidebarVisible4 = true;
     });
 
     this.map.controls[google.maps.ControlPosition.RIGHT_TOP].push(searchPRDiv);
@@ -231,9 +238,7 @@ export class RecycleComponent implements OnInit{
   }
 
   deleteMarkerPosition(){
-    // this.markerPosition.setMap(null);
-
-    this.messageService.clear();
+    this.markerPosition.setMap(null);
   }
 
   setMarkerPosition(){
@@ -598,7 +603,6 @@ export class RecycleComponent implements OnInit{
           lat: position.coords.latitude,
           lng: position.coords.longitude
         });
-
         this.circlePosition.setRadius(position.coords.accuracy);
 
         this.map.googleMap.setCenter(latLng);
