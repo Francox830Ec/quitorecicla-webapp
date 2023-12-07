@@ -22,6 +22,7 @@ export class RecycleComponent implements OnInit{
   heighInitial = "200px";
   mapLoading = false;
   mapLoaded = false;
+  positionIsWatched = false;
   searchBoxLoaded = false;
   geolocationButonLoaded = false;
   divSearchPRLoeaded = false;
@@ -32,6 +33,7 @@ export class RecycleComponent implements OnInit{
   // userLocation: {current: any};
   markerOrder: any;
   markerPosition: any;
+  circlePosition: any;
   acum = 0;
 
   orderMarker = [];
@@ -89,12 +91,10 @@ export class RecycleComponent implements OnInit{
   }
 
   ngOnInit() {
-
-      this.geolocation$.subscribe(position => {
-        console.info("geolocation$.subscribe: ", position.coords.latitude + ", " + position.coords.longitude + ", "
-          + position.coords.accuracy + ' meters.');
-      });
-
+      // this.geolocation$.subscribe(position => {
+      //   console.info("geolocation$.subscribe: ", position.coords.latitude + ", " + position.coords.longitude + ", "
+      //     + position.coords.accuracy + ' meters.');
+      // });
 
       // this.getCurrentLocation();
     this.loadMap();
@@ -228,6 +228,21 @@ export class RecycleComponent implements OnInit{
       });
 
   }
+
+  setCirclePosition() {
+    this.circlePosition = new google.maps.Circle({
+      // center: center,
+      map: this.map.googleMap,
+      // radius: 10000,          // IN METERS.
+      fillColor: '#6ebce9',
+      fillOpacity: 0.35,
+      strokeColor: "#FFF",
+      strokeWeight: 0,         // DON'T SHOW CIRCLE BORDER.
+      strokeOpacity: 0.8
+    });
+
+  }
+
   setMarkerOrder(){
     var that = this;
     this.markerOrder = new google.maps.Marker({
@@ -250,44 +265,20 @@ export class RecycleComponent implements OnInit{
 
   getCurrentLocation2(animationInterval, secondChild){
     var that = this;
-    var is_echo = false;
 
     // Try HTML5 geolocation.
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function(position: GeolocationPosition){
-          that.acum++;
-          const pos = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          };
 
-          console.info( "geolocation.getCurrentPosition2 ->-> ", pos.lat + ", " + pos.lng + ", : ", position.coords.accuracy + ' meters.');
-          that.myCurrentPosition = pos;
+          console.info( "geolocation.getCurrentPosition2 ->-> ", position.coords.latitude + ", " + position.coords.longitude + ", : ", position.coords.accuracy + ' meters.');
+          that.myCurrentPosition = position;
         /*------------------------------------------------*/
 
-          that.markerPosition.setPosition(pos);
-          that.markerPosition.setMap(that.map.googleMap);
+        that.validatePosition(animationInterval, secondChild, position);
 
 
-          that.map.googleMap.setCenter(pos);
-          that.map.googleMap.setZoom(17);
-          clearInterval(animationInterval);
-          secondChild.style['background-position'] = '-240px 0';
-          that.markerOrder.setPosition(pos);
+        /*------------------------------------------------*/
 
-          /*------------------------------------------------*/
-
-          if(that.acum <= 1){
-            console.info("--- Fecha Hora de inicio: ", new Date())
-          }
-
-            /*validate accuracy*/
-          if(position.coords.accuracy <= 300){
-            console.warn("Only here must put the maker position")
-            console.warn("--- Fecha Hora de fin: ", new Date())
-          }else{
-            // that.getCurrentLocation2(animationInterval, secondChild);
-          }
 
 
         },
@@ -537,110 +528,78 @@ export class RecycleComponent implements OnInit{
 
     }
 
-    userLocationTrack(animationInterval, secondChild){
-        // Keep track of user location
+    validatePosition(animationInterval, secondChild, position: GeolocationPosition){
+      this.acum++;
 
+      if(this.acum <= 1){
+        console.info("--------> Fecha Hora de inicio: ", new Date())
+      }
+
+      /*validate accuracy*/
+      if(this.acum <= 1 || position.coords.accuracy <= 300){
+        if(position.coords.accuracy <= 300){
+          console.warn("Only here must put the maker position")
+          console.warn("--------> Fecha Hora de fin: ", new Date())
+        }
+
+        const latLng = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        }
+
+        this.myCurrentPosition = position;
+
+        // Mark the current location
+        this.markerPosition.setPosition(latLng);
+        this.markerPosition.setMap(this.map.googleMap);
+
+        this.circlePosition.setCenter({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        });
+
+        this.circlePosition.setRadius(position.coords.accuracy);
+
+        this.map.googleMap.setCenter(latLng);
+        this.map.googleMap.setZoom(17);
+        clearInterval(animationInterval);
+        secondChild.style['background-position'] = '-240px 0';
+        this.markerOrder.setPosition(latLng);
+
+        this.map.googleMap.fitBounds(this.circlePosition.getBounds());
+      }
+
+    }
+
+    userLocationTrack(animationInterval, secondChild){
         var that = this;
 
-        var userLocation = {current: undefined};
-        //var userLocation = {current: null};
-        // var userLocation = {current: this.myCurrentPosition};
-
-        // console.info("inside userLocationTrack before watchPosition (is this.myFirstGeoPosition): ", userLocation.current);
-
-
-        navigator.geolocation.watchPosition(position => {
-          that.acum++;
-            // Record the previous user location
-            // const previousCoordinates = userLocation.current;
-
-            // Update the user location
-            userLocation.current = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
-            };
-
-
-            if(that.acum <= 1){
-                console.info("--------> Fecha Hora de inicio: ", new Date())
-            }
-
-            console.info("**** watchPosition: ", userLocation.current + ", " + position.coords.accuracy + ' meters.');
-            // this.myCurrentPosition = userLocation.current;
-
-            // Calculate the direction
-            // const userDirection = this.getCurrentDirection(   // ADDED
-            //     previousCoordinates,                       // ADDED
-            //     userLocation.current
-            // );                                           // ADDED
-
-                // Construct marker
-                // that.markerPosition = new google.maps.Marker({
-                //     icon: {
-                //         fillColor: 'blue',
-                //         fillOpacity: 1,
-                //         path: google.maps.SymbolPath.CIRCLE,
-                //         // rotation: userDirection,               // ADDED
-                //         scale: 8,
-                //         // strokeColor: color['white 100'],
-                //         strokeColor: 'white',
-                //         strokeWeight: 2,
-                //     },
-                //     position:  userLocation.current,
-                //     title: 'You are here!',
-                // });
-
-
-
-
-                /*validate accuracy*/
-                if(position.coords.accuracy <= 300){
-                    console.warn("Only here must put the maker position")
-                    console.warn("--------> Fecha Hora de fin: ", new Date())
-
-                    // Mark the current location
-                    that.markerPosition.setPosition(userLocation.current);
-                    that.markerPosition.setMap(this.map.googleMap);
-
-
-                    that.map.googleMap.setCenter(userLocation.current);
-                    that.map.googleMap.setZoom(17);
-                    clearInterval(animationInterval);
-                    secondChild.style['background-position'] = '-240px 0';
-                    that.markerOrder.setPosition(userLocation.current);
-                }
-
-
-
-        },
+        if(!this.positionIsWatched){
+          navigator.geolocation.watchPosition(position => {
+              that.positionIsWatched = true;
+              console.info("**** watchPosition: ", position.coords + ", " + position.coords.accuracy + ' meters.');
+              that.validatePosition(animationInterval, secondChild, position);
+            },
             () => {
-                // this.handleLocationError(true, this.infoWindow.infoWindow, this.map.getCenter()!);
+              // this.handleLocationError(true, this.infoWindow.infoWindow, this.map.getCenter()!);
             }, {enableHighAccuracy: true, timeout: 5000, maximumAge: 0}
 
-        );
+          );
+
+        }else{
+            let newCenter = new google.maps.LatLng({lat: this.myCurrentPosition.coords.latitude,
+              lng: this.myCurrentPosition.coords.longitude});
+            this.map.googleMap.setCenter(newCenter);
+            clearInterval(animationInterval);
+            secondChild.style['background-position'] = '-240px 0';
+        }
     }
 
   addElementsOnMap(){
-    // const markerPosition = new google.maps.Marker({
-    //   anchorPoint: new google.maps.Point(0, -29),
-    //   map: this.map.googleMap,
-    //   draggable: true,
-    //   animation: google.maps.Animation.BOUNCE,
-    //   label: {
-    //     color: 'yellow',
-    //     text: ' '
-    //   },
-    //   // icon: "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
-    // });
-
-    // if(this.myCurrentPosition != undefined){
-    //   this.map.googleMap.setCenter(this.myCurrentPosition);
-    //   markerPosition.setPosition(this.fillPosition(this.myCurrentPosition.lat, this.myCurrentPosition.lng));
-    //   markerPosition.setVisible(true);
-    // }
 
     this.setMarkerOrder();
     this.setMarkerPosition();
+    this.setCirclePosition();
 
     const options = {
       componentRestrictions: { country: 'EC' },
@@ -665,16 +624,8 @@ export class RecycleComponent implements OnInit{
     //         + position.coords.accuracy + ' meters.');
     // });
 
-      // var GeoMarker = new GeolocationMarker(this.map.googleMap);
-      // this.loadGeolocationMarker();
-
-      // this.userLocationTrack();
-
     autocomplete.addListener("place_changed", () => {
       const place = autocomplete.getPlace();
-
-      // console.info("place_changed: ", place);
-
       this.markerOrder.setVisible(false);
 
       if (!place.geometry || !place.geometry.location) {
@@ -703,17 +654,10 @@ export class RecycleComponent implements OnInit{
 
       var position = this.fillPosition(place.geometry.location.lat(), place.geometry.location.lng());
       console.info("position of searchBox", position);
-      //this.addMarker(position);
 
       this.markerOrder.setPosition(place.geometry.location);
       this.markerOrder.setVisible(true);
     });
-
-
-    /*Marker gps */
-    //this.mapMarker.marker.setD
-
-
   }
 
 
