@@ -1,16 +1,18 @@
-<p-dialog [modal]="true" [(visible)]="visible" [breakpoints]="{ '960px': '75vw' }"
+<p-dialog [modal]="true" [(visible)]="modalBasicVisible" [breakpoints]="{ '960px': '75vw' }"
           [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
   <ng-template pTemplate="header">
-    <span class="text-xl font-bold">Lugar no disponible</span>
+<!--    <span class="text-xl font-bold">Lugar no disponible</span>-->
+      <span class="text-xl font-bold">{{modalBasicTittle}}</span>
   </ng-template>
   <p>
-    No existe información registrada para {{siteNoAvailable}}.
+<!--    No existe información registrada para {{siteNoAvailable}}.-->
+    {{modalBasicParagraph}}
   </p>
 
 
   <ng-template pTemplate="footer">
     <div class="flex justify-content-center mt-4">
-        <button pButton label="Ok" (click)="visible = false" class="p-button m-1 ngx-emgirs-dark-blue" ></button>
+        <button pButton label="Ok" (click)="modalBasicVisible = false" class="p-button m-1 ngx-emgirs-dark-blue" ></button>
     </div>
   </ng-template>
 
@@ -32,37 +34,23 @@
     <p-button icon="pi pi-map-marker" styleClass="ngx-emgirs-dark-blue"></p-button>
   </div>
 
-  <p-sidebar [(visible)]="sidebarVisible4" position="bottom">
+  <p-sidebar [(visible)]="sidebarButtomVisible" position="bottom">
     <h3>Bottom Sidebar</h3>
   </p-sidebar>
 
-  <!--  <map-marker id="laDeliciaMarkers" *ngFor="let position of laDeliciaMarkers" #marker="mapMarker" [position]="position"-->
-<!--              (mapClick)="openInfoWindow(marker, position.label)">-->
-<!--  </map-marker>-->
-
-<!--  <map-marker id="eloyAlfatoMarkers" *ngFor="let position of eloyAlfatoMarkers" #marker="mapMarker" [position]="position"-->
-<!--              (mapClick)="openInfoWindow(marker, position.label)">-->
-<!--  </map-marker>-->
-
-<!--  <map-marker id="manuelitaSaenzMarkers" *ngFor="let position of manuelitaSaenzMarkers" #marker="mapMarker" [position]="position"-->
-<!--              (mapClick)="openInfoWindow(marker, position.label)">-->
-<!--  </map-marker>-->
-
-<!--  <map-marker id="tumbacoMarkers" *ngFor="let position of tumbacoMarkers" #marker="mapMarker" [position]="position"-->
-<!--              (mapClick)="openInfoWindow(marker, position.label)">-->
-<!--  </map-marker>-->
-
-  <map-marker #marker *ngFor="let marker of orderMarker" [position]="marker.position" [label]="marker.label" [title]="marker.title"
-    [options]="marker.options">
-  </map-marker>
 
   <map-info-window>
     <div class="card">
       <p><b>{{ infoContent }}</b></p>
       <p>Horario de atención: 8am a 12pm - 1pm a 5pm </p>
-      <br><br>
-      <p-button (click)="showDialog()" label="Recicla a domicilio" icon="pi pi-home" styleClass="ngx-emgirs-dark-blue
-      p-button-sm"></p-button>
+      <div *ngIf="buttonReciclaDomicilioVisible">
+        <br><br>
+        <p-button  (click)="showDialog()" label="Recicla a domicilio" icon="pi pi-home" styleClass="ngx-emgirs-dark-blue
+        p-button-sm"></p-button>
+      </div>
+
+
+
     </div>
   </map-info-window>
 </google-map>

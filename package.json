@@ -19,6 +19,7 @@
     "@angular/platform-browser": "^16.2.0",
     "@angular/platform-browser-dynamic": "^16.2.0",
     "@angular/router": "^16.2.0",
+    "@googlemaps/markerclusterer": "^2.5.1",
     "@ng-web-apis/common": "^3.0.6",
     "@ng-web-apis/geolocation": "^3.0.6",
     "@types/node": "^20.10.3",

@@ -6,7 +6,9 @@ import {SitioReciclajeTumbacoservice} from "../../service/sitioreciclajeTumbacos
 import {SitioReciclajeEloyAlfaroService} from "../../service/sitioreciclajeEloyAlfaroservice";
 import {SitioReciclajeManuelitaSaenzservice} from "../../service/sitioreciclajeManuelitaSaenzservice";
 import {GeolocationService} from '@ng-web-apis/geolocation';
-
+// import {MarkerClusterer} from "@googlemaps/markerclusterer";
+// import {MarkerClusterer} from "@googlemaps/markerclusterer";
+// import { MarkerClusterer } from "@googlemaps/markerclusterer";
 
 @Component({
   selector: 'app-recycle',
@@ -34,11 +36,15 @@ export class RecycleComponent implements OnInit, OnDestroy{
   markerPosition: any;
   circlePosition: any;
   acum = 0;
-  sidebarVisible4: boolean = false;
+  sidebarButtomVisible: boolean = false;
   idWatchPosition : number;
   orderMarker = [];
+  markersPR = [];
+  markersPRVisible = false;
   arrayPolygons = [];
-
+  modalBasicTittle : string;
+  modalBasicParagraph : string;
+  buttonReciclaDomicilioVisible : boolean = false;
 
   categories: any[] = [
     { name: 'Papel', key: 'A' },
@@ -50,7 +56,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
     { name: 'Textiles', key: 'R' }
   ];
 
-  visible: boolean = false;
+  modalBasicVisible: boolean = false;
   siteNoAvailable: string = "";
 
   buttonPosition: google.maps.ControlPosition.TOP_LEFT;
@@ -81,6 +87,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
   eloyAlfatoMarkers = [];
   tumbacoMarkers = [];
   manuelitaSaenzMarkers = [];
+  markersPolygon : any;
 
   constructor(private confirmationService: ConfirmationService,
               private sitioReciclajeLaDeliciaservice: SitioReciclajeLaDeliciaservice,
@@ -123,7 +130,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
 
   showLifeLong(accuracy) {
     this.messageService.add({ severity: 'info', summary: 'Precisión del dispositivo', detail: 'El dispostivo actualmente tiene una precisión de ' +
-       this.formatDistance(accuracy) + ' a la redonda.', life: 20000 });
+       this.formatDistance(accuracy) + ' a la redonda.', life: 6000 });
   }
 
   // clickOnSearchPR(that: any){
@@ -132,23 +139,161 @@ export class RecycleComponent implements OnInit, OnDestroy{
   //     console.info("that.arrayPolygons: ", that.arrayPolygons)
   // }
 
+  private showAllMarkersPR(){
+    // this.markersPolygon = [];
+      this.deleteAllMarkersPR();
+
+    this.eloyAlfatoMarkers.forEach(marker => {
+      // this.markersPolygon.push(marker)
+        this.eloyAlfatoMarkers.map((marker, i) => {
+            this.markersPR.push(new google.maps.Marker({
+                map: this.map.googleMap,
+                position: marker
+            }));
+        });
+    });
+
+    this.manuelitaSaenzMarkers.forEach(marker => {
+      // this.markersPolygon.push(marker)
+
+        this.manuelitaSaenzMarkers.map((marker, i) => {
+            this.markersPR.push(new google.maps.Marker({
+                map: this.map.googleMap,
+                position: marker
+            }));
+        });
+    });
+
+    this.tumbacoMarkers.forEach(marker => {
+      // this.markersPolygon.push(marker)
+
+        this.tumbacoMarkers.map((marker, i) => {
+            this.markersPR.push(new google.maps.Marker({
+                map: this.map.googleMap,
+                position: marker
+            }));
+        });
+    });
+
+    this.laDeliciaMarkers.forEach(marker => {
+      // this.markersPolygon.push(marker)
+
+        this.laDeliciaMarkers.map((marker, i) => {
+            this.markersPR.push(new google.maps.Marker({
+                map: this.map.googleMap,
+                position: marker
+            }));
+        });
+    });
+  }
+
+  private showMarkersPRZone(polygon: any){
+
+    switch (polygon.name) {
+      case "CEGAM ELOY ALFARO":
+          this.deleteAllMarkersPR();
+          this.eloyAlfatoMarkers.map((marker, i) => {
+              this.markersPR.push(new google.maps.Marker({
+                  map: this.map.googleMap,
+                  position: marker
+              }));
+          });
+
+        break;
+      case "CEGAM LA DELICIA":
+          this.deleteAllMarkersPR();
+          this.laDeliciaMarkers.map((marker, i) => {
+              this.markersPR.push(new google.maps.Marker({
+                  map: this.map.googleMap,
+                  position: marker
+              }));
+          });
+
+        break;
+      case "CEGAM MANUELA SÁENZ":
+          this.deleteAllMarkersPR();
+          this.manuelitaSaenzMarkers.map((marker, i) => {
+              this.markersPR.push(new google.maps.Marker({
+                  map: this.map.googleMap,
+                  position: marker
+              }));
+          });
+
+          break;
+      case "CEGAM TUMBACO":
+          this.deleteAllMarkersPR();
+          this.tumbacoMarkers.map((marker, i) => {
+              this.markersPR.push(new google.maps.Marker({
+                  map: this.map.googleMap,
+                  position: marker
+              }));
+          });
+
+        break;
+      default:
+        break;
+    }
+
+    console.info("Current this.markersPolygon: ", this.markersPolygon);
+
+  }
+
+  private validateContainsLocation (position: google.maps.LatLng){
+    let isInZone = false;
+
+    this.arrayPolygons.forEach(polygon => {
+      let zonaPR = new google.maps.Polygon({ paths: polygon.polygon });
+      let containsLocation = google.maps.geometry.poly.containsLocation(
+        position,
+        zonaPR
+      )
+
+      if(containsLocation){
+        isInZone = true;
+        console.info("Polygon name: ", polygon.name + ", polygon coords: ", polygon.polygon)
+        this.buttonReciclaDomicilioVisible = true;
+        this.showMarkersPRZone(polygon);
+
+      }
+    })
+
+    if(!isInZone){//
+      this.modalBasicParagraph = "El punto no se encuentra dentro de ninguna zona establecida para la recolección. Se muestran todos los lugares disponibles en la ciudad.";
+      this.modalBasicTittle = "Zona no establecida";
+      this.modalBasicVisible = true;
+
+      this.showAllMarkersPR();
+    }
+  }
+
+
   addSearchPRButton()
   {
     var that = this;
     const searchPRDiv = document.getElementById("divSearchPR") as HTMLElement;
 
     searchPRDiv.addEventListener('click', function (){
-        that.sidebarVisible4 = true;
-        console.info("that.arrayPolygons: ", that.arrayPolygons)
+        // that.sidebarButtomVisible = true;
+        console.info("that.arrayPolygons: ", that.arrayPolygons);
+        that.markersPolygon = [];
+        console.info("that.markersPolygon: ", that.markersPolygon);
 
-      if(that.markerOrder.getPosition() != undefined){
+      if(that.markerOrder.getPosition() != undefined){// MarkerOrder Position
         console.info("that.markerOrder :", that.markerOrder.getPosition().lat() + ", " + that.markerOrder.getPosition().lng());
+        that.validateContainsLocation(that.markerOrder.getPosition());
+      }else{
+        that.modalBasicTittle = "Ubicar el punto del pedido";
+        that.modalBasicParagraph = "Debe ubicar el sitio del pedido para mostrar los puntos de recilaje cercanos.";
+        that.modalBasicVisible = true;
       }
 
 
-      if(that.markerPosition.getPosition() != undefined){
-        console.info("that.markerPosition:", that.markerPosition.getPosition().lat() + ", " + that.markerPosition.getPosition().lng());
+      if(that.markerPosition.getPosition() != undefined){// MarkerPosition Position
+        // console.info("that.markerPosition:", that.markerPosition.getPosition().lat() + ", " + that.markerPosition.getPosition().lng());
       }
+
+      //To do containsLocations
+
     });
 
     this.map.controls[google.maps.ControlPosition.RIGHT_TOP].push(searchPRDiv);
@@ -203,48 +348,15 @@ export class RecycleComponent implements OnInit, OnDestroy{
       map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(divGeoLocation);
   }
 
-  addMarker(position: any) {
-        // this.orderMarker.push({
-        //     position: {
-        //         lat: this.center.lat,
-        //         lng: this.center.lng,
-        //     },
-        //     /* label: {
-        //          color: 'red',
-        //          text: 'Marker label ' + (this.orderMarker.length + 1),
-        //      },*/
-        //     title: 'Marker title ' + (this.orderMarker.length + 1),
-        //     info: 'Marker info ' + (this.orderMarker.length + 1),
-        //     options: {
-        //         animation: google.maps.Animation.BOUNCE,
-        //         draggable: true,
-        //     },
-        // });
-
-
-      this.orderMarker.push({
-        position: {
-          lat: position.lat,
-          lng: position.lng,
-        },
-        //position: position,
-
-        /* label: {
-             color: 'red',
-             text: 'Marker label ' + (this.orderMarker.length + 1),
-         },*/
-        title: 'Marker title ',
-        info: 'Marker info ' ,
-        options: {
-          animation: google.maps.Animation.BOUNCE,
-          draggable: true,
-        },
-      });
-
-      let newCenter = new google.maps.LatLng({lat: position.lat, lng: position.lng});
-      // this.map.center = newCenter;
-      this.map.googleMap.setCenter(newCenter);
-  }
+    addMarker(position: google.maps.LatLng) {
+        this.markersPR.push({
+            // position: {
+            //     lat: this.center.lat + ((Math.random() - 0.5) * 2) / 10,
+            //     lng: this.center.lng + ((Math.random() - 0.5) * 2) / 10,
+            // },
+            position: position
+        });
+    }
 
   private fillPosition(lat: number, lng: number){
     return {
@@ -291,6 +403,9 @@ export class RecycleComponent implements OnInit, OnDestroy{
   setMarkerOrder(){
     var that = this;
     this.markerOrder = new google.maps.Marker({
+      icon: {
+        url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+      },
       anchorPoint: new google.maps.Point(0, -29),
       map: this.map.googleMap,
       draggable: true,
@@ -299,9 +414,25 @@ export class RecycleComponent implements OnInit, OnDestroy{
         color: 'yellow',
         text: ' '
       },
-      // icon: "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
     });
   }
+
+    // setMarkerspolygon(){
+    //     var that = this;
+    //     this.markerPosition = new google.maps.Marker[]({
+    //         icon: {
+    //             url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+    //         },
+    //         anchorPoint: new google.maps.Point(0, -29),
+    //         map: this.map.googleMap,
+    //         draggable: true,
+    //         animation: google.maps.Animation.BOUNCE,
+    //         label: {
+    //             color: 'yellow',
+    //             text: ' '
+    //         },
+    //     });
+    // }
 
   getCurrentLocation2(animationInterval, secondChild){
     var that = this;
@@ -507,13 +638,18 @@ export class RecycleComponent implements OnInit, OnDestroy{
     }
 
     showDialog() {
-        this.visible = true;
+        this.modalBasicVisible = true;
     }
 
   openInfoWindow(marker: MapMarker, content: string) {
     this.infoContent = content;
     this.infoWindow.open(marker);
   }
+
+    openInfo(marker: MapMarker, content) {
+        this.infoContent = content;
+        this.infoWindow.open(marker);
+    }
 
   calculateScreenHeight(){
     var body = document.body, html = document.documentElement;
@@ -643,7 +779,10 @@ export class RecycleComponent implements OnInit, OnDestroy{
           this.messageService.clear();
           console.warn("Only here must put the maker position")
           console.warn("--------> Fecha Hora de fin: ", new Date())
-          this.setMarkerPositionExact();
+
+            this.setMarkerPositionExact();
+
+
         }else{
           this.showLifeLong(position.coords.accuracy);
         }
@@ -665,15 +804,22 @@ export class RecycleComponent implements OnInit, OnDestroy{
         });
         this.circlePosition.setRadius(position.coords.accuracy);
 
+        this.markerOrder.setPosition(latLng);
+
+        this.deleteAllMarkersPR();
+
         this.map.googleMap.setCenter(latLng);
         this.map.googleMap.setZoom(17);
+        this.map.googleMap.fitBounds(this.circlePosition.getBounds());
+
+
 
         clearInterval(animationInterval);
         secondChild.style['background-position'] = '-240px 0';
 
-        this.markerOrder.setPosition(latLng);
 
-        this.map.googleMap.fitBounds(this.circlePosition.getBounds());
+
+        // this.map.googleMap.fitBounds(this.circlePosition.getBounds());
       }
 
     }
@@ -725,6 +871,14 @@ export class RecycleComponent implements OnInit, OnDestroy{
         }
     }
 
+  private deleteAllMarkersPR(){
+      this.markersPR.forEach(markerPR => {
+          markerPR.setMap(null);
+      });
+
+      this.markersPR = [];
+  }
+
   addElementsOnMap(){
     const options = {
       componentRestrictions: { country: 'EC'},
@@ -755,36 +909,26 @@ export class RecycleComponent implements OnInit, OnDestroy{
       if (!place.geometry || !place.geometry.location) {
         // User entered the name of a Place that was not suggested and
         // pressed the Enter key, or the Place Details request failed.
-        this.siteNoAvailable = place.name;
-        this.visible = true;
-        // console.info("buttonShowNoAvailableDetailsDialog...");
+        this.modalBasicVisible = true;
+        this.modalBasicTittle = "Lugar no disponible";
+        this.modalBasicParagraph = "No existe información registrada para " + place.name
         return;
       }
 
       // If the place has a geometry, then present it on a map.
       if (place.geometry.viewport) {
-        const latLng = {
-          lat: place.geometry.location.lat(),
-          lng: place.geometry.location.lng()
-        }
-
-        console.info("latLng:", latLng);
-
-        this.markerOrder.setPosition(latLng);
+        let position = new google.maps.LatLng({lat: place.geometry.location.lat(), lng: place.geometry.location.lng()});
+        this.markerOrder.setPosition(position);
         this.markerOrder.setVisible(true);
         this.map.googleMap.fitBounds(place.geometry.viewport);
 
-        console.info("place.geometry.viewport: ", place.geometry.viewport);
-        console.info("place.geometry.location.lat(): ", place.geometry.location.lat());
-        console.info("place.geometry.location.lng(): ", place.geometry.location.lng());
-
+        this.deleteAllMarkersPR();
+        // this.validateContainsLocation(position);
       } else {
         console.info("NOT place.geometry.viewport");
         this.map.center = place.geometry.location;
         this.map.zoom = 17;
       }
-
-
     });
 
     this.setMarkerPosition();
@@ -805,4 +949,6 @@ export class RecycleComponent implements OnInit, OnDestroy{
       acceptIcon: ' '
     });
   }
+
+  protected readonly Array = Array;
 }
