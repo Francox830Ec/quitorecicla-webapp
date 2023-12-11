@@ -122,7 +122,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
   };
 
   showLifeLong(accuracy) {
-    this.messageService.add({ severity: 'info', summary: 'Localización del dispositivo', detail: 'El dispostivo actualmente tiene una exactitud de ' +
+    this.messageService.add({ severity: 'info', summary: 'Precisión del dispositivo', detail: 'El dispostivo actualmente tiene una precisión de ' +
        this.formatDistance(accuracy) + ' a la redonda.', life: 20000 });
   }
 
@@ -137,13 +137,18 @@ export class RecycleComponent implements OnInit, OnDestroy{
     var that = this;
     const searchPRDiv = document.getElementById("divSearchPR") as HTMLElement;
 
-    // searchPRDiv.addEventListener('click', this.clickOnSearchPR);
     searchPRDiv.addEventListener('click', function (){
         that.sidebarVisible4 = true;
         console.info("that.arrayPolygons: ", that.arrayPolygons)
 
-       console.info("that.markerPosition:", that.markerPosition.getPosition());
-        console.info("that.markerPosition:", that.markerPosition.lat);
+      if(that.markerOrder.getPosition() != undefined){
+        console.info("that.markerOrder :", that.markerOrder.getPosition().lat() + ", " + that.markerOrder.getPosition().lng());
+      }
+
+
+      if(that.markerPosition.getPosition() != undefined){
+        console.info("that.markerPosition:", that.markerPosition.getPosition().lat() + ", " + that.markerPosition.getPosition().lng());
+      }
     });
 
     this.map.controls[google.maps.ControlPosition.RIGHT_TOP].push(searchPRDiv);
@@ -192,10 +197,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
                   secondChild.style['background-position'] = imgX+'px 0';
               }, 500);
 
-           that.userLocationTrack(animationInterval, secondChild);
-          // console.info("Result of getCurrentLocation2: ", currentLocation2);
-
-        //that.userLocationTrack(animationInterval, secondChild);
+          that.userLocationService(animationInterval,secondChild);
       });
 
       map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(divGeoLocation);
@@ -299,11 +301,6 @@ export class RecycleComponent implements OnInit, OnDestroy{
       },
       // icon: "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
     });
-
-    google.maps.event.addListener(this.markerOrder, 'dragend', function() {
-      console.info("this.markerOrder -> dragend: ", that.markerOrder.getPosition().lat() + ", " + that.markerOrder.getPosition().lng());
-    });
-
   }
 
   getCurrentLocation2(animationInterval, secondChild){
@@ -417,7 +414,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
         this.sitioReciclajeTumbacoservice.getZona().then((items) => {
 
             this.setArrayPolygon(items);
-            console.info("sitioReciclajeTumbacoservice.getZona(): ", items.Placemark.Polygon.outerBoundaryIs.LinearRing.coordinates);
+            // console.info("sitioReciclajeTumbacoservice.getZona(): ", items.Placemark.Polygon.outerBoundaryIs.LinearRing.coordinates);
         });
     }
 
@@ -425,14 +422,14 @@ export class RecycleComponent implements OnInit, OnDestroy{
         this.sitioReciclajeManuelitaSaenzservice.getZona().then((items) => {
 
             this.setArrayPolygon(items);
-            console.info("sitioReciclajeManuelitaSaenzservice.getZona(): ", items.Placemark.Polygon.outerBoundaryIs.LinearRing.coordinates);
+            // console.info("sitioReciclajeManuelitaSaenzservice.getZona(): ", items.Placemark.Polygon.outerBoundaryIs.LinearRing.coordinates);
         });
     }
 
     getPolygonEloyAlfaroService(){
         this.sitioReciclajeEloyAlfaroService.getZona().then((items) => {
             this.setArrayPolygon(items);
-            console.info("sitioReciclajeEloyAlfaroService.getZona(): ", items.Placemark.Polygon.outerBoundaryIs.LinearRing.coordinates);
+            // console.info("sitioReciclajeEloyAlfaroService.getZona(): ", items.Placemark.Polygon.outerBoundaryIs.LinearRing.coordinates);
         });
     }
 
@@ -440,7 +437,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
     getPolygonLaDeliciaService(){
         this.sitioReciclajeLaDeliciaservice.getZona().then((items) => {
             this.setArrayPolygon(items);
-            console.info("sitioReciclajeLaDeliciaservice.getZona(): ", items.Placemark.Polygon.outerBoundaryIs.LinearRing.coordinates);
+            // console.info("sitioReciclajeLaDeliciaservice.getZona(): ", items.Placemark.Polygon.outerBoundaryIs.LinearRing.coordinates);
         });
     }
   listSitioReciclajeLaDeliciaService(){
@@ -670,8 +667,10 @@ export class RecycleComponent implements OnInit, OnDestroy{
 
         this.map.googleMap.setCenter(latLng);
         this.map.googleMap.setZoom(17);
+
         clearInterval(animationInterval);
         secondChild.style['background-position'] = '-240px 0';
+
         this.markerOrder.setPosition(latLng);
 
         this.map.googleMap.fitBounds(this.circlePosition.getBounds());
@@ -679,13 +678,36 @@ export class RecycleComponent implements OnInit, OnDestroy{
 
     }
 
-    userLocationTrack(animationInterval, secondChild){
+  userLocationService(animationInterval, secondChild){
+    if(!this.positionIsWatched){
+      this.geolocation$.subscribe(position => {
+        this.positionIsWatched = true;
+        var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        console.info("geolocation$.subscribe: ", position.coords.latitude + ", " + position.coords.longitude + ", "
+          + position.coords.accuracy + ' meters, ' + new Date(position.timestamp));
+
+        this.validatePosition(animationInterval, secondChild, position);
+      });
+    }else{
+      let newCenter = new google.maps.LatLng({lat: this.myCurrentPosition.coords.latitude,
+        lng: this.myCurrentPosition.coords.longitude});
+      this.map.googleMap.setCenter(newCenter);
+      clearInterval(animationInterval);
+      secondChild.style['background-position'] = '-240px 0';
+    }
+
+
+  }
+
+
+
+  userLocationTrack(animationInterval, secondChild){
         var that = this;
 
         if(!this.positionIsWatched){
           that.idWatchPosition = navigator.geolocation.watchPosition(position => {
               that.positionIsWatched = true;
-              console.info("**** watchPosition: ", position.coords + ", " + position.coords.accuracy + ' meters.');
+              console.info("**** watchPosition: ", position.coords + ", " + new Date(position.timestamp) + ", "  + position.coords.accuracy + ' meters.');
               that.validatePosition(animationInterval, secondChild, position);
             },
             () => {
@@ -704,13 +726,8 @@ export class RecycleComponent implements OnInit, OnDestroy{
     }
 
   addElementsOnMap(){
-
-    this.setMarkerOrder();
-    this.setMarkerPosition();
-    this.setCirclePosition();
-
     const options = {
-      componentRestrictions: { country: 'EC' },
+      componentRestrictions: { country: 'EC'},
       fields: ["formatted_address", "geometry", "name"],
       strictBounds: false,
     };
@@ -723,8 +740,6 @@ export class RecycleComponent implements OnInit, OnDestroy{
     // this.geolocationButonLoaded = true;
 
     // ----------------------------------
-    this.addGeoLocationButton(this.map, this.markerOrder);
-    this.addSearchPRButton();
 
     // this.geolocation$.subscribe(position => {
     //     var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
@@ -748,6 +763,15 @@ export class RecycleComponent implements OnInit, OnDestroy{
 
       // If the place has a geometry, then present it on a map.
       if (place.geometry.viewport) {
+        const latLng = {
+          lat: place.geometry.location.lat(),
+          lng: place.geometry.location.lng()
+        }
+
+        console.info("latLng:", latLng);
+
+        this.markerOrder.setPosition(latLng);
+        this.markerOrder.setVisible(true);
         this.map.googleMap.fitBounds(place.geometry.viewport);
 
         console.info("place.geometry.viewport: ", place.geometry.viewport);
@@ -760,19 +784,14 @@ export class RecycleComponent implements OnInit, OnDestroy{
         this.map.zoom = 17;
       }
 
-      var position = this.fillPosition(place.geometry.location.lat(), place.geometry.location.lng());
-      console.info("position of searchBox", position);
 
-        const latLng = {
-            lat: place.geometry.location.lat(),
-            lng: place.geometry.location.lng()
-        }
-
-       console.info("latLng:", latLng);
-
-      this.markerOrder.setPosition(latLng);
-      // this.markerOrder.setVisible(true);
     });
+
+    this.setMarkerPosition();
+    this.setCirclePosition();
+    this.setMarkerOrder();
+    this.addGeoLocationButton(this.map, this.markerOrder);
+    this.addSearchPRButton();
   }
 
 
