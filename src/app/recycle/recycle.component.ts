@@ -192,7 +192,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
         this.sidebarBottomVisible = true;
         this.modalBasicVisible = false;
 
-        console.warn("this.markersPR: ", this.markersPR);
+        // console.warn("this.markersPR: ", this.markersPR);
   }
 
   private formatPosition (item){
