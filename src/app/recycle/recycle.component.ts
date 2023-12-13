@@ -1089,6 +1089,8 @@ export class RecycleComponent implements OnInit, OnDestroy{
   }
 
   addElementsOnMap(){
+    var that = this;
+
     const options = {
       componentRestrictions: { country: 'EC'},
       fields: ["formatted_address", "geometry", "name"],
@@ -1126,6 +1128,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
 
       // If the place has a geometry, then present it on a map.
       if (place.geometry.viewport) {
+        that.sidebarBottomVisible = false;
         let position = new google.maps.LatLng({lat: place.geometry.location.lat(), lng: place.geometry.location.lng()});
         this.markerOrder.setPosition(position);
         this.markerOrder.setVisible(true);
@@ -1138,6 +1141,9 @@ export class RecycleComponent implements OnInit, OnDestroy{
         this.map.center = place.geometry.location;
         this.map.zoom = 17;
       }
+
+
+
     });
 
     this.setMarkerPosition();
