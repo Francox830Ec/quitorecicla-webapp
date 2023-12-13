@@ -319,8 +319,25 @@ export class RecycleComponent implements OnInit, OnDestroy{
   }
 
   clickItemMarkerPR(marker){
+
+      const infowindow = new google.maps.InfoWindow({
+          content: "<b>" + marker.title + "</b>",
+
+      });
+
+      let title = marker.title;
+
+      infowindow.open(this.map.googleMap, marker);
+
+      marker.addListener("click", () => {
+          //this.sidebarBottomVisible = true;
+          // this.markersPR = this.markersPR.filter((marker) => marker.title == title);
+          // this.sidebarBottomVisible = true;
+      });
+
       this.map.googleMap.setCenter(marker.getPosition());
       this.map.googleMap.setZoom(16);
+      this.sidebarBottomVisible = false;
   }
 
     polygonBounds(polygon) {
