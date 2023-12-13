@@ -44,6 +44,7 @@ import {SitioReciclajeEloyAlfaroService} from "../service/sitioreciclajeEloyAlfa
 import {SitioReciclajeTumbacoservice} from "../service/sitioreciclajeTumbacoservice";
 import {SitioReciclajeManuelitaSaenzservice} from "../service/sitioreciclajeManuelitaSaenzservice";
 import {ToolbarModule} from "primeng/toolbar";
+import {ScrollTopModule} from "primeng/scrolltop";
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
@@ -89,7 +90,8 @@ const routes: Routes = [
         SplitterModule,
         DialogModule,
         ConfirmDialogModule,
-        ToolbarModule
+        ToolbarModule,
+        ScrollTopModule
     ],
   providers: [ProductService, ProductService2, PhotoService, ConfirmationService, MessageService,
       SitioReciclajeLaDeliciaservice,

@@ -1,18 +1,17 @@
 <p-dialog [modal]="true" [(visible)]="modalBasicVisible" [breakpoints]="{ '960px': '75vw' }"
           [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
   <ng-template pTemplate="header">
-<!--    <span class="text-xl font-bold">Lugar no disponible</span>-->
       <span class="text-xl font-bold">{{modalBasicTittle}}</span>
   </ng-template>
   <p>
-<!--    No existe información registrada para {{siteNoAvailable}}.-->
     {{modalBasicParagraph}}
   </p>
 
-
   <ng-template pTemplate="footer">
     <div class="flex justify-content-center mt-4">
-        <button pButton label="Ok" (click)="modalBasicVisible = false" class="p-button m-1 ngx-emgirs-dark-blue" ></button>
+        <button *ngIf="!allMarkerPRVisible" pButton label="Ok" (click)="modalBasicVisible = false" class="p-button m-1 ngx-emgirs-dark-blue" ></button>
+        <button *ngIf="allMarkerPRVisible" pButton label="Ok" (click)="showAllMarkersPR()"
+                class="p-button m-1 ngx-emgirs-dark-blue" ></button>
     </div>
   </ng-template>
 
@@ -20,7 +19,7 @@
 
 <div *ngIf="!searchBoxLoaded" class="flex p-fluid m-0 col-8 md:col-3" id="searchBox">
   <span class="p-input-icon-right">
-    <i class="pi pi-search"></i>
+<!--    <i class="pi pi-search"></i>-->
     <input type="text" id="address" class="p-inputtext" placeholder="Lugar de referencia">
   </span>
 </div>
@@ -31,11 +30,36 @@
   <p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
 
   <div *ngIf="!divSearchPRLoeaded" id="divSearchPR" class="m-2" >
-    <p-button icon="pi pi-map-marker" styleClass="ngx-emgirs-dark-blue"></p-button>
+    <p-button icon="pi pi-search" styleClass="ngx-emgirs-dark-blue"></p-button>
   </div>
 
-  <p-sidebar [(visible)]="sidebarButtomVisible" position="bottom">
-    <h3>Bottom Sidebar</h3>
+  <p-sidebar styleClass="h-30rem" [modal]="false" [(visible)]="sidebarBottomVisible" position="bottom">
+
+        <div (click)="clickItemMarkerPR(markerPR)" *ngFor="let markerPR of markersPR" tabindex="0" class="mb-4 flex flex-nowrap justify-content-between align-items-center border-1 surface-border border-round p-3 cursor-pointer select-none hover:surface-hover transition-colors transition-duration-150">
+            <div class="flex align-items-center">
+                <div class="relative md:mr-3">
+                    <img alt="user" class="w-3rem h-3rem border-circle shadow-4" src="./assets/img/pixeled/Recyclables-Vector2_50x50.png">
+                </div>
+                <div class="flex-column md:flex ml-3">
+                    <span class="text-900 font-semibold block">{{markerPR.title}}</span>
+                    <span class="block text-600 overflow-hidden text-sm">Lunes a Viernes de 7am a 5pm</span>
+                    <span class="block text-600 overflow-hidden text-sm">Sabados y Domingos de 10am a 3pm</span>
+                </div>
+            </div>
+
+            <span class="text-700 font-semibold ml-auto mr-3 md:inline">{{markerPR.cursor}} km</span>
+
+            <div class="flex gap-2">
+                <button icon="pi pi-phone" class="p-element p-button-icon-only p-button-rounded ngx-emgirs-green p-button p-component">
+                    <span class="p-button-icon pi pi-phone" aria-hidden="true"></span>
+                </button>
+
+                <button *ngIf="!allMarkerPRVisible" pbutton="" icon="pi pi-cog" class="p-element p-button-icon-only p-button-rounded ngx-emgirs-light-blue p-button p-component">
+                    <span class="p-button-icon pi pi-home" aria-hidden="true"></span>
+                </button>
+            </div>
+        </div>
+
   </p-sidebar>
 
 

@@ -36,7 +36,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
   markerPosition: any;
   circlePosition: any;
   acum = 0;
-  sidebarButtomVisible: boolean = false;
+  sidebarBottomVisible: boolean = false;
   idWatchPosition : number;
   orderMarker = [];
   markersPR = [];
@@ -45,6 +45,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
   modalBasicTittle : string;
   modalBasicParagraph : string;
   buttonReciclaDomicilioVisible : boolean = false;
+  allMarkerPRVisible = false;
 
   categories: any[] = [
     { name: 'Papel', key: 'A' },
@@ -88,6 +89,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
   tumbacoMarkers = [];
   manuelitaSaenzMarkers = [];
   markersPolygon : any;
+  polygonDrawing : any;
 
   constructor(private confirmationService: ConfirmationService,
               private sitioReciclajeLaDeliciaservice: SitioReciclajeLaDeliciaservice,
@@ -139,132 +141,242 @@ export class RecycleComponent implements OnInit, OnDestroy{
   //     console.info("that.arrayPolygons: ", that.arrayPolygons)
   // }
 
-  private showAllMarkersPR(){
-    // this.markersPolygon = [];
+  showAllMarkersPR(){
       this.deleteAllMarkersPR();
 
-    this.eloyAlfatoMarkers.forEach(marker => {
-      // this.markersPolygon.push(marker)
         this.eloyAlfatoMarkers.map((marker, i) => {
             this.markersPR.push(new google.maps.Marker({
                 map: this.map.googleMap,
-                position: marker
+                icon: "./assets/img/pixeled/Recyclables-Vector2.png",
+                position: marker,
+                title: marker.title,
+                cursor: this.haversineDistance(this.markerOrder, marker)
             }));
         });
-    });
-
-    this.manuelitaSaenzMarkers.forEach(marker => {
-      // this.markersPolygon.push(marker)
 
         this.manuelitaSaenzMarkers.map((marker, i) => {
             this.markersPR.push(new google.maps.Marker({
                 map: this.map.googleMap,
-                position: marker
+                icon: "./assets/img/pixeled/Recyclables-Vector2.png",
+                position: marker,
+                title: marker.title,
+                cursor: this.haversineDistance(this.markerOrder, marker)
             }));
         });
-    });
-
-    this.tumbacoMarkers.forEach(marker => {
-      // this.markersPolygon.push(marker)
 
         this.tumbacoMarkers.map((marker, i) => {
             this.markersPR.push(new google.maps.Marker({
                 map: this.map.googleMap,
-                position: marker
+                icon: "./assets/img/pixeled/Recyclables-Vector2.png",
+                position: marker,
+                title: marker.title,
+                cursor: this.haversineDistance(this.markerOrder, marker)
             }));
         });
-    });
 
-    this.laDeliciaMarkers.forEach(marker => {
-      // this.markersPolygon.push(marker)
+
 
         this.laDeliciaMarkers.map((marker, i) => {
             this.markersPR.push(new google.maps.Marker({
                 map: this.map.googleMap,
-                position: marker
+                icon: "./assets/img/pixeled/Recyclables-Vector2.png",
+                position: marker,
+                title: marker.title,
+                cursor: this.haversineDistance(this.markerOrder, marker)
             }));
         });
-    });
+
+        this.markersPR.sort((a, b) => a.cursor - b.cursor);
+
+        this.sidebarBottomVisible = true;
+        this.modalBasicVisible = false;
+
+        console.warn("this.markersPR: ", this.markersPR);
+  }
+
+  private formatPosition (item){
+      return new google.maps.LatLng({lat: item.lat,
+          lng: item.lng});
+  }
+
+  private validateMarkersInPolygonCorresponding(){
+      let polygon;
+
+      // polygon = this.arrayPolygons.find(value => value.name = 'CEGAM ELOY ALFARO')
+      // this.eloyAlfatoMarkers = this.eloyAlfatoMarkers.filter(marker => google.maps.geometry.poly.containsLocation(this.formatPosition(marker),
+      //     new google.maps.Polygon({ paths: polygon.polygon })));
+
+      polygon = this.arrayPolygons.find(value => value.name = 'CEGAM LA DELICIA')
+      // this.laDeliciaMarkers = this.laDeliciaMarkers.find(marker => google.maps.geometry.poly.containsLocation(this.formatPosition(marker),
+      //     new google.maps.Polygon({ paths: polygon.polygon })));
+      let valoresConstains = 0;
+      let valoresNoConstains = 0;
+
+      this.laDeliciaMarkers.forEach(marker => {
+          let contains = google.maps.geometry.poly.containsLocation(this.formatPosition(marker),
+              new google.maps.Polygon({ paths: polygon.polygon }))
+
+          if(contains){
+            valoresConstains++;
+          }else{
+            valoresNoConstains++
+          }
+      })
+
+      console.info("valoresConstains: ", valoresConstains + ", valoresNoConstains:", valoresNoConstains);
+
+
+
+      // polygon = this.arrayPolygons.find(value => value.name = 'CEGAM MANUELA SÁENZ')
+      // this.manuelitaSaenzMarkers = this.manuelitaSaenzMarkers.filter(marker => google.maps.geometry.poly.containsLocation(this.formatPosition(marker),
+      //     new google.maps.Polygon({ paths: polygon.polygon })));
+
+
+      // polygon = this.arrayPolygons.find(value => value.name = 'CEGAM TUMBACO')
+      // this.tumbacoMarkers = this.tumbacoMarkers.filter(marker => google.maps.geometry.poly.containsLocation(this.formatPosition(marker),
+      //     new google.maps.Polygon({ paths: polygon.polygon })));
+
+      let nose = 4;
+
   }
 
   private showMarkersPRZone(polygon: any){
-
+      this.deleteAllMarkersPR();
     switch (polygon.name) {
       case "CEGAM ELOY ALFARO":
-          this.deleteAllMarkersPR();
-          this.eloyAlfatoMarkers.map((marker, i) => {
-              this.markersPR.push(new google.maps.Marker({
-                  map: this.map.googleMap,
-                  position: marker
-              }));
+         this.eloyAlfatoMarkers.map((marker, i) => {
+              if(google.maps.geometry.poly.containsLocation(this.formatPosition(marker), new google.maps.Polygon({ paths: polygon.polygon }))){
+                  this.markersPR.push(new google.maps.Marker({
+                      map: this.map.googleMap,
+                      icon: "./assets/img/pixeled/Recyclables-Vector2.png",
+                      position: marker,
+                      title: marker.title,
+                      cursor: this.haversineDistance(this.markerOrder, marker),
+                  }));
+
+                  // console.info("-- name of marker: ", marker.title);
+              }
           });
 
         break;
       case "CEGAM LA DELICIA":
-          this.deleteAllMarkersPR();
           this.laDeliciaMarkers.map((marker, i) => {
-              this.markersPR.push(new google.maps.Marker({
-                  map: this.map.googleMap,
-                  position: marker
-              }));
+              if(google.maps.geometry.poly.containsLocation(this.formatPosition(marker), new google.maps.Polygon({ paths: polygon.polygon }))){
+                  this.markersPR.push(new google.maps.Marker({
+                      map: this.map.googleMap,
+                      icon: "./assets/img/pixeled/Recyclables-Vector2.png",
+                      position: marker,
+                      title: marker.title,
+                      cursor: this.haversineDistance(this.markerOrder, marker)
+                  }));
+              }
           });
 
-        break;
+          break;
       case "CEGAM MANUELA SÁENZ":
-          this.deleteAllMarkersPR();
           this.manuelitaSaenzMarkers.map((marker, i) => {
-              this.markersPR.push(new google.maps.Marker({
-                  map: this.map.googleMap,
-                  position: marker
-              }));
+              if(google.maps.geometry.poly.containsLocation(this.formatPosition(marker), new google.maps.Polygon({ paths: polygon.polygon }))){
+                  this.markersPR.push(new google.maps.Marker({
+                      map: this.map.googleMap,
+                      icon: "./assets/img/pixeled/Recyclables-Vector2.png",
+                      position: marker,
+                      title: marker.title,
+                      cursor: this.haversineDistance(this.markerOrder, marker)
+                  }));
+              }
+
           });
 
           break;
       case "CEGAM TUMBACO":
-          this.deleteAllMarkersPR();
           this.tumbacoMarkers.map((marker, i) => {
-              this.markersPR.push(new google.maps.Marker({
-                  map: this.map.googleMap,
-                  position: marker
-              }));
+              if(google.maps.geometry.poly.containsLocation(this.formatPosition(marker), new google.maps.Polygon({ paths: polygon.polygon }))){
+                  this.markersPR.push(new google.maps.Marker({
+                      map: this.map.googleMap,
+                      icon: "./assets/img/pixeled/Recyclables-Vector2.png",
+                      position: marker,
+                      title: marker.title,
+                      cursor: this.haversineDistance(this.markerOrder, marker)
+                  }));
+              }
           });
 
-        break;
+          break;
       default:
         break;
     }
 
-    console.info("Current this.markersPolygon: ", this.markersPolygon);
+      this.polygonDrawing.setPath(polygon.polygon);
+      this.polygonDrawing.setMap(this.map.googleMap);
 
+      let bounds = this.polygonBounds(this.polygonDrawing);
+      this.map.googleMap.fitBounds(bounds);
+      this.markersPR.sort((a, b) => a.cursor - b.cursor);
+
+      console.info("Current this.markersPolygon: ", this.markersPolygon);
+      console.warn("this.markersPR: ", this.markersPR);
+      this.sidebarBottomVisible = true;
   }
 
-  private validateContainsLocation (position: google.maps.LatLng){
-    let isInZone = false;
+  clickItemMarkerPR(marker){
+      this.map.googleMap.setCenter(marker.getPosition());
+      this.map.googleMap.setZoom(16);
+  }
 
-    this.arrayPolygons.forEach(polygon => {
-      let zonaPR = new google.maps.Polygon({ paths: polygon.polygon });
-      let containsLocation = google.maps.geometry.poly.containsLocation(
-        position,
-        zonaPR
-      )
-
-      if(containsLocation){
-        isInZone = true;
-        console.info("Polygon name: ", polygon.name + ", polygon coords: ", polygon.polygon)
-        this.buttonReciclaDomicilioVisible = true;
-        this.showMarkersPRZone(polygon);
-
-      }
-    })
-
-    if(!isInZone){//
-      this.modalBasicParagraph = "El punto no se encuentra dentro de ninguna zona establecida para la recolección. Se muestran todos los lugares disponibles en la ciudad.";
-      this.modalBasicTittle = "Zona no establecida";
-      this.modalBasicVisible = true;
-
-      this.showAllMarkersPR();
+    polygonBounds(polygon) {
+        var bounds = new google.maps.LatLngBounds();
+        for (var i=0; i<polygon.getPaths().getLength(); i++) {
+            for (var j=0; j<polygon.getPaths().getAt(i).getLength(); j++) {
+                bounds.extend(polygon.getPaths().getAt(i).getAt(j));
+            }
+        }
+        return bounds;
     }
+
+    haversineDistance(mk1, mk2) {
+        var R = 6371.0710; // Radius of the Earth in kms
+        var rlat1 = mk1.position.lat() * (Math.PI/180); // Convert degrees to radians
+        var rlat2 = mk2.lat * (Math.PI/180); // Convert degrees to radians
+        var difflat = rlat2-rlat1; // Radian difference (latitudes)
+        var difflon = (mk2.lng-mk1.position.lng()) * (Math.PI/180); // Radian difference (longitudes)
+
+        var d = 2 * R * Math.asin(Math.sqrt(Math.sin(difflat/2)*Math.sin(difflat/2)+Math.cos(rlat1)*Math.cos(rlat2)*Math.sin(difflon/2)*Math.sin(difflon/2)));
+        return d.toFixed(2);
+    }
+
+  private getCorrespondingPolygon (position: google.maps.LatLng){
+    return this.arrayPolygons.find(value => google.maps.geometry.poly.containsLocation(position, new google.maps.Polygon({ paths: value.polygon })));
   }
+
+  // private validateContainsLocation (position: google.maps.LatLng){
+  //   let isInZone = false;
+  //
+  //   console.info("//// this.arrayPolygons: ", this.arrayPolygons);
+  //
+  //   this.arrayPolygons.forEach(polygon => {
+  //     let zonaPR = new google.maps.Polygon({ paths: polygon.polygon });
+  //     let containsLocation = google.maps.geometry.poly.containsLocation(
+  //       position,
+  //       zonaPR
+  //     )
+  //
+  //     if(containsLocation){
+  //       isInZone = true;
+  //       console.info("Polygon name: ", polygon.name + ", polygon coords: ", polygon.polygon)
+  //       this.buttonReciclaDomicilioVisible = true;
+  //       this.showMarkersPRZone(polygon);
+  //
+  //     }
+  //   })
+
+  //   if(!isInZone){//
+  //     this.modalBasicParagraph = "El punto no se encuentra dentro de ninguna zona establecida para la recolección. Se muestran todos los lugares disponibles en la ciudad.";
+  //     this.modalBasicTittle = "Zona no establecida";
+  //     this.modalBasicVisible = true;
+  //
+  //     this.showAllMarkersPR();
+  //   }
+  // }
 
 
   addSearchPRButton()
@@ -272,15 +384,37 @@ export class RecycleComponent implements OnInit, OnDestroy{
     var that = this;
     const searchPRDiv = document.getElementById("divSearchPR") as HTMLElement;
 
+
+
     searchPRDiv.addEventListener('click', function (){
-        // that.sidebarButtomVisible = true;
         console.info("that.arrayPolygons: ", that.arrayPolygons);
         that.markersPolygon = [];
         console.info("that.markersPolygon: ", that.markersPolygon);
 
       if(that.markerOrder.getPosition() != undefined){// MarkerOrder Position
         console.info("that.markerOrder :", that.markerOrder.getPosition().lat() + ", " + that.markerOrder.getPosition().lng());
-        that.validateContainsLocation(that.markerOrder.getPosition());
+
+
+          let polygon = that.getCorrespondingPolygon(that.markerOrder.getPosition());
+
+
+          if(polygon == undefined){//
+              that.allMarkerPRVisible = true;
+              that.modalBasicParagraph = "El punto no se encuentra dentro de ninguna zona establecida para la recolección. A continuación se muestran todos los lugares disponibles.";
+              that.modalBasicTittle = "Zona no establecida";
+              that.modalBasicVisible = true;
+
+              // that.showAllMarkersPR();
+          }else{
+              that.allMarkerPRVisible = false;
+              console.info("****** Polygon name: ", polygon.name + ", polygon coords: ", polygon.polygon)
+              that.buttonReciclaDomicilioVisible = true;
+              that.showMarkersPRZone(polygon);
+              // that.sidebarBottomVisible = true;
+          }
+
+          // that.sidebarBottomVisible = true;
+
       }else{
         that.modalBasicTittle = "Ubicar el punto del pedido";
         that.modalBasicParagraph = "Debe ubicar el sitio del pedido para mostrar los puntos de recilaje cercanos.";
@@ -369,6 +503,16 @@ export class RecycleComponent implements OnInit, OnDestroy{
     this.markerPosition.setMap(null);
   }
 
+  setPolygonDrawing(){
+      this.polygonDrawing = new google.maps.Polygon({
+          strokeColor: "#28367f",
+          strokeOpacity: 0.8,
+          strokeWeight: 2,
+          fillColor: "#28367f",
+          fillOpacity: 0.1,
+      });
+  }
+
   setMarkerPosition(){
     // #757575  #616161 #607D8B
       this.markerPosition = new google.maps.Marker({
@@ -403,16 +547,16 @@ export class RecycleComponent implements OnInit, OnDestroy{
   setMarkerOrder(){
     var that = this;
     this.markerOrder = new google.maps.Marker({
-      icon: {
-        url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-      },
+      // icon: {
+      //   url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+      // },
       anchorPoint: new google.maps.Point(0, -29),
       map: this.map.googleMap,
       draggable: true,
       animation: google.maps.Animation.BOUNCE,
       label: {
         color: 'yellow',
-        text: ' '
+        text: ' ',
       },
     });
   }
@@ -528,6 +672,19 @@ export class RecycleComponent implements OnInit, OnDestroy{
         this.infoWindow.infoWindow.open(this.map.googleMap);
     }
 
+    private getArrayPolygon2(items: any){
+        const arrayCoord = items.Placemark.Polygon.outerBoundaryIs.LinearRing.coordinates.split("|");
+        let arrayCoordPolygon = [];
+        arrayCoord.map(value => {
+            arrayCoordPolygon.push({
+                lat: parseFloat(value.split(",")[1]),
+                lng: parseFloat(value.split(",")[0])
+            })
+        })
+
+        return arrayCoordPolygon;
+    }
+
     private setArrayPolygon(items: any){
         const arrayCoord = items.Placemark.Polygon.outerBoundaryIs.LinearRing.coordinates.split("|");
         let arrayCoordPolygon = [];
@@ -571,60 +728,72 @@ export class RecycleComponent implements OnInit, OnDestroy{
             // console.info("sitioReciclajeLaDeliciaservice.getZona(): ", items.Placemark.Polygon.outerBoundaryIs.LinearRing.coordinates);
         });
     }
-  listSitioReciclajeLaDeliciaService(){
-      this.sitioReciclajeLaDeliciaservice.getSitios().then((items) => {
-        items.forEach(item => {
-          this.laDeliciaMarkers.push(
-            {label: item.name,
-             lat: parseFloat(item.Point.coordinates.toString().split(',')[1].toString()),
-             lng: parseFloat(item.Point.coordinates.toString().split(',')[0].toString())
+
+    private validateMarkersLaDeliciaInPolygon(itemsMarkers){
+        this.sitioReciclajeLaDeliciaservice.getZona().then((items) => {
+            let arrayPolygon = this.getArrayPolygon2(items);
+
+            itemsMarkers.forEach(item => {
+
+                let position = new google.maps.LatLng({lat: parseFloat(item.Point.coordinates.toString().split(',')[1].toString()),
+                    lng: parseFloat(item.Point.coordinates.toString().split(',')[0].toString())});
+
+                if(google.maps.geometry.poly.containsLocation(position, new google.maps.Polygon({ paths: arrayPolygon }))){
+                    this.laDeliciaMarkers.push(
+                        {label: item.name,
+                            lat: parseFloat(item.Point.coordinates.toString().split(',')[1].toString()),
+                            lng: parseFloat(item.Point.coordinates.toString().split(',')[0].toString())
+                        });
+                }
             });
         });
-          // console.info("this.laDeliciaMarkers: ", this.laDeliciaMarkers);
+    }
+
+  listSitioReciclajeLaDeliciaService(){
+      this.sitioReciclajeLaDeliciaservice.getSitios().then((items) => {
+          items.map((item, i) => {
+              this.laDeliciaMarkers.push(
+                  {title: item.name,
+                      lat: parseFloat(item.Point.coordinates.toString().split(',')[1].toString()),
+                      lng: parseFloat(item.Point.coordinates.toString().split(',')[0].toString())
+                  });
+          });
       });
   }
 
     listSitioReciclajeEloyAlfaroService(){
         this.sitioReciclajeEloyAlfaroService.getSitios().then((items) => {
-            items.forEach(item => {
+            items.map((item, i) => {
                 this.eloyAlfatoMarkers.push(
-                    {label: item.name,
+                    {title: item.name,
                         lat: parseFloat(item.Point.coordinates.toString().split(',')[1].toString()),
                         lng: parseFloat(item.Point.coordinates.toString().split(',')[0].toString())
                     });
             });
-
-            // console.info("this.eloyAlfatoMarkers: ", this.eloyAlfatoMarkers);
-
         });
     }
 
     listSitioReciclajeManuelitaSaenzService(){
         this.sitioReciclajeManuelitaSaenzservice.getSitios().then((items) => {
-            items.forEach(item => {
+            items.map((item, i) => {
                 this.manuelitaSaenzMarkers.push(
-                    {label: item.name,
+                    {title: item.name,
                         lat: parseFloat(item.Point.coordinates.toString().split(',')[1].toString()),
                         lng: parseFloat(item.Point.coordinates.toString().split(',')[0].toString())
                     });
             });
-            // console.info("this.manuelitaSaenzMarkers: ", this.manuelitaSaenzMarkers);
-
         });
     }
 
     listSitioReciclajeTumbacoService(){
         this.sitioReciclajeTumbacoservice.getSitios().then((items) => {
-            items.forEach(item => {
+            items.map((item, i) => {
                 this.tumbacoMarkers.push(
-                    {label: item.name,
+                    {title: item.name,
                         lat: parseFloat(item.Point.coordinates.toString().split(',')[1].toString()),
                         lng: parseFloat(item.Point.coordinates.toString().split(',')[0].toString())
                     });
             });
-
-            // console.info("this.tumbacoMarkers: ", this.tumbacoMarkers);
-
         });
     }
 
@@ -809,7 +978,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
         this.deleteAllMarkersPR();
 
         this.map.googleMap.setCenter(latLng);
-        this.map.googleMap.setZoom(17);
+        this.map.googleMap.setZoom(15);
         this.map.googleMap.fitBounds(this.circlePosition.getBounds());
 
 
@@ -840,6 +1009,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
       this.map.googleMap.setCenter(newCenter);
       clearInterval(animationInterval);
       secondChild.style['background-position'] = '-240px 0';
+      this.polygonDrawing.setMap(null);
     }
 
 
@@ -877,6 +1047,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
       });
 
       this.markersPR = [];
+      this.polygonDrawing.setMap(null);
   }
 
   addElementsOnMap(){
@@ -936,6 +1107,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
     this.setMarkerOrder();
     this.addGeoLocationButton(this.map, this.markerOrder);
     this.addSearchPRButton();
+    this.setPolygonDrawing();
   }
 
 
