@@ -46,6 +46,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
   modalBasicParagraph : string;
   buttonReciclaDomicilioVisible : boolean = false;
   allMarkerPRVisible = false;
+  buttomShowFormUploadedClicked = false;
 
   categories: any[] = [
     { name: 'Papel', key: 'A' },
@@ -318,26 +319,46 @@ export class RecycleComponent implements OnInit, OnDestroy{
       this.sidebarBottomVisible = true;
   }
 
+  showFormUpload() {
+      console.info("Click en boton. Debe mostrar el firulario de carga");
+
+      this.buttomShowFormUploadedClicked = true;
+      return;
+  }
+
+    callTelphoneNumber() {
+        console.info("Click en llamar button");
+
+        this.buttomShowFormUploadedClicked = true;
+        return;
+    }
+
   clickItemMarkerPR(marker){
+      if(!this.buttomShowFormUploadedClicked ){
+          console.info("Click en DIV.");
 
-      const infowindow = new google.maps.InfoWindow({
-          content: "<b>" + marker.title + "</b>",
+          const infowindow = new google.maps.InfoWindow({
+              content: "<b>" + marker.title + "</b>",
 
-      });
+          });
 
-      let title = marker.title;
+          let title = marker.title;
 
-      infowindow.open(this.map.googleMap, marker);
+          infowindow.open(this.map.googleMap, marker);
 
-      marker.addListener("click", () => {
-          //this.sidebarBottomVisible = true;
-          // this.markersPR = this.markersPR.filter((marker) => marker.title == title);
-          // this.sidebarBottomVisible = true;
-      });
+          marker.addListener("click", () => {
+              //this.sidebarBottomVisible = true;
+              // this.markersPR = this.markersPR.filter((marker) => marker.title == title);
+              // this.sidebarBottomVisible = true;
+          });
 
-      this.map.googleMap.setCenter(marker.getPosition());
-      this.map.googleMap.setZoom(16);
-      this.sidebarBottomVisible = false;
+          this.map.googleMap.setCenter(marker.getPosition());
+          this.map.googleMap.setZoom(16);
+          this.sidebarBottomVisible = false;
+
+      }
+
+      this.buttomShowFormUploadedClicked = false;
   }
 
     polygonBounds(polygon) {

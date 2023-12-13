@@ -49,11 +49,11 @@
             <span class="text-700 font-semibold ml-auto mr-3 md:inline">{{markerPR.cursor}} km</span>
 
             <div class="flex gap-2">
-                <button icon="pi pi-phone" class="p-element p-button-icon-only p-button-rounded ngx-emgirs-green p-button p-component">
+                <button (click)="callTelphoneNumber()" icon="pi pi-phone" class="p-element p-button-icon-only p-button-rounded ngx-emgirs-green p-button p-component">
                     <span class="p-button-icon pi pi-phone" aria-hidden="true"></span>
                 </button>
 
-                <button *ngIf="!allMarkerPRVisible" pbutton="" icon="pi pi-cog" class="p-element p-button-icon-only p-button-rounded ngx-emgirs-light-blue p-button p-component">
+                <button (click)="showFormUpload()" *ngIf="!allMarkerPRVisible" pbutton="" icon="pi pi-cog" class="p-element p-button-icon-only p-button-rounded ngx-emgirs-light-blue p-button p-component">
                     <span class="p-button-icon pi pi-home" aria-hidden="true"></span>
                 </button>
             </div>
