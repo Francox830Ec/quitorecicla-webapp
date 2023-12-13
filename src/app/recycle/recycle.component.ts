@@ -6,9 +6,12 @@ import {SitioReciclajeTumbacoservice} from "../../service/sitioreciclajeTumbacos
 import {SitioReciclajeEloyAlfaroService} from "../../service/sitioreciclajeEloyAlfaroservice";
 import {SitioReciclajeManuelitaSaenzservice} from "../../service/sitioreciclajeManuelitaSaenzservice";
 import {GeolocationService} from '@ng-web-apis/geolocation';
-// import {MarkerClusterer} from "@googlemaps/markerclusterer";
-// import {MarkerClusterer} from "@googlemaps/markerclusterer";
-// import { MarkerClusterer } from "@googlemaps/markerclusterer";
+import Webcam from 'webcam-easy';
+
+interface Categorie {
+  label: string,
+  value: string
+}
 
 @Component({
   selector: 'app-recycle',
@@ -27,7 +30,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
   searchBoxLoaded = false;
   geolocationButonLoaded = false;
   divSearchPRLoeaded = false;
-  selectedCategories: any[] = [];
+  // selectedCategories: any[] = [];
   zoom = 14;
   myCurrentPosition: any;
   myFirstGeoPosition: any;
@@ -48,17 +51,28 @@ export class RecycleComponent implements OnInit, OnDestroy{
   allMarkerPRVisible = false;
   buttomShowFormUploadedClicked = false;
 
-  categories: any[] = [
-    { name: 'Papel', key: 'A' },
-    { name: 'Carton', key: 'M' },
-    { name: 'Plastico', key: 'P' },
-    { name: 'Vidrio', key: 'R' },
-    { name: 'Chatarra', key: 'M' },
-    { name: 'Madera', key: 'P' },
-    { name: 'Textiles', key: 'R' }
-  ];
+  // categories: any[] = [
+  //   { name: 'Papel', key: 'PA' },
+  //   { name: 'Carton', key: 'CAR' },
+  //   { name: 'Plastico', key: 'PLA' },
+  //   { name: 'Vidrio', key: 'VI' },
+  //   { name: 'Chatarra', key: 'CHAT' },
+  //   { name: 'Madera', key: 'MAD' },
+  //   { name: 'Textiles', key: 'TEXT' },
+  // ];
+
+  categories!: Categorie[];
+  selectedCategories!: Categorie[];
 
   modalBasicVisible: boolean = false;
+  modalFormUploadVisible: boolean = false;
+  sideBarFotografiaVisible: boolean = false;
+
+  webcamElement : any
+  canvasElement : any
+  snapSoundElement: any
+  webcam : any
+
   siteNoAvailable: string = "";
 
   buttonPosition: google.maps.ControlPosition.TOP_LEFT;
@@ -91,6 +105,12 @@ export class RecycleComponent implements OnInit, OnDestroy{
   manuelitaSaenzMarkers = [];
   markersPolygon : any;
   polygonDrawing : any;
+  selectAll = false;
+
+  dateOrder: Date | undefined;
+
+  username: string = '';
+  userLastName: string | undefined;
 
   constructor(private confirmationService: ConfirmationService,
               private sitioReciclajeLaDeliciaservice: SitioReciclajeLaDeliciaservice,
@@ -118,9 +138,39 @@ export class RecycleComponent implements OnInit, OnDestroy{
     this.getPolygonLaDeliciaService();
     this.getPolygonManuelitaSaenzService();
     this.getPolygonTumbacoService();
+
+    this.categories = [
+        { label: 'Papel', value: 'PA' },
+        { label: 'Carton', value: 'CAR' },
+        { label: 'Plastico', value: 'PLA' },
+        { label: 'Vidrio', value: 'VI' },
+        { label: 'Chatarra', value: 'CHAT' },
+        { label: 'Madera', value: 'MAD' },
+        { label: 'Textiles', value: 'TEXT' },
+    ];
   }
 
+  onShowSideBarCamera() {
+    console.info("onShowModalCamera");
 
+    this.webcamElement = document.getElementById('webcam');
+    this.canvasElement = document.getElementById('canvas');
+    this.snapSoundElement = document.getElementById('snapSound');
+    this.webcam = new Webcam(this.webcamElement, 'user', this.canvasElement, this.snapSoundElement);
+
+    this.webcam.flip();
+    this.webcam.start()
+      .then(result =>{
+        console.log("webcam started");
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }
+  clickCameraButton() {
+    console.info("clickCameraButton");
+    this.sideBarFotografiaVisible = true;
+  }
   formatDistance (accurancy) {
     if (accurancy >= 1000) {
       return Math.round(accurancy / 1000) + " Km."
@@ -130,6 +180,17 @@ export class RecycleComponent implements OnInit, OnDestroy{
       return accurancy.toFixed(1) + " m."
     }
   };
+
+  onSelectAllChange(event) {
+    this.selectedCategories = event.checked ? [...this.categories] : [];
+    this.selectAll = event.checked;
+    event.updateModel(this.selectedCategories, event.originalEvent)
+  }
+
+  onChange(event) {
+    const { originalEvent, value } = event
+    if(value) this.selectAll = value.length === this.categories.length;
+  }
 
   showLifeLong(accuracy) {
     this.messageService.add({ severity: 'info', summary: 'Precisión del dispositivo', detail: 'El dispostivo actualmente tiene una precisión de ' +
@@ -323,6 +384,8 @@ export class RecycleComponent implements OnInit, OnDestroy{
       console.info("Click en boton. Debe mostrar el firulario de carga");
 
       this.buttomShowFormUploadedClicked = true;
+      this.modalBasicTittle = "Recicla a domicilio"
+      this.modalFormUploadVisible = true;
       return;
   }
 

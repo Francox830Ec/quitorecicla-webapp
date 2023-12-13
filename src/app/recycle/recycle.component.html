@@ -9,12 +9,136 @@
 
   <ng-template pTemplate="footer">
     <div class="flex justify-content-center mt-4">
-        <button *ngIf="!allMarkerPRVisible" pButton label="Ok" (click)="modalBasicVisible = false" class="p-button m-1 ngx-emgirs-dark-blue" ></button>
+        <button *ngIf="!allMarkerPRVisible" pButton label="Ok" (click)="modalBasicVisible = false" class="p-button m-1 ngx-emgirs-light-blue" ></button>
         <button *ngIf="allMarkerPRVisible" pButton label="Ok" (click)="showAllMarkersPR()"
-                class="p-button m-1 ngx-emgirs-dark-blue" ></button>
+                class="p-button m-1 ngx-emgirs-light-blue" ></button>
     </div>
   </ng-template>
+</p-dialog>
 
+<p-sidebar (onShow)="onShowSideBarCamera()" [(visible)]="sideBarFotografiaVisible" [fullScreen]="true">
+  <ng-template pTemplate="content">
+        <div class="flex justify-content-center">
+          <video id="webcam" autoplay playsinline class="w-full" height="480"></video>
+        </div>
+        <canvas id="canvas" class="d-none"></canvas>
+        <audio id="snapSound" src="./assets/audio/QuadFingerSnap02.wav" preload = "auto"></audio>
+  </ng-template>
+</p-sidebar>
+
+<p-dialog [modal]="true" [(visible)]="modalFormUploadVisible" [breakpoints]="{ '960px': '75vw' }"
+          [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+  <ng-template pTemplate="header">
+    <span class="text-2xl font-bold" style="color: #1275bb;">{{modalBasicTittle}}</span>
+  </ng-template>
+  <ng-template pTemplate="content">
+    <div class="grid p-fluid">
+      <div class="col-12 md:col-12">
+              <h4>Selecciona el/los producto(s): </h4>
+              <div class="flex justify-content-center">
+                <p-listbox
+                  [options]="categories"
+                  [(ngModel)]="selectedCategories"
+                  [selectAll]="selectAll"
+                  optionLabel="label"
+                  [style]="{ width: '15rem' }"
+                  [virtualScroll]="true"
+                  [filter]="false"
+                  [virtualScrollItemSize]="43"
+                  [multiple]="true"
+                  [checkbox]="true"
+                  [showToggleAll]="false"
+                  [metaKeySelection]="false"
+                  (onSelectAllChange)="onSelectAllChange($event)"
+                  (onChange)="onChange($event)"
+                  [listStyle]="{ 'max-height': '220px' }"
+                ></p-listbox>
+              </div>
+
+              <div class="flex justify-content-center">
+                <button [style]="{ width: '10rem' }" icon="pi pi-camera" pButton label="Fotagrafía" routerLink="/recycle"
+                        class="ngx-emgirs-light-blue p-element p-ripple mt-3 mb-4 p-button p-component"
+                        type="submit" pTooltip="Fotagrafía" tooltipPosition="right" (click)="clickCameraButton()">
+                </button>
+              </div>
+
+                <h4>Referencia del domicilio: </h4>
+                <div class="p-fluid p-formgrid">
+                  <div class="col-12 md:col-12">
+                    <span class="p-input-icon-left">
+                                <i class="pi pi-home"></i>
+                                <textarea rows="2" cols="30" pInputTextarea [autoResize]="true"></textarea>
+                              </span>
+                  </div>
+                </div>
+
+                <h4>Fecha y hora de recolección: </h4>
+                <div class="p-fluid p-formgrid">
+                  <div class="col-12 md:col-12">
+                    <p-calendar [readonlyInput]="true"  [(ngModel)]="dateOrder" [showTime]="true" [showIcon]="true"></p-calendar>
+                  </div>
+                </div>
+
+                <div class="border-1 surface-border border-round p-fluid mt-5">
+                  <span class="text-900 font-bold block border-bottom-1 surface-border p-2">
+                    <div class="border-top-3" style="color: #1275bb;"></div>
+                    <div class="font-medium my-2 ml-2" style="color: #1275bb;">
+                      <span class="p-button-icon p-button-icon-left pi pi-id-card mr-1" style="color: #1275bb;" aria-hidden="true"></span>
+                      Datos del contacto
+                    </div>
+
+                  </span>
+
+                  <div class="p-2">
+                    <div class="p-fluid p-formgrid">
+                      <div class="col-12 md:col-12">
+                        <div class="p-inputgroup">
+                                  <span class="p-inputgroup-addon">
+                                    Nombres:
+                                  </span>
+                          <input type="text" pinputtext="" class="p-inputtext p-component p-element">
+                        </div>
+
+                        <div class="p-inputgroup mt-3">
+                                        <span class="p-inputgroup-addon">
+                                          Apellidos:
+                                        </span>
+                          <input type="text" pinputtext="" class="p-inputtext p-component p-element">
+                        </div>
+
+                        <div class="p-inputgroup mt-3">
+                            <span class="p-inputgroup-addon">
+                              <i class="pi pi-envelope"></i>
+                            </span>
+                          <input type="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                                 placeholder="Correo" class="p-inputtext p-component p-element">
+                        </div>
+
+                        <div class="p-inputgroup mt-3">
+                            <span class="p-inputgroup-addon">
+                              <i class="pi pi-phone"></i>
+                            </span>
+                          <input type="text" pKeyFilter="int" placeholder="Teléfono" class="p-inputtext p-component p-element">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <div class="flex justify-content-center mt-4">
+      <button pButton class="p-button ngx-emgirs-light-blue-border p-button-outlined"
+              type="submit" pTooltip="Guardar">
+        <span class="p-button-icon pi pi-send mr-1" style="color: #1275bb;" aria-hidden="true"></span>
+        <span class="p-button-label" style="color: #1275bb;">Guardar</span>
+      </button>
+
+      <p-button (click)="modalFormUploadVisible = false" label="Cancelar" icon="pi pi-times" [outlined]="true" severity="secondary"></p-button>
+    </div>
+  </ng-template>
 </p-dialog>
 
 <div *ngIf="!searchBoxLoaded" class="flex p-fluid m-0 col-8 md:col-3" id="searchBox">
@@ -38,7 +162,7 @@
       <span class="text-3xl font-bold" style="color: #1275bb;">Quiero reciclar</span>
     </ng-template>
     <ng-template pTemplate="content">
-        <div (click)="clickItemMarkerPR(markerPR)"  *ngFor="let markerPR of markersPR" tabindex="0" class="mb-4 flex
+        <div (click)="clickItemMarkerPR(markerPR)"  *ngFor="let markerPR of markersPR" tabindex="0" class="mb-3 flex
        flex-nowrap justify-content-between align-items-center border-1 surface-border border-round p-3 cursor-pointer
        select-none hover:surface-hover transition-colors transition-duration-150 work-station-item-QR">
           <div class="flex align-items-center">

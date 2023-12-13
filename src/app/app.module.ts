@@ -45,6 +45,10 @@ import {SitioReciclajeTumbacoservice} from "../service/sitioreciclajeTumbacoserv
 import {SitioReciclajeManuelitaSaenzservice} from "../service/sitioreciclajeManuelitaSaenzservice";
 import {ToolbarModule} from "primeng/toolbar";
 import {ScrollTopModule} from "primeng/scrolltop";
+import {ListboxModule} from "primeng/listbox";
+import {InputTextareaModule} from "primeng/inputtextarea";
+import {CalendarModule} from "primeng/calendar";
+import {InplaceModule} from "primeng/inplace";
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
@@ -63,36 +67,40 @@ const routes: Routes = [
     RegisterFormComponent,
     LoginComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        ButtonModule,
-        BrowserAnimationsModule,
-        CarouselModule,
-        TagModule,
-        GalleriaModule,
-        FormsModule,
-        TableModule,
-        RouterModule.forRoot(routes, {useHash: true}),
-        CardModule,
-        AvatarModule,
-        PanelModule,
-        ImageModule,
-        ReactiveFormsModule,
-        CheckboxModule,
-        PasswordModule,
-        SidebarModule,
-        OverlayModule,
-        DropdownModule,
-        DividerModule,
-        GoogleMapsModule,
-        ToastModule,
-        SplitterModule,
-        DialogModule,
-        ConfirmDialogModule,
-        ToolbarModule,
-        ScrollTopModule
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    ButtonModule,
+    BrowserAnimationsModule,
+    CarouselModule,
+    TagModule,
+    GalleriaModule,
+    FormsModule,
+    TableModule,
+    RouterModule.forRoot(routes, {useHash: true}),
+    CardModule,
+    AvatarModule,
+    PanelModule,
+    ImageModule,
+    ReactiveFormsModule,
+    CheckboxModule,
+    PasswordModule,
+    SidebarModule,
+    OverlayModule,
+    DropdownModule,
+    DividerModule,
+    GoogleMapsModule,
+    ToastModule,
+    SplitterModule,
+    DialogModule,
+    ConfirmDialogModule,
+    ToolbarModule,
+    ScrollTopModule,
+    ListboxModule,
+    InputTextareaModule,
+    CalendarModule,
+    InplaceModule
+  ],
   providers: [ProductService, ProductService2, PhotoService, ConfirmationService, MessageService,
       SitioReciclajeLaDeliciaservice,
       SitioReciclajeEloyAlfaroService,
