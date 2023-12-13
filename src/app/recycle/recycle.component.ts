@@ -314,8 +314,8 @@ export class RecycleComponent implements OnInit, OnDestroy{
       this.map.googleMap.fitBounds(bounds);
       this.markersPR.sort((a, b) => a.cursor - b.cursor);
 
-      console.info("Current this.markersPolygon: ", this.markersPolygon);
-      console.warn("this.markersPR: ", this.markersPR);
+      // console.info("Current this.markersPolygon: ", this.markersPolygon);
+      // console.warn("this.markersPR: ", this.markersPR);
       this.sidebarBottomVisible = true;
   }
 
@@ -335,7 +335,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
 
   clickItemMarkerPR(marker){
       if(!this.buttomShowFormUploadedClicked ){
-          console.info("Click en DIV.");
+          // console.info("Click en DIV.");
 
           const infowindow = new google.maps.InfoWindow({
               content: "<b>" + marker.title + "</b>",
@@ -425,12 +425,12 @@ export class RecycleComponent implements OnInit, OnDestroy{
 
 
     searchPRDiv.addEventListener('click', function (){
-        console.info("that.arrayPolygons: ", that.arrayPolygons);
+        // console.info("that.arrayPolygons: ", that.arrayPolygons);
         that.markersPolygon = [];
-        console.info("that.markersPolygon: ", that.markersPolygon);
+        // console.info("that.markersPolygon: ", that.markersPolygon);
 
       if(that.markerOrder.getPosition() != undefined){// MarkerOrder Position
-        console.info("that.markerOrder :", that.markerOrder.getPosition().lat() + ", " + that.markerOrder.getPosition().lng());
+        // console.info("that.markerOrder :", that.markerOrder.getPosition().lat() + ", " + that.markerOrder.getPosition().lng());
 
 
           let polygon = that.getCorrespondingPolygon(that.markerOrder.getPosition());
@@ -445,7 +445,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
               // that.showAllMarkersPR();
           }else{
               that.allMarkerPRVisible = false;
-              console.info("****** Polygon name: ", polygon.name + ", polygon coords: ", polygon.polygon)
+              // console.info("****** Polygon name: ", polygon.name + ", polygon coords: ", polygon.polygon)
               that.buttonReciclaDomicilioVisible = true;
               that.showMarkersPRZone(polygon);
               // that.sidebarBottomVisible = true;
@@ -977,15 +977,15 @@ export class RecycleComponent implements OnInit, OnDestroy{
       this.acum++;
 
       if(this.acum <= 1){
-        console.info("--------> Fecha Hora de inicio: ", new Date())
+        // console.info("--------> Fecha Hora de inicio: ", new Date())
       }
 
       /*validate accuracy*/
       if(this.acum <= 1 || position.coords.accuracy <= 35){
         if(position.coords.accuracy <= 35){//in meters
           this.messageService.clear();
-          console.warn("Only here must put the maker position")
-          console.warn("--------> Fecha Hora de fin: ", new Date())
+          // console.warn("Only here must put the maker position")
+          // console.warn("--------> Fecha Hora de fin: ", new Date())
 
             this.setMarkerPositionExact();
 
@@ -1036,8 +1036,8 @@ export class RecycleComponent implements OnInit, OnDestroy{
       this.geolocation$.subscribe(position => {
         this.positionIsWatched = true;
         var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        console.info("geolocation$.subscribe: ", position.coords.latitude + ", " + position.coords.longitude + ", "
-          + position.coords.accuracy + ' meters, ' + new Date(position.timestamp));
+        // console.info("geolocation$.subscribe: ", position.coords.latitude + ", " + position.coords.longitude + ", "
+        //   + position.coords.accuracy + ' meters, ' + new Date(position.timestamp));
 
         this.validatePosition(animationInterval, secondChild, position);
       });
@@ -1061,7 +1061,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
         if(!this.positionIsWatched){
           that.idWatchPosition = navigator.geolocation.watchPosition(position => {
               that.positionIsWatched = true;
-              console.info("**** watchPosition: ", position.coords + ", " + new Date(position.timestamp) + ", "  + position.coords.accuracy + ' meters.');
+              // console.info("**** watchPosition: ", position.coords + ", " + new Date(position.timestamp) + ", "  + position.coords.accuracy + ' meters.');
               that.validatePosition(animationInterval, secondChild, position);
             },
             () => {
