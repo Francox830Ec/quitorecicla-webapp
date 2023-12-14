@@ -49,11 +49,21 @@ export class RecycleComponent implements OnInit, OnDestroy{
   modalBasicVisible: boolean = false;
   modalFormUploadVisible: boolean = false;
   sideBarFotografiaVisible: boolean = false;
+  markersPRIcon = "./assets/img/pixeled/Recyclables-Vector2.png";
   webcamElement : any
   canvasElement : any
   snapSoundElement: any
   webcam : any
   zoneCurrentName = "";
+    myStyles =[
+        {
+            featureType: "poi",
+            elementType: "labels",
+            stylers: [
+                { visibility: "off" }
+            ]
+        }
+    ];
   mapOptions: google.maps.MapOptions = {
     center: { lat: -0.1770411, lng: -78.4491145 },
     zoom : 11,
@@ -62,7 +72,10 @@ export class RecycleComponent implements OnInit, OnDestroy{
     scaleControl: false,
     streetViewControl: false,
     rotateControl: false,
-    fullscreenControl: false
+    fullscreenControl: false,
+    clickableIcons: false,
+      disableDefaultUI: true,
+      // styles: this.myStyles
   }
 
   infoContent = '';
@@ -193,7 +206,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
         this.eloyAlfatoMarkers.map((marker, i) => {
             this.markersPR.push(new google.maps.Marker({
                 map: this.map.googleMap,
-                icon: "./assets/img/pixeled/Recyclables-Vector2.png",
+                icon: this.markersPRIcon,
                 position: marker,
                 title: marker.title,
                 cursor: this.haversineDistance(this.markerOrder, marker),
@@ -203,7 +216,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
         this.manuelitaSaenzMarkers.map((marker, i) => {
             this.markersPR.push(new google.maps.Marker({
                 map: this.map.googleMap,
-                icon: "./assets/img/pixeled/Recyclables-Vector2.png",
+                icon: this.markersPRIcon,
                 position: marker,
                 title: marker.title,
                 cursor: this.haversineDistance(this.markerOrder, marker),
@@ -213,7 +226,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
         this.tumbacoMarkers.map((marker, i) => {
             this.markersPR.push(new google.maps.Marker({
                 map: this.map.googleMap,
-                icon: "./assets/img/pixeled/Recyclables-Vector2.png",
+                icon: this.markersPRIcon,
                 position: marker,
                 title: marker.title,
                 cursor: this.haversineDistance(this.markerOrder, marker),
@@ -225,7 +238,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
         this.laDeliciaMarkers.map((marker, i) => {
             this.markersPR.push(new google.maps.Marker({
                 map: this.map.googleMap,
-                icon: "./assets/img/pixeled/Recyclables-Vector2.png",
+                icon: this.markersPRIcon,
                 position: marker,
                 title: marker.title,
                 cursor: this.haversineDistance(this.markerOrder, marker),
@@ -294,7 +307,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
               if(google.maps.geometry.poly.containsLocation(this.formatPosition(marker), new google.maps.Polygon({ paths: polygon.polygon }))){
                   this.markersPR.push(new google.maps.Marker({
                       map: this.map.googleMap,
-                      icon: "./assets/img/pixeled/Recyclables-Vector2.png",
+                      icon: this.markersPRIcon,
                       position: marker,
                       title: marker.title,
                       cursor: this.haversineDistance(this.markerOrder, marker),
@@ -309,7 +322,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
               if(google.maps.geometry.poly.containsLocation(this.formatPosition(marker), new google.maps.Polygon({ paths: polygon.polygon }))){
                   this.markersPR.push(new google.maps.Marker({
                       map: this.map.googleMap,
-                      icon: "./assets/img/pixeled/Recyclables-Vector2.png",
+                      icon: this.markersPRIcon,
                       position: marker,
                       title: marker.title,
                       cursor: this.haversineDistance(this.markerOrder, marker),
@@ -324,7 +337,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
               if(google.maps.geometry.poly.containsLocation(this.formatPosition(marker), new google.maps.Polygon({ paths: polygon.polygon }))){
                   this.markersPR.push(new google.maps.Marker({
                       map: this.map.googleMap,
-                      icon: "./assets/img/pixeled/Recyclables-Vector2.png",
+                      icon: this.markersPRIcon,
                       position: marker,
                       title: marker.title,
                       cursor: this.haversineDistance(this.markerOrder, marker)
@@ -339,7 +352,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
               if(google.maps.geometry.poly.containsLocation(this.formatPosition(marker), new google.maps.Polygon({ paths: polygon.polygon }))){
                   this.markersPR.push(new google.maps.Marker({
                       map: this.map.googleMap,
-                      icon: "./assets/img/pixeled/Recyclables-Vector2.png",
+                      icon: this.markersPRIcon,
                       position: marker,
                       title: marker.title,
                       cursor: this.haversineDistance(this.markerOrder, marker)
@@ -359,9 +372,10 @@ export class RecycleComponent implements OnInit, OnDestroy{
           this.zoneCurrentName = polygon.name;
       }
 
+      this.polygonDrawing.clickable = false;
       this.polygonDrawing.setPath(polygon.polygon);
       this.polygonDrawing.setMap(this.map.googleMap);
-      this.polygonDrawing.clickable = false;
+
 
       // let bounds = this.polygonBounds(this.polygonDrawing);
       // this.map.googleMap.fitBounds(bounds);
@@ -400,11 +414,8 @@ export class RecycleComponent implements OnInit, OnDestroy{
 
           infowindow.open(this.map.googleMap, marker);
 
-          marker.addListener("click", () => {
-              //this.sidebarBottomVisible = true;
-              // this.markersPR = this.markersPR.filter((marker) => marker.title == title);
-              // this.sidebarBottomVisible = true;
-          });
+          // marker.addListener("click", () => {
+          // });
 
           this.map.googleMap.setCenter(marker.getPosition());
           this.map.googleMap.setZoom(16);
@@ -1110,7 +1121,9 @@ export class RecycleComponent implements OnInit, OnDestroy{
       this.map.googleMap.setCenter(newCenter);
       clearInterval(animationInterval);
       secondChild.style['background-position'] = '-240px 0';
+      this.polygonDrawing.clickable = false;
       this.polygonDrawing.setMap(null);
+
     }
 
 
@@ -1146,6 +1159,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
       });
 
       this.markersPR = [];
+      this.polygonDrawing.clickable = false;
       this.polygonDrawing.setMap(null);
   }
 
