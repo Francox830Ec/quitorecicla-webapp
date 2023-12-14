@@ -8,6 +8,7 @@ import {SitioReciclajeManuelitaSaenzservice} from "../../service/sitioreciclajeM
 import {GeolocationService} from '@ng-web-apis/geolocation';
 import Webcam from 'webcam-easy';
 
+
 interface Categorie {
   label: string,
   value: string
@@ -21,7 +22,6 @@ interface Categorie {
 export class RecycleComponent implements OnInit, OnDestroy{
   @ViewChild(GoogleMap, { static: false }) map: GoogleMap;
   @ViewChild(MapInfoWindow) infoWindow: MapInfoWindow;
-  // @ViewChild(MapMarker, { static: false }) mapMarker: MapMarker;
 
   heighInitial = "200px";
   mapLoading = false;
@@ -30,53 +30,30 @@ export class RecycleComponent implements OnInit, OnDestroy{
   searchBoxLoaded = false;
   geolocationButonLoaded = false;
   divSearchPRLoeaded = false;
-  // selectedCategories: any[] = [];
-  zoom = 14;
   myCurrentPosition: any;
-  myFirstGeoPosition: any;
-  // userLocation: {current: any};
   markerOrder: any;
   markerPosition: any;
   circlePosition: any;
   acum = 0;
   sidebarBottomVisible: boolean = false;
   idWatchPosition : number;
-  orderMarker = [];
   markersPR = [];
-  markersPRVisible = false;
   arrayPolygons = [];
   modalBasicTittle : string;
   modalBasicParagraph : string;
   buttonReciclaDomicilioVisible : boolean = false;
   allMarkerPRVisible = false;
   buttomShowFormUploadedClicked = false;
-
-  // categories: any[] = [
-  //   { name: 'Papel', key: 'PA' },
-  //   { name: 'Carton', key: 'CAR' },
-  //   { name: 'Plastico', key: 'PLA' },
-  //   { name: 'Vidrio', key: 'VI' },
-  //   { name: 'Chatarra', key: 'CHAT' },
-  //   { name: 'Madera', key: 'MAD' },
-  //   { name: 'Textiles', key: 'TEXT' },
-  // ];
-
   categories!: Categorie[];
   selectedCategories!: Categorie[];
-
   modalBasicVisible: boolean = false;
   modalFormUploadVisible: boolean = false;
   sideBarFotografiaVisible: boolean = false;
-
   webcamElement : any
   canvasElement : any
   snapSoundElement: any
   webcam : any
-
-  siteNoAvailable: string = "";
-
-  buttonPosition: google.maps.ControlPosition.TOP_LEFT;
-
+  zoneCurrentName = "";
   mapOptions: google.maps.MapOptions = {
     center: { lat: -0.1770411, lng: -78.4491145 },
     zoom : 11,
@@ -150,6 +127,12 @@ export class RecycleComponent implements OnInit, OnDestroy{
     ];
   }
 
+  clickOnMap(event: any){
+    this.markerOrder.setMap(null);
+    this.deleteMarkerorder();
+    this.setMarkerOrder(event.latLng);
+  }
+
   onShowSideBarCamera() {
     console.info("onShowModalCamera");
 
@@ -204,7 +187,8 @@ export class RecycleComponent implements OnInit, OnDestroy{
   // }
 
   showAllMarkersPR(){
-      this.deleteAllMarkersPR();
+    this.zoneCurrentName = "";
+    this.deleteAllMarkersPR();
 
         this.eloyAlfatoMarkers.map((marker, i) => {
             this.markersPR.push(new google.maps.Marker({
@@ -212,7 +196,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
                 icon: "./assets/img/pixeled/Recyclables-Vector2.png",
                 position: marker,
                 title: marker.title,
-                cursor: this.haversineDistance(this.markerOrder, marker)
+                cursor: this.haversineDistance(this.markerOrder, marker),
             }));
         });
 
@@ -222,7 +206,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
                 icon: "./assets/img/pixeled/Recyclables-Vector2.png",
                 position: marker,
                 title: marker.title,
-                cursor: this.haversineDistance(this.markerOrder, marker)
+                cursor: this.haversineDistance(this.markerOrder, marker),
             }));
         });
 
@@ -232,7 +216,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
                 icon: "./assets/img/pixeled/Recyclables-Vector2.png",
                 position: marker,
                 title: marker.title,
-                cursor: this.haversineDistance(this.markerOrder, marker)
+                cursor: this.haversineDistance(this.markerOrder, marker),
             }));
         });
 
@@ -244,7 +228,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
                 icon: "./assets/img/pixeled/Recyclables-Vector2.png",
                 position: marker,
                 title: marker.title,
-                cursor: this.haversineDistance(this.markerOrder, marker)
+                cursor: this.haversineDistance(this.markerOrder, marker),
             }));
         });
 
@@ -303,7 +287,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
   }
 
   private showMarkersPRZone(polygon: any){
-      this.deleteAllMarkersPR();
+    this.deleteAllMarkersPR();
     switch (polygon.name) {
       case "CEGAM ELOY ALFARO":
          this.eloyAlfatoMarkers.map((marker, i) => {
@@ -319,7 +303,6 @@ export class RecycleComponent implements OnInit, OnDestroy{
                   // console.info("-- name of marker: ", marker.title);
               }
           });
-
         break;
       case "CEGAM LA DELICIA":
           this.laDeliciaMarkers.map((marker, i) => {
@@ -329,7 +312,8 @@ export class RecycleComponent implements OnInit, OnDestroy{
                       icon: "./assets/img/pixeled/Recyclables-Vector2.png",
                       position: marker,
                       title: marker.title,
-                      cursor: this.haversineDistance(this.markerOrder, marker)
+                      cursor: this.haversineDistance(this.markerOrder, marker),
+
                   }));
               }
           });
@@ -368,11 +352,19 @@ export class RecycleComponent implements OnInit, OnDestroy{
         break;
     }
 
+      if(this.zoneCurrentName != polygon.name){
+          this.messageService.add({ severity: 'info', summary: 'Zona delimitada', detail: 'El punto indicado pertenece a la Zona '
+                  + polygon.name, life: 8000 });
+
+          this.zoneCurrentName = polygon.name;
+      }
+
       this.polygonDrawing.setPath(polygon.polygon);
       this.polygonDrawing.setMap(this.map.googleMap);
+      this.polygonDrawing.clickable = false;
 
-      let bounds = this.polygonBounds(this.polygonDrawing);
-      this.map.googleMap.fitBounds(bounds);
+      // let bounds = this.polygonBounds(this.polygonDrawing);
+      // this.map.googleMap.fitBounds(bounds);
       this.markersPR.sort((a, b) => a.cursor - b.cursor);
 
       // console.info("Current this.markersPolygon: ", this.markersPolygon);
@@ -398,7 +390,6 @@ export class RecycleComponent implements OnInit, OnDestroy{
 
   clickItemMarkerPR(marker){
       if(!this.buttomShowFormUploadedClicked ){
-          // console.info("Click en DIV.");
 
           const infowindow = new google.maps.InfoWindow({
               content: "<b>" + marker.title + "</b>",
@@ -604,13 +595,18 @@ export class RecycleComponent implements OnInit, OnDestroy{
     this.markerPosition.setMap(null);
   }
 
+  deleteMarkerorder(){
+      this.markerOrder.setMap(null);
+  }
+
   setPolygonDrawing(){
       this.polygonDrawing = new google.maps.Polygon({
-          strokeColor: "#28367f",
+          fillColor: "#1275bb",
+          strokeColor: "#1275bb",
+          fillOpacity: 0.1,
           strokeOpacity: 0.8,
           strokeWeight: 2,
-          fillColor: "#28367f",
-          fillOpacity: 0.1,
+          clickable: false,
       });
   }
 
@@ -627,7 +623,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
               strokeColor: 'white',
               strokeWeight: 2,
           },
-          // visible: false
+          clickable: false
       });
   }
 
@@ -637,21 +633,23 @@ export class RecycleComponent implements OnInit, OnDestroy{
       map: this.map.googleMap,
       // radius: 10000,          // IN METERS.
       fillColor: '#6ebce9',
-      fillOpacity: 0.35,
+      fillOpacity: 0.2,
       strokeColor: "#FFF",
       strokeWeight: 0,         // DON'T SHOW CIRCLE BORDER.
-      strokeOpacity: 0.8
+      strokeOpacity: 0.8,
+      clickable: false
     });
-
   }
 
-  setMarkerOrder(){
+  setMarkerOrder(position?){
+    // this.deleteMarkerorder();
     var that = this;
     this.markerOrder = new google.maps.Marker({
       // icon: {
       //   url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
       // },
-      anchorPoint: new google.maps.Point(0, -29),
+      // anchorPoint: new google.maps.Point(0, -29),
+      position: position,
       map: this.map.googleMap,
       draggable: true,
       animation: google.maps.Animation.BOUNCE,
@@ -659,6 +657,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
         color: 'yellow',
         text: ' ',
       },
+      clickable: false
     });
   }
 
@@ -735,7 +734,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
                 that.map.googleMap.setZoom(17);
                 clearInterval(animationInterval);
                 secondChild.style['background-position'] = '-240px 0';
-                that.markerOrder.setPosition(pos);
+                 // that.markerOrder.setPosition(pos);
 
 
                 //that.myCurrentPosition = pos;
@@ -1029,6 +1028,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
           strokeWeight: 2,
         },
         // visible: true
+        clickable: false
       });
     }
 
@@ -1039,12 +1039,14 @@ export class RecycleComponent implements OnInit, OnDestroy{
     validatePosition(animationInterval, secondChild, position: GeolocationPosition){
       this.acum++;
 
-      if(this.acum <= 1){
-        // console.info("--------> Fecha Hora de inicio: ", new Date())
+      const latLng = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
       }
 
+
       /*validate accuracy*/
-      if(this.acum <= 1 || position.coords.accuracy <= 35){
+      if(this.acum >= 0 || position.coords.accuracy <= 35){
         if(position.coords.accuracy <= 35){//in meters
           this.messageService.clear();
           // console.warn("Only here must put the maker position")
@@ -1053,13 +1055,6 @@ export class RecycleComponent implements OnInit, OnDestroy{
             this.setMarkerPositionExact();
 
 
-        }else{
-          this.showLifeLong(position.coords.accuracy);
-        }
-
-        const latLng = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
         }
 
         this.myCurrentPosition = position;
@@ -1073,16 +1068,21 @@ export class RecycleComponent implements OnInit, OnDestroy{
           lng: position.coords.longitude
         });
         this.circlePosition.setRadius(position.coords.accuracy);
+        this.circlePosition.clickable = false;
 
-        this.markerOrder.setPosition(latLng);
+          if(this.acum == 1){
+              // console.info("--------> Fecha Hora de inicio: ", new Date())
+              this.deleteMarkerorder();
+              this.setMarkerOrder(latLng);
+              this.map.googleMap.fitBounds(this.circlePosition.getBounds());
+              this.map.googleMap.setCenter(latLng);
+          }
 
-        this.deleteAllMarkersPR();
+        // this.deleteAllMarkersPR();
 
-        this.map.googleMap.setCenter(latLng);
-        this.map.googleMap.setZoom(15);
-        this.map.googleMap.fitBounds(this.circlePosition.getBounds());
-
-
+        // this.map.googleMap.setCenter(latLng);
+        // this.map.googleMap.setZoom(12);
+        // this.map.googleMap.fitBounds(this.circlePosition.getBounds());
 
         clearInterval(animationInterval);
         secondChild.style['background-position'] = '-240px 0';
@@ -1115,8 +1115,6 @@ export class RecycleComponent implements OnInit, OnDestroy{
 
 
   }
-
-
 
   userLocationTrack(animationInterval, secondChild){
         var that = this;
@@ -1193,8 +1191,10 @@ export class RecycleComponent implements OnInit, OnDestroy{
       if (place.geometry.viewport) {
         that.sidebarBottomVisible = false;
         let position = new google.maps.LatLng({lat: place.geometry.location.lat(), lng: place.geometry.location.lng()});
-        this.markerOrder.setPosition(position);
-        this.markerOrder.setVisible(true);
+        // this.markerOrder.setPosition(position);
+        // this.markerOrder.setVisible(true);
+          this.deleteMarkerorder();
+          this.setMarkerOrder(position);
         this.map.googleMap.fitBounds(place.geometry.viewport);
 
         this.deleteAllMarkersPR();

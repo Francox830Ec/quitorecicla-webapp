@@ -49,6 +49,7 @@ import {ListboxModule} from "primeng/listbox";
 import {InputTextareaModule} from "primeng/inputtextarea";
 import {CalendarModule} from "primeng/calendar";
 import {InplaceModule} from "primeng/inplace";
+import { TooltipModule } from 'primeng/tooltip';
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
@@ -99,7 +100,8 @@ const routes: Routes = [
     ListboxModule,
     InputTextareaModule,
     CalendarModule,
-    InplaceModule
+    InplaceModule,
+    TooltipModule
   ],
   providers: [ProductService, ProductService2, PhotoService, ConfirmationService, MessageService,
       SitioReciclajeLaDeliciaservice,
