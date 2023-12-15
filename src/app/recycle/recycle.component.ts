@@ -49,7 +49,7 @@ export class RecycleComponent implements OnInit, OnDestroy{
   modalBasicVisible: boolean = false;
   modalFormUploadVisible: boolean = false;
   sideBarFotografiaVisible: boolean = false;
-  markersPRIcon = "./assets/img/pixeled/Recyclables-Vector2.png";
+  markersPRIcon = "./assets/img/pixeled/recycle.png";
   webcamElement : any
   canvasElement : any
   snapSoundElement: any
