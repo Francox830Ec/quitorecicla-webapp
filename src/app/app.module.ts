@@ -50,6 +50,7 @@ import {InputTextareaModule} from "primeng/inputtextarea";
 import {CalendarModule} from "primeng/calendar";
 import {InplaceModule} from "primeng/inplace";
 import { TooltipModule } from 'primeng/tooltip';
+import { SocialLoginComponent } from './social-login/social-login.component';
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
@@ -66,7 +67,8 @@ const routes: Routes = [
     RecycleComponent,
     QuitoEpsCarouselComponent,
     RegisterFormComponent,
-    LoginComponent
+    LoginComponent,
+    SocialLoginComponent
   ],
   imports: [
     BrowserModule,
