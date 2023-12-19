@@ -51,6 +51,7 @@ import {CalendarModule} from "primeng/calendar";
 import {InplaceModule} from "primeng/inplace";
 import { TooltipModule } from 'primeng/tooltip';
 import { SocialLoginComponent } from './social-login/social-login.component';
+import { ResponsiveService } from './responsive/responsive.service';
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
@@ -109,7 +110,8 @@ const routes: Routes = [
       SitioReciclajeLaDeliciaservice,
       SitioReciclajeEloyAlfaroService,
       SitioReciclajeTumbacoservice,
-      SitioReciclajeManuelitaSaenzservice
+      SitioReciclajeManuelitaSaenzservice,
+      ResponsiveService
   ],
   bootstrap: [AppComponent]
 })
