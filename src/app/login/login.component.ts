@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit{
     }else{
       console.info("document.getElementById('formLogin').offsetHeight: ", document.getElementById('formLogin').offsetHeight);
       // this.maxHeightCarouselImage = (this.screenHeight - (document.getElementById('formLogin').offsetHeight + 166)) + "px";
-      this.maxHeightCarouselImage = (this.screenHeight - (document.getElementById('formLogin').offsetHeight + 166)).toString();
+      this.maxHeightCarouselImage = (this.screenHeight - (document.getElementById('formLogin').offsetHeight + 250)).toString();
       console.warn("*** maxHeightCarouselImage -> ", this.maxHeightCarouselImage);
     }
 

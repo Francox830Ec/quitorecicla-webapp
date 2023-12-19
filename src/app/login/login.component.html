@@ -6,7 +6,11 @@
 </p-dialog>
 
 <div  class="flex h-screen">
-  <div  class="w-full lg:w-4 h-full text-center px-6 py-6 flex flex-column justify-content-between">
+  <div  class="w-full lg:w-4 h-full text-center px-6 py-6 justify-content-between">
+
+<!--    <p ></p>-->
+
+    <!--    <img  alt="diamond-layout" class="h-4rem mt-4" src="https://www.primefaces.org/diamond-ng/assets/layout/images/logo-dark.svg">-->
 
     <div class="flex justify-content-center">
       <p *ngIf="isMinWidthSizeScreenMedium || +maxHeightCarouselImage < 0" ></p>
@@ -16,7 +20,7 @@
     </div>
 
     <div class="flex flex-column align-items-center gap-4" id="formLogin">
-      <div  class="mb-3">
+      <div  class="mb-0">
         <h2 style="color: #1275bb;">Ingresa a tu cuenta</h2>
         <p >¿Olvidaste tu clave? <a  class="text-primary hover:underline cursor-pointer font-medium">Click aquí</a> para resetear. </p>
       </div>
@@ -43,8 +47,10 @@
         <span class="p-button-label" style="color: #1275bb;">Saltar registro</span>
       </button>
 
+      <p-button (click)="modalSocialLogin = true;" label="Ingresar con Redes Sociales " [text]="true"></p-button>
+
     </div>
-    <p (click)="modalSocialLogin = true;" class="text-lg text-color-secondary font-semibold"><a  class="text-primary hover:underline cursor-pointer font-medium">Ingresar con Redes Sociales</a></p>
+<!--    <p (click)="modalSocialLogin = true;" class="text-lg text-color-secondary font-semibold"><a  class="text-primary hover:underline cursor-pointer font-medium">Ingresar con Redes Sociales</a></p>-->
   </div>
 
 
