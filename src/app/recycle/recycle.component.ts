@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {GoogleMap, MapInfoWindow, MapMarker} from '@angular/google-maps';
 import {ConfirmationService, MessageService} from 'primeng/api';
 import {SitioReciclajeLaDeliciaservice} from "../../service/sitioreciclajeLaDeliciaservice";
@@ -931,10 +931,14 @@ export class RecycleComponent implements OnInit, OnDestroy{
         this.infoWindow.open(marker);
     }
 
+  @HostListener('window:resize', ['$event'])
+  onWindowResize() {
+    console.warn("onWindowResize");
+   this.calculateScreenHeight();
+  }
+
   calculateScreenHeight(){
-    var body = document.body, html = document.documentElement;
-    var height = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
-    this.heighInitial = (height - 45) + "px";
+    this.heighInitial = window.innerHeight + "px";
   }
 
     loadGeolocationMarker() {

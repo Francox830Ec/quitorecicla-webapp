@@ -7,13 +7,15 @@
 
 <div  class="flex h-screen">
   <div  class="w-full lg:w-4 h-full text-center px-6 py-6 flex flex-column justify-content-between">
-    <!--    <img  alt="diamond-layout" class="h-4rem mt-4" src="https://www.primefaces.org/diamond-ng/assets/layout/images/logo-dark.svg">-->
-    <!--    <img alt="diamond-layout" class="h-8rem" src="./assets/img/pixeled/logo-quitorecicla001.png">-->
 
-<!--    <p class="text-lg text-color-secondary font-semibold"></p>-->
-          <app-quito-eps-carousel></app-quito-eps-carousel>
+    <div class="flex justify-content-center">
+      <p *ngIf="isMinWidthSizeScreenMedium || +maxHeightCarouselImage < 0" ></p>
+      <div *ngIf="!isMinWidthSizeScreenMedium && +maxHeightCarouselImage > 0">
+        <app-quito-eps-carousel [imageMaxHeight]="maxHeightCarouselImage + 'px'"  ></app-quito-eps-carousel>
+      </div>
+    </div>
 
-    <div class="flex flex-column align-items-center gap-4">
+    <div class="flex flex-column align-items-center gap-4" id="formLogin">
       <div  class="mb-3">
         <h2 style="color: #1275bb;">Ingresa a tu cuenta</h2>
         <p >¿Olvidaste tu clave? <a  class="text-primary hover:underline cursor-pointer font-medium">Click aquí</a> para resetear. </p>
@@ -42,24 +44,11 @@
       </button>
 
     </div>
-
-        <p (click)="modalSocialLogin = true;" class="text-lg text-color-secondary font-semibold"><a  class="text-primary hover:underline cursor-pointer font-medium">Ingresar con Redes Sociales</a></p>
-<!--    <p-button class="" (click)="modalSocialLogin = true;" label="Ingresar con Redes Sociales" [text]="true"></p-button>-->
+    <p (click)="modalSocialLogin = true;" class="text-lg text-color-secondary font-semibold"><a  class="text-primary hover:underline cursor-pointer font-medium">Ingresar con Redes Sociales</a></p>
   </div>
 
-<!--  <div  class="w-8 hidden lg:flex flex-column justify-content-between align-items-center px-6 py-6 bg-cover bg-norepeat" style="background-image: url('assets/demo/images/auth/bg-login.jpg');">-->
-<!--    <div  class="mt-auto mb-auto">-->
-<!--      <span  class="block text-white text-7xl font-semibold">Access to your <br >Diamond <br >Account </span>-->
-<!--      <span  class="block text-white text-3xl mt-4">Lorem ipsum dolor sit amet, consectetur <br > adipiscing elit. Donec posuere velit nec enim <br > sodales, nec placerat erat tincidunt. </span>-->
-<!--    </div>-->
-<!--    <div  class="flex align-items-center gap-5">-->
-<!--      <span  class="text-white font-semibold">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span>-->
-<!--      <i  class="pi pi-github text-3xl p-1 surface-overlay border-circle cursor-pointer"></i>-->
-<!--      <i  class="pi pi-twitter text-3xl p-1 surface-overlay border-circle cursor-pointer"></i>-->
-<!--    </div>-->
-<!--  </div>-->
 
-    <div  class="w-8 hidden lg:flex flex-column justify-content-between align-items-center px-6 py-6 bg-cover bg-norepeat" style="background-image: url('assets/demo/images/auth/bg-login.jpg');">
+    <div  class="w-8 hidden lg:flex flex-column justify-content-between align-items-center px-6 py-6 bg-cover bg-norepeat">
       <div  class="mt-auto mb-auto">
                       <p-card>
                         <p-table #table [value]="[{}]">

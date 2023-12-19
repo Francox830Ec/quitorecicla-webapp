@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {Product} from "../../domain/product";
 import {ProductService2} from "../../service/productservice2";
 
@@ -9,6 +9,8 @@ import {ProductService2} from "../../service/productservice2";
 })
 export class QuitoEpsCarouselComponent {
   products2: Product[] = [];
+
+  @Input() imageMaxHeight = "max-content";
 
   responsiveOptions: any[] = [
     {
