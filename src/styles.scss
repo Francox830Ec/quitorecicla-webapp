@@ -10,12 +10,14 @@ html {
 
 body {
   font-family: var(--font-family);
-  font-weight: normal;
-  background: var(--surface-ground);
+  font-weight: 400;
   color: var(--text-color);
-  padding: 1rem;
+  padding: 0;
+  margin: 0;
+  min-height: 100%;
+  background: var(--surface-ground);
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  -moz-osx-font-smoothing: grayscale
 }
 
 .tooltip .ui-tooltip-text {
@@ -77,9 +79,18 @@ body {
   background-image: url("assets/img/pixeled/FONDO_MesadetrabajoBanner1.png");
 }
 
-.work-station-QR {
-  padding: 2rem !important;
+.ui-panel-images {
+  width: auto;
+  height: inherit;
+  object-fit: contain;
+  position: relative;
   background-image: url("assets/img/pixeled/FONDO_Mesadetrabajo1.png");
+}
+
+.work-station-QR {
+  //padding: 2rem !important;
+  background-image: url("assets/img/pixeled/FONDO_Mesadetrabajo1.png");
+
 }
 
 .ngx-emgirs-dark-blue {
@@ -96,10 +107,6 @@ body {
 //  margin: 0rem 0;
 //  padding: 0 0rem
 //}
-
-.h-screen-custom {
-  height: 93vh !important;
-}
 
 .ngx-facebook {
   background: #3b5998;
