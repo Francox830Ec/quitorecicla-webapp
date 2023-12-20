@@ -79,6 +79,12 @@ body {
   background-image: url("assets/img/pixeled/FONDO_MesadetrabajoBanner1.png");
 }
 
+.p-col-6 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .ui-panel-images {
   width: auto;
   height: inherit;

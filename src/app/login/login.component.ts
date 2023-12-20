@@ -14,7 +14,7 @@ export class LoginComponent implements OnInit{
   screenHeight: any;
   minWidthSizeScreenMedium: number = 992;
   isMinWidthSizeScreenMedium = false;
-  @Output() maxHeightCarouselImage = "max-content";
+  @Output() maxHeightCarouselImage = "275px";
 
   constructor(private responsive: BreakpointObserver,
               public responsiveService:ResponsiveService) {
@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit{
     }else{
       console.info("document.getElementById('formLogin').offsetHeight: ", document.getElementById('formLogin').offsetHeight);
       // this.maxHeightCarouselImage = (this.screenHeight - (document.getElementById('formLogin').offsetHeight + 166)) + "px";
-      this.maxHeightCarouselImage = (this.screenHeight - (document.getElementById('formLogin').offsetHeight + 250)).toString();
+      // this.maxHeightCarouselImage = (this.screenHeight - (document.getElementById('formLogin').offsetHeight + 250)).toString();
       console.warn("*** maxHeightCarouselImage -> ", this.maxHeightCarouselImage);
     }
 
