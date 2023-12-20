@@ -10,7 +10,7 @@ import {ProductService2} from "../../service/productservice2";
 export class QuitoEpsCarouselComponent {
   products2: Product[] = [];
 
-  @Input() imageMaxHeight = "190px";
+  @Input() imageMaxHeight = "150px";
 
   responsiveOptions: any[] = [
     {

@@ -39,9 +39,17 @@ export class LoginComponent implements OnInit{
       console.warn("-------> Debe ocultar carrusel pequeño");
       console.warn("*** maxHeightCarouselImage -> ", this.maxHeightCarouselImage);
     }else{
-      console.info("document.getElementById('formLogin').offsetHeight: ", document.getElementById('formLogin').offsetHeight);
+       console.info("document.getElementById('formLogin').offsetHeight: ", document.getElementById('formLogin').offsetHeight);
       // this.maxHeightCarouselImage = (this.screenHeight - (document.getElementById('formLogin').offsetHeight + 166)) + "px";
+      // this.maxHeightCarouselImage = (this.screenHeight - (document.getElementById('formLogin').offsetHeight + 200)) + "px";
       // this.maxHeightCarouselImage = (this.screenHeight - (document.getElementById('formLogin').offsetHeight + 250)).toString();
+      // this.maxHeightCarouselImage = (this.screenHeight - (document.getElementById('formLogin').offsetHeight) + 166) + "px";
+      // this.maxHeightCarouselImage = (this.screenHeight - (document.getElementById('formLogin').offsetHeight)) - 185 + "px";
+
+      let alturaFormLogin = document.getElementById('formLogin').offsetHeight;
+      let diferencia = this.screenHeight - alturaFormLogin - 425;
+      // alert("screenHeight: " + this.screenHeight + ", alturaFormLogin: " + alturaFormLogin + ", diferencia: " +  diferencia);
+      this.maxHeightCarouselImage = diferencia + "px";
       console.warn("*** maxHeightCarouselImage -> ", this.maxHeightCarouselImage);
     }
 
