@@ -12,6 +12,16 @@ export class LoginComponent implements OnInit{
   modalSocialLogin = false;
   screenWidth: any;
   screenHeight: any;
+  screenWidthOuter: any;
+  screenHeightOuter: any;
+
+  clientHeight:any;
+  offsetHeight:any;
+  offsetWidth:any;
+  clientWidth:any
+
+  sizeInfoDevice = "";
+  dimensionsInfoDevice = "";
   minWidthSizeScreenMedium: number = 992;
   isMinWidthSizeScreenMedium = false;
   @Output() maxHeightCarouselImage = "275px";
@@ -47,7 +57,7 @@ export class LoginComponent implements OnInit{
       // this.maxHeightCarouselImage = (this.screenHeight - (document.getElementById('formLogin').offsetHeight)) - 185 + "px";
 
       let alturaFormLogin = document.getElementById('formLogin').offsetHeight;
-      let diferencia = this.screenHeight - alturaFormLogin - 450;
+      let diferencia = this.screenHeight - alturaFormLogin - 500;
       // alert("screenHeight: " + this.screenHeight + ", alturaFormLogin: " + alturaFormLogin + ", diferencia: " +  diferencia);
       this.maxHeightCarouselImage = diferencia + "px";
       console.warn("*** maxHeightCarouselImage -> ", this.maxHeightCarouselImage);
@@ -56,11 +66,21 @@ export class LoginComponent implements OnInit{
     return this.isMinWidthSizeScreenMedium ;
   }
 
+
   private getSizeScreen(){
     this.screenWidth = window.innerWidth;
     this.screenHeight = window.innerHeight;
+    this.screenWidthOuter = window.outerWidth;
+    this.screenHeightOuter = window.outerHeight;
+
     console.info(" this.screenWidth -> ", this.screenWidth);
     console.info(" this.screenHeight -> ", this.screenHeight);
+
+    this.clientHeight = document.documentElement.clientHeight;
+    this.offsetHeight = document.documentElement.offsetHeight;
+
+    this.offsetWidth = document.documentElement.offsetWidth;
+    this.clientWidth = document.documentElement.clientWidth
 
     this.validateMinWidthSizeScreenMedium();
   }
@@ -69,8 +89,11 @@ export class LoginComponent implements OnInit{
   onWindowResize() {
     this.screenWidth = window.innerWidth;
     this.screenHeight = window.innerHeight;
+    this.screenWidthOuter = window.outerWidth;
+    this.screenHeightOuter = window.outerHeight;
     // this.validateMinWidthSizeScreenMedium();
   }
+
 
   private observeResponsive(){
     this.responsive.observe([
@@ -88,48 +111,63 @@ export class LoginComponent implements OnInit{
       Breakpoints.XLarge,
     ])
       .subscribe(result => {
-
         const breakpoints = result.breakpoints;
 
-        if (breakpoints[Breakpoints.XSmall]) {
-          console.warn("--- screens size XSmall");
-        }
-        else if (breakpoints[Breakpoints.Small]) {
-          console.warn("--- screens size Small");
-        }
-        else if (breakpoints[Breakpoints.Medium]) {
+        var size = "";
+        var orientation = "";
+
+        if (breakpoints[Breakpoints.Medium]) {
           console.warn("--- screens size Medium");
+          size = "Medium";
         }
         else if (breakpoints[Breakpoints.Large ]) {
           console.warn("--- screens size Large");
+          size = "Large";
         }
         else if (breakpoints[Breakpoints.XLarge ]) {
           console.warn("--- screens size XLarge");
+          size = "XLarge";
+        }else if (breakpoints[Breakpoints.XSmall]) {
+          console.warn("--- screens size XSmall");
+          size = "XSmall";
+        }
+        else if (breakpoints[Breakpoints.Small]) {
+          console.warn("--- screens size Small");
+          size = "Small";
         }
 
-        // if (breakpoints[Breakpoints.TabletPortrait]) {
-        //   console.warn("screens matches TabletPortrait");
-        // }
-        // else if (breakpoints[Breakpoints.TabletLandscape]) {
-        //   console.warn("screens matches TabletLandscape");
-        // }
-        // else if (breakpoints[Breakpoints.HandsetPortrait]) {
-        //   console.warn("screens matches HandsetPortrait");
-        // }
-        // else if (breakpoints[Breakpoints.HandsetLandscape ]) {
-        //   console.warn("screens matches HandsetLandscape ");
-        // }
-        // else if (breakpoints[Breakpoints.WebPortrait ]) {
-        //   console.warn("screens matches WebPortrait ");
-        // }
-        // else if (breakpoints[Breakpoints.WebLandscape ]) {
-        //   console.warn("screens matches WebLandscape ");
-        // }
+        if (breakpoints[Breakpoints.TabletPortrait]) {
+          // alert("screens matches TabletPortrait");
+          orientation = "TabletPortrait";
+        }
+        else if (breakpoints[Breakpoints.TabletLandscape]) {
+          // alert("screens matches TabletLandscape");
+          orientation = "TabletLandscape";
+        }
+        else if (breakpoints[Breakpoints.HandsetPortrait]) {
+          // alert("screens matches HandsetPortrait");
+          orientation = "HandsetPortrait";
+        }
+        else if (breakpoints[Breakpoints.HandsetLandscape ]) {
+          // alert("screens matches HandsetLandscape ");
+          orientation = "HandsetLandscape";
+        }
+        else if (breakpoints[Breakpoints.WebPortrait ]) {
+          // alert("screens matches WebPortrait ");
+          orientation = "WebPortrait";
+        }
+        else if (breakpoints[Breakpoints.WebLandscape ]) {
+          // alert("screens matches WebLandscape ");
+          orientation = "WebLandscape";
+        }
 
-        // if (result.matches) {
-        //   console.info("result: ", result)
-        // }
+        if (result.matches) {
+          console.info("result: ", result)
+        }else{
+          alert ("no matches")
+        }
 
+        this.sizeInfoDevice = size + " - " + orientation;
       });
   }
 }
