@@ -69,7 +69,7 @@ export class LoginComponent implements OnInit{
   onWindowResize() {
     this.screenWidth = window.innerWidth;
     this.screenHeight = window.innerHeight;
-    this.validateMinWidthSizeScreenMedium();
+    // this.validateMinWidthSizeScreenMedium();
   }
 
   private observeResponsive(){
