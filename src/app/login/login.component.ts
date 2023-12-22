@@ -1,6 +1,10 @@
 import {Component, HostListener, Input, OnInit, Output} from '@angular/core';
 import { BreakpointObserver,Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { ResponsiveService } from '../responsive/responsive.service';
+import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {UserService} from "../../service/user.service";
+import {MessageService} from "primeng/api";
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -20,47 +24,98 @@ export class LoginComponent implements OnInit{
   offsetWidth:any;
   clientWidth:any
 
+  showRegisterForm = false;
+  formReg: FormGroup
+
   sizeInfoDevice = "";
   dimensionsInfoDevice = "";
   minWidthSizeScreenMedium: number = 992;
   isMinWidthSizeScreenMedium = false;
   @Output() maxHeightCarouselImage = "275px";
 
+  orientation = "";
+
   constructor(private responsive: BreakpointObserver,
-              public responsiveService:ResponsiveService) {
+              public responsiveService:ResponsiveService,
+              private userService: UserService,
+              private messageService: MessageService,
+              private router: Router
+  ) {
 
     console.info("responsive: ", responsive);
   }
 
   ngOnInit() {
-    console.info("On Init");
+    console.info("--- On Init");
+    this.setForm();
+    this.showRegisterForm = false;
     this.observeResponsive();
     this.getSizeScreen();
+  }
+
+  public setShowRegisterForm(data: any):void {
+    // console.log('setShowRegisterForm : ', setShowRegisterForm);
+    this.showRegisterForm = data;
+  }
+
+  onSubmit(){
+    console.log("this.formReg.value:",  this.formReg.value);
+    this.userService.login(this.formReg.value).then( response => {
+        console.warn("userService response login: ", response);
+      this.router.navigate(['/recycle']);
+      }
+    ).catch( error => {
+      console.error(error)
+      // alert (error.firebase.firebase.error)
+      this.messageService.add({ severity: 'error', summary: 'Error de autenticación', detail: error, life: 5000 });
+      }
+    );
+  }
+  setForm(){
+    this.formReg = new FormGroup({
+      email: new FormControl('', Validators.required),
+      password: new FormControl('', Validators.required),
+    })
   }
 
   private validateMinWidthSizeScreenMedium(){
     this.isMinWidthSizeScreenMedium = this.screenWidth >= this.minWidthSizeScreenMedium;
 
-    console.warn(" this.isMinWidthSizeScreenMedium  -> ", this.isMinWidthSizeScreenMedium );
+    // console.warn(" this.isMinWidthSizeScreenMedium  -> ", this.isMinWidthSizeScreenMedium );
     // console.warn(" this.screenHeight -> ", this.screenHeight);
 
     if (this.isMinWidthSizeScreenMedium ){
-      console.warn("*** isMinWidthSizeScreenMedium -> ", this.screenWidth);
-      console.warn("-------> Debe ocultar carrusel pequeño");
-      console.warn("*** maxHeightCarouselImage -> ", this.maxHeightCarouselImage);
+      // console.warn("*** isMinWidthSizeScreenMedium -> ", this.screenWidth);
+      // console.warn("-------> Debe ocultar carrusel pequeño");
+      // console.warn("*** maxHeightCarouselImage -> ", this.maxHeightCarouselImage);
     }else{
-       console.info("document.getElementById('formLogin').offsetHeight: ", document.getElementById('formLogin').offsetHeight);
+       // console.info("document.getElementById('formLogin').offsetHeight: ", document.getElementById('formLogin').offsetHeight);
       // this.maxHeightCarouselImage = (this.screenHeight - (document.getElementById('formLogin').offsetHeight + 166)) + "px";
       // this.maxHeightCarouselImage = (this.screenHeight - (document.getElementById('formLogin').offsetHeight + 200)) + "px";
       // this.maxHeightCarouselImage = (this.screenHeight - (document.getElementById('formLogin').offsetHeight + 250)).toString();
       // this.maxHeightCarouselImage = (this.screenHeight - (document.getElementById('formLogin').offsetHeight) + 166) + "px";
       // this.maxHeightCarouselImage = (this.screenHeight - (document.getElementById('formLogin').offsetHeight)) - 185 + "px";
+      // let alturaFormLogin = document.getElementById('formLogin').offsetHeight;
+      // let diferencia = this.screenHeight - alturaFormLogin - 330;
+      // let diferencia = this.screenHeight - alturaFormLogin;
 
-      let alturaFormLogin = document.getElementById('formLogin').offsetHeight;
-      let diferencia = this.screenHeight - alturaFormLogin - 500;
+      // console.info(this.screenHeight + " ------- " + this.offsetHeight )
+      let diferencia = this.screenHeight - this.offsetHeight;
+      // let diferencia = this.screenHeight - alturaFormLogin - this.offsetHeight;
+
+
       // alert("screenHeight: " + this.screenHeight + ", alturaFormLogin: " + alturaFormLogin + ", diferencia: " +  diferencia);
       this.maxHeightCarouselImage = diferencia + "px";
-      console.warn("*** maxHeightCarouselImage -> ", this.maxHeightCarouselImage);
+      // console.warn("*** maxHeightCarouselImage -> ", this.maxHeightCarouselImage);
+
+      // console.warn("sizeInfoDevice:", this.sizeInfoDevice);
+      // console.warn("w: " + this.screenWidth + ' - h:' + this.screenHeight);
+      // console.warn('-> wO:' + this.screenWidthOuter + ' - hO: ' + this.screenHeightOuter);
+      //
+      // console.warn('-> clientWidth:' + this.clientWidth + ' - offsetWidth: ' + this.offsetWidth);
+      // console.warn('-> clientHeight:' + this.clientHeight + ' - offsetHeight: ' + this.offsetHeight);
+
+
     }
 
     return this.isMinWidthSizeScreenMedium ;
@@ -114,7 +169,7 @@ export class LoginComponent implements OnInit{
         const breakpoints = result.breakpoints;
 
         var size = "";
-        var orientation = "";
+        this.orientation = "";
 
         if (breakpoints[Breakpoints.Medium]) {
           console.warn("--- screens size Medium");
@@ -138,27 +193,30 @@ export class LoginComponent implements OnInit{
 
         if (breakpoints[Breakpoints.TabletPortrait]) {
           // alert("screens matches TabletPortrait");
-          orientation = "TabletPortrait";
+          this.orientation = "35%";
         }
         else if (breakpoints[Breakpoints.TabletLandscape]) {
           // alert("screens matches TabletLandscape");
-          orientation = "TabletLandscape";
+          this.orientation = "35%";
         }
         else if (breakpoints[Breakpoints.HandsetPortrait]) {
           // alert("screens matches HandsetPortrait");
-          orientation = "HandsetPortrait";
+          this.orientation = "75%";
+          console.warn("screens matches HandsetPortrait");
         }
         else if (breakpoints[Breakpoints.HandsetLandscape ]) {
           // alert("screens matches HandsetLandscape ");
-          orientation = "HandsetLandscape";
+          this.orientation = "75%";
         }
         else if (breakpoints[Breakpoints.WebPortrait ]) {
           // alert("screens matches WebPortrait ");
-          orientation = "WebPortrait";
+
+          this.orientation = "35%";
         }
         else if (breakpoints[Breakpoints.WebLandscape ]) {
           // alert("screens matches WebLandscape ");
-          orientation = "WebLandscape";
+          this.orientation = "35%";
+
         }
 
         if (result.matches) {
@@ -167,7 +225,7 @@ export class LoginComponent implements OnInit{
           alert ("no matches")
         }
 
-        this.sizeInfoDevice = size + " - " + orientation;
+        this.sizeInfoDevice = size + " - " + this.orientation;
       });
   }
 }

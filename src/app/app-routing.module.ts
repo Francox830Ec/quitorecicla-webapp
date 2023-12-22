@@ -5,12 +5,14 @@ import {RegisterFormComponent} from "./register-form/register-form.component";
 import {HomeComponent} from "./home/home.component";
 import {RecycleComponent} from "./recycle/recycle.component";
 import {LoginComponent} from "./login/login.component";
+import {RegisterComponent} from "./register/register.component";
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
   {path: 'login', component: LoginComponent},
   {path: 'home', component: HomeComponent},
   {path: 'register-form', component: RegisterFormComponent},
+  {path: 'register', component: RegisterComponent},
   {path: 'recycle', component: RecycleComponent},
 ];
 

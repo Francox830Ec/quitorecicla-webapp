@@ -23,11 +23,11 @@ import {AvatarModule} from "primeng/avatar";
 import {PanelModule} from "primeng/panel";
 import {HomeComponent} from './home/home.component';
 import {RecycleComponent} from './recycle/recycle.component';
-import { QuitoEpsCarouselComponent } from './quito-eps-carousel/quito-eps-carousel.component';
+import {QuitoEpsCarouselComponent} from './quito-eps-carousel/quito-eps-carousel.component';
 import {ImageModule} from "primeng/image";
 import {CheckboxModule} from "primeng/checkbox";
-import { RegisterFormComponent } from './register-form/register-form.component';
-import { LoginComponent } from './login/login.component';
+import {RegisterFormComponent} from './register-form/register-form.component';
+import {LoginComponent} from './login/login.component';
 import {PasswordModule} from "primeng/password";
 import {SidebarModule} from "primeng/sidebar";
 import {OverlayModule} from "primeng/overlay";
@@ -49,15 +49,21 @@ import {ListboxModule} from "primeng/listbox";
 import {InputTextareaModule} from "primeng/inputtextarea";
 import {CalendarModule} from "primeng/calendar";
 import {InplaceModule} from "primeng/inplace";
-import { TooltipModule } from 'primeng/tooltip';
-import { SocialLoginComponent } from './social-login/social-login.component';
-import { ResponsiveService } from './responsive/responsive.service';
+import {TooltipModule} from 'primeng/tooltip';
+import {SocialLoginComponent} from './social-login/social-login.component';
+import {ResponsiveService} from './responsive/responsive.service';
+import {RegisterComponent} from './register/register.component';
+import {UserService} from "../service/user.service";
+import {environment} from "../environments/environment";
+import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
+import { provideAuth,getAuth } from '@angular/fire/auth';
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
   {path: 'login', component: LoginComponent},
   {path: 'home', component: HomeComponent},
   {path: 'register-form', component: RegisterFormComponent},
+  {path: 'register', component: RegisterComponent},
   {path: 'recycle', component: RecycleComponent},
 ];
 
@@ -69,7 +75,8 @@ const routes: Routes = [
     QuitoEpsCarouselComponent,
     RegisterFormComponent,
     LoginComponent,
-    SocialLoginComponent
+    SocialLoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
@@ -104,15 +111,29 @@ const routes: Routes = [
     InputTextareaModule,
     CalendarModule,
     InplaceModule,
-    TooltipModule
+    TooltipModule,
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideAuth(() => getAuth()),
+    // AngularFireModule.initializeApp({
+    //   apiKey: "AIzaSyDJ_eDBrLJttuFSdLMWPX-adwKUX6-JAHQ",
+    //   authDomain: "quitorecicla-firebase-auth.firebaseapp.com",
+    //   projectId: "quitorecicla-firebase-auth",
+    //   storageBucket: "quitorecicla-firebase-auth.appspot.com",
+    //   messagingSenderId: "538033766324",
+    //   appId: "1:538033766324:web:f6c00149b7aa881acafce1"
+    // }),
+
+    // AngularFireModule
+
   ],
   providers: [ProductService, ProductService2, PhotoService, ConfirmationService, MessageService,
       SitioReciclajeLaDeliciaservice,
       SitioReciclajeEloyAlfaroService,
       SitioReciclajeTumbacoservice,
       SitioReciclajeManuelitaSaenzservice,
-      ResponsiveService
-  ],
+      ResponsiveService,
+      UserService
+ ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

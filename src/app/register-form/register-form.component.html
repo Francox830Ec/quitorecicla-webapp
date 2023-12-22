@@ -1,1 +1,48 @@
-<p>Register-form works!</p>
+<p-toast  [showTransformOptions]="'translateY(100%)'" [showTransitionOptions]="'1000ms'" [hideTransitionOptions]="'1000ms'" [showTransformOptions]="'translateX(100%)'" class="custom-toast-emgirs" [life]="10000" [breakpoints]="{'920px': {width: '100%', right: '0', left: '0'}}"></p-toast>
+<div  class="flex flex-column align-items-center gap-3">
+
+<!--  <div class="flex justify-content-center">-->
+<!--    <app-quito-eps-carousel [imageMaxHeight]="maxHeightCarouselImage"></app-quito-eps-carousel>-->
+<!--  </div>-->
+  <form [formGroup]="formReg2" >
+    <div  class="flex flex-column align-items-center gap-3" id="formLogin">
+
+      <div class="mb-0">
+        <h2 style="color: #1275bb;">Registrate</h2>
+        <p>Empecemos</p>
+      </div>
+
+      <div class="p-inputgroup w-18rem">
+          <span class="p-inputgroup-addon">
+            <i class="pi pi-envelope"></i>
+          </span>
+        <input type="text" pinputtext="" formControlName="email"  placeholder="Correo" class="p-inputtext p-component p-element">
+      </div>
+<!--      <div class="p-inputgroup w-20rem">-->
+<!--          <span class="p-inputgroup-addon">-->
+<!--            <i class="pi pi-lock"></i>-->
+<!--          </span>-->
+<!--        <input formControlName="password" type="password" pinputtext="" placeholder="Contraseña" class="p-inputtext p-component p-element">-->
+<!--      </div>-->
+      <p-password
+                  [toggleMask]="true" weakLabel="Débil" goodLabel="Buena" strongLabel="Fuerte"
+                  promptLabel="Contraseña" placeholder="Contraseña"
+                  styleClass="p-password p-component p-inputwrapper p-input-icon-right w-full" formControlName="password">
+      </p-password>
+
+      <button (click)="onSubmit()" pbutton="" label="Registrarse" type="button" class="p-element w-18rem p-button p-component ngx-emgirs-light-blue">
+        <span class="p-button-label">Registrarse</span>
+      </button>
+
+      <span class="font-semibold text-color-secondary">
+      ¿Ya tienes una cuenta?
+        <a class="font-semibold cursor-pointer primary-color" (click)="clickGoLogin()" >
+          Login
+        </a>
+      </span>
+
+    </div>
+  </form>
+
+</div>
+
