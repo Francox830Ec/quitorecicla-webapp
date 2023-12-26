@@ -21,7 +21,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {CardModule} from "primeng/card";
 import {AvatarModule} from "primeng/avatar";
 import {PanelModule} from "primeng/panel";
-import {HomeComponent} from './home/home.component';
+import {Home2Component} from './home2/home2.component';
 import {RecycleComponent} from './recycle/recycle.component';
 import {QuitoEpsCarouselComponent} from './quito-eps-carousel/quito-eps-carousel.component';
 import {ImageModule} from "primeng/image";
@@ -57,9 +57,11 @@ import {UserService} from "../service/user.service";
 import {environment} from "../environments/environment";
 import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
 import { provideAuth,getAuth } from '@angular/fire/auth';
+import { HomeComponent } from './home/home.component';
+import { MaterialReciclableCarouselComponent } from './material-reciclable-carousel/material-reciclable-carousel.component';
 
 const routes: Routes = [
-  {path: '', component: LoginComponent},
+  {path: '', component: HomeComponent},
   {path: 'login', component: LoginComponent},
   {path: 'home', component: HomeComponent},
   {path: 'register-form', component: RegisterFormComponent},
@@ -70,13 +72,15 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
+    Home2Component,
     RecycleComponent,
     QuitoEpsCarouselComponent,
     RegisterFormComponent,
     LoginComponent,
     SocialLoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    HomeComponent,
+    MaterialReciclableCarouselComponent
   ],
   imports: [
     BrowserModule,

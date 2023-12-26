@@ -2,6 +2,47 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class ProductService2 {
+
+  getRecycableProductsData() {
+    return [
+      {
+        id: '1',
+        image: 'paper-5boozp_pixeled.jpg',
+        name: 'Papel',
+      },
+      {
+        id: '2',
+        image: 'carton_pixeled.jpg',
+        name: 'Cartón',
+      },
+      {
+        id: '3',
+        image: 'reciclaje_de_plastico_pixeled.jpg',
+        name: 'Plástico',
+      },
+      {
+        id: '4',
+        image: 'vidrio_pixeled.jpg',
+        name: 'Vidrio',
+      },
+      {
+        id: '5',
+        image: 'madera_pixeled.jpg',
+        name: 'Chatarra',
+      },
+      {
+        id: '6',
+        image: 'chatarra_pixeled.jpg',
+        name: 'Madera',
+      },
+      {
+        id: '7',
+        image: 'Reciclar-telas_pixeled.jpg',
+        name: 'Textiles',
+      }
+    ];
+  }
+
   getProductsData() {
     return [
       {
@@ -890,6 +931,10 @@ export class ProductService2 {
 
   getProductsSmall() {
     return Promise.resolve(this.getProductsData().slice(0, 10));
+  }
+
+  getRecycableProducts() {
+    return Promise.resolve(this.getRecycableProductsData().slice(0, 10));
   }
 
   getProducts() {

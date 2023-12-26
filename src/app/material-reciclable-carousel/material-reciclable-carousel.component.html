@@ -1,0 +1,14 @@
+  <p-carousel [value]="products" [numVisible]="3" [autoplayInterval]="3000" [numScroll]="3" [showIndicators]="true"  [showNavigators]="false">
+    <ng-template let-product pTemplate="item">
+      <div class="product-item">
+        <div class="product-item-content">
+          <div >
+            <img src="./assets/img/pixeled/recycle/{{ product.image }}" [alt]="product.name" class="product-image" />
+          </div>
+          <div>
+            <h4 class="">{{ product.name }}</h4>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </p-carousel>

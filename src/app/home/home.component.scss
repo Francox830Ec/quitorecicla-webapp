@@ -1,30 +1,16 @@
-//.card2 {
-//  .flex{
-//    .justify-content-center {
-//      background-image: url("../../assets/img/pixeled/FONDO_Mesadetrabajo1.png");
-//      padding: 2rem;
-//      border-radius: 10px;
-//      margin-bottom: 1rem;
+//:host ::ng-deep {
+//  .product-item {
+//    .product-item-content {
+//      border: 1px solid var(--surface-d);
+//      border-radius: 3px;
+//      margin: .3rem;
+//      text-align: center;
+//      padding: 2rem 0;
+//    }
+//
+//    .product-image {
+//      width: 50%;
+//      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
 //    }
 //  }
 //}
-
-//.mycard{
-//  height: 400px;
-//  background-image: url("../../assets/img/pixeled/FONDO_Mesadetrabajo1.png");
-//}
-
-.ngx-color {
-  &.p-card {
-    border-radius: 1rem;
-    overflow: hidden;
-  }
-
-  .p-card-title {
-  }
-  .p-card-body {
-    padding: 2rem !important;
-    background: #a6120d;
-    color: #fff;
-  }
-}
