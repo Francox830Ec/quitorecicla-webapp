@@ -58,7 +58,7 @@ import {environment} from "../environments/environment";
 import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
 import { provideAuth,getAuth } from '@angular/fire/auth';
 import { HomeComponent } from './home/home.component';
-import { MaterialReciclableCarouselComponent } from './material-reciclable-carousel/material-reciclable-carousel.component';
+import { MaterialReciclableQuestionCarouselComponent } from './material-reciclable-carousel/material-reciclable-question-carousel.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -80,7 +80,7 @@ const routes: Routes = [
     SocialLoginComponent,
     RegisterComponent,
     HomeComponent,
-    MaterialReciclableCarouselComponent
+    MaterialReciclableQuestionCarouselComponent
   ],
   imports: [
     BrowserModule,

@@ -7,12 +7,12 @@ export class ProductService2 {
     return [
       {
         id: '1',
-        image: 'paper-5boozp_pixeled.jpg',
+        image: 'paper-5boozp_pixeled.png',
         name: 'Papel',
       },
       {
         id: '2',
-        image: 'carton_pixeled.jpg',
+        image: 'carton_pixeled.png',
         name: 'Cartón',
       },
       {
@@ -22,17 +22,17 @@ export class ProductService2 {
       },
       {
         id: '4',
-        image: 'vidrio_pixeled.jpg',
+        image: 'vidrio_pixeled.png',
         name: 'Vidrio',
       },
       {
         id: '5',
-        image: 'madera_pixeled.jpg',
+        image: 'chatarra_pixeled.jpg',
         name: 'Chatarra',
       },
       {
         id: '6',
-        image: 'chatarra_pixeled.jpg',
+        image: 'madera_pixeled.jpg',
         name: 'Madera',
       },
       {
