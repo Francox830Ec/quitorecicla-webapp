@@ -1,58 +1,25 @@
-<div class="card-emgirs">
+<div class="card-screen-heigth flex gap-6 flex-column justify-content-center align-items-center" [style.height]="screenHeightCalculated">
 
-  <p-panel styleClass="p-panel-emgirs-QR center-header">
-    <ng-template pTemplate="header">
-      <!--      <p-image src="./assets/img/pixeled/logo-alcaldia01_original.png" alt="Image" width="170" class=""></p-image>-->
-      <img src="./assets/img/pixeled/logo-alcaldia01.png" style="
-                border: none !important;
-                width: auto !important;
-                max-width:100%;
-                height:auto;
-                max-height: 300px !important;
-                cursor: pointer;"/>
-    </ng-template>
+    <img src="./assets/img/pixeled/logo-alcaldia01_original.png" style="
+            border: none !important;
+            width: auto !important;
+            max-width:100%;
+            " [style.max-height] = "maxHeightCalculatedLogoAlcaldia + 'px'" />
 
-    <ng-template pTemplate="content">
-
-      <app-material-reciclable-carousel></app-material-reciclable-carousel>
-      <!--    <div class="flex gap-2 justify-content-center align-items-center">-->
-      <!--      <img src="./assets/img/pixeled/logo-quitoreciclaoriginal.png" style="-->
-      <!--          border: none !important;-->
-      <!--          width: auto !important;-->
-      <!--          max-width:100%;-->
-      <!--          height:auto;-->
-      <!--          /*max-height: 20px !important;*/-->
-      <!--          cursor: pointer;"/>-->
-      <!--      <p-button styleClass="ngx-emgirs-light-blue" label="¡Quiero reciclar!"></p-button>-->
-      <!--    </div>-->
+    <!--    {{'screenHeight:' + screenHeight + ', offsetHeight: ' + offsetHeight + ', clientHeight: ' + clientHeight + ', content: ' + content}}-->
+    <div id="content">
+      <app-material-reciclable-carousel ></app-material-reciclable-carousel>
+    </div>
 
 
-    </ng-template>
+    <div class="flex gap-2 justify-content-center align-items-center">
+      <img src="./assets/img/pixeled/logo-quitoreciclaoriginal(2).png" style="
+              border: none !important;
+              width: auto !important;
+              max-width:100%;
+              "  [style.max-height] = "maxHeightCalculatedLogoQuitoRecicla + 'px'"/>
+      <p-button styleClass="ngx-emgirs-light-blue" label="¡Quiero reciclar!"></p-button>
+    </div>
 
-    <ng-template pTemplate="footer">
-      <!--    <div class="flex justify-content-center">-->
-      <!--      <img src="./assets/img/pixeled/logostodas-empre04.png" style="-->
-      <!--          border: none !important;-->
-      <!--          width: auto !important;-->
-      <!--          max-width:100%;-->
-      <!--          height:auto;-->
-      <!--          /*max-height: 100px !important;*/-->
-      <!--          cursor: pointer;"/>-->
-      <!--    </div>-->
-
-      <div class="flex gap-2 justify-content-center align-items-center">
-        <!--        <p-image src="./assets/img/pixeled/logo-quitoreciclaoriginal.png" alt="Image" width="150" class=""></p-image>-->
-        <img src="./assets/img/pixeled/logo-quitoreciclaoriginal.png" style="
-                  border: none !important;
-                  width: auto !important;
-                  max-width:100%;
-                  height:auto;
-                  max-height: 250px !important;
-                  cursor: pointer;"/>
-        <p-button styleClass="ngx-emgirs-light-blue" label="¡Quiero reciclar!"></p-button>
-      </div>
-    </ng-template>
-
-  </p-panel>
 
 </div>
