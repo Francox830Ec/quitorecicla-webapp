@@ -59,6 +59,7 @@ import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
 import { provideAuth,getAuth } from '@angular/fire/auth';
 import { HomeComponent } from './home/home.component';
 import { MaterialReciclableQuestionCarouselComponent } from './material-reciclable-carousel/material-reciclable-question-carousel.component';
+import { IngresoComponent } from './ingreso/ingreso.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -67,6 +68,7 @@ const routes: Routes = [
   {path: 'register-form', component: RegisterFormComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'recycle', component: RecycleComponent},
+  {path: 'ingreso', component: IngresoComponent},
 ];
 
 @NgModule({
@@ -80,7 +82,9 @@ const routes: Routes = [
     SocialLoginComponent,
     RegisterComponent,
     HomeComponent,
-    MaterialReciclableQuestionCarouselComponent
+    MaterialReciclableQuestionCarouselComponent,
+    LoginComponent,
+    IngresoComponent
   ],
   imports: [
     BrowserModule,

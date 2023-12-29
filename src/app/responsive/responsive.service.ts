@@ -13,11 +13,16 @@ import {
 export class ResponsiveService {
     constructor(breakpointObserver: BreakpointObserver) {
         this.checkScreenSize(breakpointObserver);
-
         this.checkDeviceTypeAndOrientation(breakpointObserver);
+
     }
 
     private _screenSize = ScreenSizeType.Unknown;
+
+    public getScreenHeightCalculated(){
+      return window.innerHeight - 32;
+    }
+
     public get screenSize(): ScreenSizeType {
         return this._screenSize;
     }
@@ -103,12 +108,12 @@ export class ResponsiveService {
                         let type = this.deviceAndOrientation.get(query) ?? BreakpointType.Unknown;
 
                         orientationTypes.forEach((element) => {
-                            if (type.indexOf(element) !== -1) 
+                            if (type.indexOf(element) !== -1)
                                 this._orientation = element as OrientationType;
                         });
 
                         deviceTypes.forEach((element) => {
-                            if (type.indexOf(element) !== -1) 
+                            if (type.indexOf(element) !== -1)
                                 this._deviceType = element as DeviceType;
                         });
                     }
