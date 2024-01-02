@@ -61,6 +61,8 @@ import { HomeComponent } from './home/home.component';
 import { MaterialReciclableQuestionCarouselComponent } from './material-reciclable-carousel/material-reciclable-question-carousel.component';
 import { IngresoComponent } from './ingreso/ingreso.component';
 import { Home3Component } from './home3/home3.component';
+import { LogoQuitoDMQRBlogComponent } from './logo-quito-dmqrblog/logo-quito-dmqrblog.component';
+import { Login2Component } from './login2/login2.component';
 
 const routes: Routes = [
   {path: '', component: Home3Component},
@@ -85,7 +87,9 @@ const routes: Routes = [
     MaterialReciclableQuestionCarouselComponent,
     LoginComponent,
     IngresoComponent,
-    Home3Component
+    Home3Component,
+    LogoQuitoDMQRBlogComponent,
+    Login2Component
   ],
   imports: [
     BrowserModule,

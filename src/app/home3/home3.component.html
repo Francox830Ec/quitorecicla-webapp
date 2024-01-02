@@ -1,11 +1,7 @@
 <div id="cardScreenHeigth" class="card-screen-heigth flex flex-column justify-content-center align-items-center">
   <div class="col-12 md:col-{{widthMainColumn}}">
-      <div id="content" class="p-3">
-        <div class="relative">
-            <img class="w-full" src="assets/img/pixeled/QuitoDM_1.png" [style.max-height] = "logoAlcaldiaMaxHeightCalculated + 'px'">
-            <img class="flex absolute w-{{widthHeightQuitoRecicla}}rem h-{{widthHeightQuitoRecicla}}rem" style="bottom: {{marginBottomQuitoRecicla + 'rem'}} ; right: 1.5rem;"
-                 src="assets/img/pixeled/quitorecicla2-fixed.png">
-        </div>
+    <div id="content" class="p-3">
+            <img class="w-full" src="assets/img/pixeled/logosUIODM_QR_.png" [style.max-height] = "logoAlcaldiaMaxHeightCalculated + 'px'">
 
             <div id="materialReciclableCarousel">
               <app-material-reciclable-carousel [numVisibleItemsRecyclables]="numVisibleItemsRecyclables"
@@ -15,11 +11,8 @@
             </div>
 
             <div class="flex justify-content-center mt-{{marginTopButtonQuieroReciclar}}">
-<!--            <div class="flex justify-content-center">-->
               <p-button styleClass="ngx-emgirs-dark-blue" size="{{sizeButtonQuieroReciclar}}" label="¡Quiero reciclar!"></p-button>
-<!--            <p-button styleClass="ngx-emgirs-dark-blue" size="small" label="¡Quiero reciclar!"></p-button>-->
             </div>
-
       </div>
   </div>
 </div>

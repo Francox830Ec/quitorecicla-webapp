@@ -7,13 +7,13 @@ import {ResponsiveService} from "../responsive/responsive.service";
   styleUrls: ['./home3.component.scss']
 })
 export class Home3Component implements OnInit{
-  logoAlcaldiaMaxHeightCalculated: number = 150;
+  @Output() logoAlcaldiaMaxHeightCalculated: number = 150;
   @Output() numVisibleItemsRecyclables: number = 2;
   @Output() marginBottomQuitoRecicla: number = -3.3;
   @Output() widthHeightQuitoRecicla: number = 6;
   @Output() widthMainColumn: number = 12;
 
-  @Output() marginTopBorderTop: number = 8;
+  @Output() marginTopBorderTop: number = 5; /*8 Logo QuitoDMQR Blog -- 5 LogoQuitoDMQR  */
   @Output() textSizeTitleCarousel: string = "xl";
 
   @Output() marginTopButtonQuieroReciclar: number = 6;
@@ -53,7 +53,7 @@ export class Home3Component implements OnInit{
       if(this.responsiveService.screenSize == 'XSmall' && this.responsiveService.deviceType == 'Handset'
         && this.responsiveService.getScreenHeightCalculated() < 600
       ){//Must to less margin between elements
-        this.marginTopBorderTop = 7;
+        this.marginTopBorderTop = 4; /*7 Logo QuitoDMQR Blog -- 5 LogoQuitoDMQR  */
         this.textSizeTitleCarousel = "md";
         this.marginTopButtonQuieroReciclar = 0;
         this.sizeButtonQuieroReciclar = "small";
@@ -63,7 +63,8 @@ export class Home3Component implements OnInit{
         this.marginBottomQuitoRecicla = -3.3;
         this.logoAlcaldiaMaxHeightCalculated = 200;
         this.widthHeightQuitoRecicla = 8;
-        this.widthMainColumn = this.responsiveService.deviceType == 'Tablet' ? 10 : 4
+        this.widthMainColumn = this.responsiveService.deviceType == 'Tablet' ? 11 : 5
       }
+
   }
 }

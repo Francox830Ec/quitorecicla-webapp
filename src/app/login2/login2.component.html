@@ -1,0 +1,48 @@
+<div id="cardScreenHeigth" class="card-screen-heigth flex flex-column justify-content-center align-items-center">
+  <div class="col-12 md:col-12">
+    <div id="content" class="p-3">
+
+      <form [formGroup]="formReg">
+        <div class="flex flex-column align-items-center gap-3" id="formLogin">
+          <div  class="mb-0">
+            <h2 style="color: #1275bb;">Ingresa a tu cuenta</h2>
+            <p>¿No tienes una cuenta? <a class="text-primary hover:underline cursor-pointer font-medium">Registrate</a></p>
+          </div>
+
+          <div class="p-inputgroup w-full">
+            <input type="text" pinputtext="" placeholder="Correo" class="p-inputtext p-component p-element" formControlName="email">
+            <span class="p-inputgroup-addon">
+            <i class="pi pi-envelope"></i>
+          </span>
+          </div>
+
+          <p-password id="password" [toggleMask]="true" promptLabel="Contraseña" placeholder="Contraseña"
+                      styleClass="p-password p-component p-inputwrapper p-input-icon-right w-full" formControlName="password">
+          </p-password>
+          <div  class="mb-0">
+            <p>¿Olvidaste la contraseña? <a class="text-primary hover:underline cursor-pointer font-medium">Restablecela</a></p>
+          </div>
+
+
+          <button  pbutton="" label="INGRESAR" type="button" class="p-element w-18rem p-button p-component ngx-emgirs-light-blue">
+            <span class="p-button-label">INGRESAR</span>
+          </button>
+
+        </div>
+      </form>
+
+      <div class="flex justify-content-center mt-5">
+        <img src="./assets/img/pixeled/logostodas-empre04.png" style="
+          border: none !important;
+          width: auto !important;
+          max-width:100%;
+          max-height: 200px !important;
+          "/>
+      </div>
+
+    </div>
+
+  </div>
+
+
+</div>

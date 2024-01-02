@@ -8,10 +8,12 @@ import {LoginComponent} from "./login/login.component";
 import {RegisterComponent} from "./register/register.component";
 import {HomeComponent} from "./home/home.component";
 import {Home3Component} from "./home3/home3.component";
+import {Login2Component} from "./login2/login2.component";
 
 const routes: Routes = [
   {path: '', component: Home3Component},
   {path: 'login', component: LoginComponent},
+  {path: 'login2', component: Login2Component},
   {path: 'home3', component: Home3Component},
   {path: 'register-form', component: RegisterFormComponent},
   {path: 'register', component: RegisterComponent},
