@@ -39,12 +39,12 @@ export class ResponsiveService {
         let elementOffsetHeight = element.offsetHeight;
 
         if(elementOffsetHeight < 100 || elementOffsetHeight > window.innerHeight){
-            console.warn("window.innerHeight: ", window.innerHeight)
+            console.warn("--> window.innerHeight: ", window.innerHeight)
             this._screenHeightCalculated = window.innerHeight;
             return Math.round((this._screenHeightCalculated * percetange) - 8);
         }else{
             this._screenHeightCalculated = elementOffsetHeight;
-            console.warn("elementOffsetHeight: ", elementOffsetHeight)
+            console.warn("--> elementOffsetHeight (div cardScreenHeigth): ", elementOffsetHeight)
             return Math.round(this._screenHeightCalculated * percetange);
         }
     }
