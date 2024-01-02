@@ -17,25 +17,47 @@ html {
 //  margin: 20px;
 //}
 
+/*Functional body*/
+//body {
+//  font-family: var(--font-family);
+//  font-weight: 400;
+//  color: var(--text-color);
+//  height: 100%;
+//  background: var(--surface-ground);
+//  -webkit-font-smoothing: antialiased;
+//  -moz-osx-font-smoothing: grayscale;
+//}
+
+/*Functional body to home3*/
 body {
   font-family: var(--font-family);
   font-weight: 400;
   color: var(--text-color);
-  height: 100%;
+  padding: 1.5rem;
+  margin: 0;
+  min-height: 100%;
   background: var(--surface-ground);
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  -moz-osx-font-smoothing: grayscale
 }
 
+/*Functional card to home3*/
 .card-screen-heigth {
   background: var(--surface-card);
-  margin-top: 16px;
-  margin-left: 6px;
-  margin-right: 6px;
-  margin-bottom: 16px;
   border-radius: 10px;
-  //height: calc( var(--windowHeight) - 32 );
+  height: calc(100dvh - 42px) !important;
 }
+
+/*Functional card to home*/
+//.card-screen-heigth {
+//  background: var(--surface-card);
+//  margin-top: 16px;
+//  margin-left: 6px;
+//  margin-right: 6px;
+//  margin-bottom: 16px;
+//  border-radius: 10px;
+//  //height: calc( var(--windowHeight) - 32 );
+//}
 
 body-original {
   font-family: var(--font-family);
@@ -236,6 +258,27 @@ body-original {
   border-color: #1275bb;
 }
 
+.ngx-emgirs-sky-blue {
+  background: #6ebce9 ;
+  border-color: #6ebce9 ;
+}
+
+.ngx-emgirs-yellow {
+  background: #e8c756;
+  border-color: #e8c756;
+}
+
+.ngx-emgirs-green {
+  background: #76b829;
+  border-color: #76b829;
+}
+
+.ngx-emgirs-red {
+  background: #e52330;
+  border-color: #e52330;
+}
+
+
 //.p-divider.p-divider-horizontal {
 //  margin: 0rem 0;
 //  padding: 0 0rem
@@ -261,25 +304,6 @@ body-original {
   border-color: #1275bb;
 }
 
-.ngx-emgirs-sky-blue {
-  background: #6ebce9 ;
-  border-color: #6ebce9 ;
-}
-
-.ngx-emgirs-yellow {
-  background: #e8c756;
-  border-color: #e8c756;
-}
-
-.ngx-emgirs-green {
-  background: #76b829;
-  border-color: #76b829;
-}
-
-.ngx-emgirs-red {
-  background: #e52330;
-  border-color: #e52330;
-}
 
 .my-google-map{
   .map-container{

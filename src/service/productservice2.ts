@@ -7,37 +7,37 @@ export class ProductService2 {
     return [
       {
         id: '1',
-        image: 'paper-5boozp_pixeled.png',
+        image: 'papel11.jpg',
         name: 'Papel',
       },
       {
         id: '2',
-        image: 'carton_pixeled.png',
+        image: 'carton11.jpg',
         name: 'Cartón',
       },
       {
         id: '3',
-        image: 'reciclaje_de_plastico_pixeled.jpg',
+        image: 'plastico11.jpg',
         name: 'Plástico',
       },
       {
         id: '4',
-        image: 'vidrio_pixeled.png',
+        image: 'vidrio11.png',
         name: 'Vidrio',
       },
       {
         id: '5',
-        image: 'chatarra_pixeled.jpg',
+        image: 'chatarra11.jpg',
         name: 'Chatarra',
       },
       {
         id: '6',
-        image: 'madera_pixeled.jpg',
+        image: 'madera11.jpg',
         name: 'Madera',
       },
       {
         id: '7',
-        image: 'Reciclar-telas_pixeled.jpg',
+        image: 'textiles11.jpg',
         name: 'Textiles',
       }
     ];

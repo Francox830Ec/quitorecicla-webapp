@@ -15,11 +15,11 @@ export class QuitoEpsCarouselComponent {
   responsiveOptions: any[] = [
     {
       breakpoint: '1024px',
-      numVisible: 1
+      numVisible: 5
     },
     {
       breakpoint: '768px',
-      numVisible: 1
+      numVisible: 3
     },
     {
       breakpoint: '560px',

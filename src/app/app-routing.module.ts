@@ -7,11 +7,12 @@ import {RecycleComponent} from "./recycle/recycle.component";
 import {LoginComponent} from "./login/login.component";
 import {RegisterComponent} from "./register/register.component";
 import {HomeComponent} from "./home/home.component";
+import {Home3Component} from "./home3/home3.component";
 
 const routes: Routes = [
-  {path: '', component: HomeComponent},
+  {path: '', component: Home3Component},
   {path: 'login', component: LoginComponent},
-  // {path: 'home', component: Home2Component},
+  {path: 'home3', component: Home3Component},
   {path: 'register-form', component: RegisterFormComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'recycle', component: RecycleComponent},

@@ -60,15 +60,15 @@ import { provideAuth,getAuth } from '@angular/fire/auth';
 import { HomeComponent } from './home/home.component';
 import { MaterialReciclableQuestionCarouselComponent } from './material-reciclable-carousel/material-reciclable-question-carousel.component';
 import { IngresoComponent } from './ingreso/ingreso.component';
+import { Home3Component } from './home3/home3.component';
 
 const routes: Routes = [
-  {path: '', component: HomeComponent},
+  {path: '', component: Home3Component},
   {path: 'login', component: LoginComponent},
-  {path: 'home', component: HomeComponent},
+  {path: 'home3', component: Home3Component},
   {path: 'register-form', component: RegisterFormComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'recycle', component: RecycleComponent},
-  {path: 'ingreso', component: IngresoComponent},
 ];
 
 @NgModule({
@@ -84,7 +84,8 @@ const routes: Routes = [
     HomeComponent,
     MaterialReciclableQuestionCarouselComponent,
     LoginComponent,
-    IngresoComponent
+    IngresoComponent,
+    Home3Component
   ],
   imports: [
     BrowserModule,

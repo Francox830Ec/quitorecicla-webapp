@@ -27,6 +27,7 @@
     "@types/node": "^20.10.3",
     "@types/npm": "^7.19.3",
     "c": "^1.1.1",
+    "firebase-tools": "^12.9.1",
     "geolocation-marker": "^2.0.5",
     "google-maps-current-location": "^0.2.3",
     "primeflex": "^3.3.1",

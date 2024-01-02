@@ -11,16 +11,28 @@ import {
     providedIn: 'root',
 })
 export class ResponsiveService {
+    private _screenSize = ScreenSizeType.Unknown;
+    private _elementToScreenHeightCalculated : any;
+
     constructor(breakpointObserver: BreakpointObserver) {
         this.checkScreenSize(breakpointObserver);
         this.checkDeviceTypeAndOrientation(breakpointObserver);
-
     }
 
-    private _screenSize = ScreenSizeType.Unknown;
+    public setElementToScreenHeightCalculated(element: HTMLElement){
+      this._elementToScreenHeightCalculated = element;
+    }
+
+    public getMaxHeightByPercentageOfElement(percetange: number){
+        return Math.round(this.getScreenHeightCalculated() * percetange);
+    }
 
     public getScreenHeightCalculated(){
-      return window.innerHeight - 32;
+        if(this._elementToScreenHeightCalculated != undefined){
+            return ((this._elementToScreenHeightCalculated) as HTMLElement).offsetHeight
+        }else{
+            return window.innerHeight;
+        }
     }
 
     public get screenSize(): ScreenSizeType {

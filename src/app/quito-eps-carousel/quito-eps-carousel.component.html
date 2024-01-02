@@ -1,41 +1,34 @@
-<p-galleria [value]="products2" [showIndicators]="true" [showThumbnails]="false" [circular]="true"
-            [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '640px' }"
-            [autoPlay]="true">
+<p-galleria [value]="products2" [showItemNavigators]="true" [showThumbnails]="false" [showIndicators]="true"
+            [showIndicatorsOnItem]="false" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '640px',
+            'margin-top': '2em'}" [autoPlay]="true" [circular]="true">
+<!--  <ng-template pTemplate="item" let-item>-->
+<!--      <img src="./assets/img/pixeled/{{item.image}}" style="-->
+<!--              border: none !important;-->
+<!--              width: auto !important;-->
+<!--              max-width:100%;-->
+<!--              height:auto;-->
+<!--              display: block;-->
+<!--              " [style.max-height] = "imageMaxHeight"-->
+<!--      />-->
+<!--  </ng-template>-->
+
+
   <ng-template pTemplate="item" let-item>
-
-<!--      <img src="./assets/img/pixeled/{{item.image}}" style="width: 100%; display: block;" />-->
-<!--      <img src="./assets/img/pixeled/{{item.image}}" class="h-8rem"/>-->
-
-<!--<img src="./assets/img/pixeled/{{item.image}}" style="-->
-<!--          border: none !important;-->
-<!--          width: auto !important;-->
-<!--          max-width:100%;-->
-<!--          height:auto;-->
-<!--          max-height: 300px !important; /*Height <= 800px and Xsmall, for all except this, dont have max-height -> Height - 517*/-->
-<!--          cursor: pointer;" />-->
-
-<!--    <img src="./assets/img/pixeled/{{item.image}}" style="-->
-<!--          border: none !important;-->
-<!--          width: auto !important;-->
-<!--          max-width:100%;-->
-<!--          height:auto;-->
-<!--          max-height: 135px !important; /*Height <= 800px and Xsmall, for all except this, dont have max-height -> Height - 517*/-->
-<!--          cursor: pointer;" />-->
-
-<!--  <img src="./assets/img/pixeled/{{item.image}}" style="-->
-<!--          border: none !important;-->
-<!--          width: auto !important;-->
-<!--          max-width:100%;-->
-<!--          height:auto;-->
-<!--          max-height: max-content;-->
-<!--          cursor: pointer;" />-->
-
-      <img src="./assets/img/pixeled/{{item.image}}" style="
+    <div class="flex flex-column">
+      <img src="./assets/img/pixeled/{{item.image}}" style="-->
               border: none !important;
               width: auto !important;
               max-width:100%;
-              height:auto;
-              " [style.max-height] = "imageMaxHeight"
-      />
+              "
+           [style.max-height] = "300 + 'px'" />
+<!--      <img src="./assets/img/pixeled/{{item.image}}" style="width: 100%; display: block;" />-->
+    </div>
   </ng-template>
+
+<!--  <ng-template pTemplate="thumbnail" let-item>-->
+<!--    <div class="grid grid-nogutter justify-content-center">-->
+<!--      <img src="./assets/img/pixeled/{{item.image}}" style="display: block;" />-->
+<!--    </div>-->
+<!--  </ng-template>-->
+
 </p-galleria>
