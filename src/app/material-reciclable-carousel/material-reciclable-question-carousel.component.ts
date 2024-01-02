@@ -10,7 +10,9 @@ import {Product} from "../../domain/product";
 export class MaterialReciclableQuestionCarouselComponent implements AfterViewInit{
 
   products: Product[] = [];
-
+  @Input() numVisibleItemsRecyclables: number = 2;
+  @Input() marginTopBorderTop: number = 8;
+  @Input() textSizeTitleCarousel: string = "xl";
   @Input() imageMaxHeight = "150px";
 
   responsiveOptions: any[] = [

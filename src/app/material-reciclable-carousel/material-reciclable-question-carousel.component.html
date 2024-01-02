@@ -1,9 +1,9 @@
-<div class="border-top-3 mt-8" style="color: #1275bb;"></div>
+<div class="border-top-3 mt-{{marginTopBorderTop}}" style="color: #1275bb;"></div>
 <!--<div class="border-top-3 mt-7" style="color: #1275bb;"></div>-->
 
-<div class="font-medium my-2 text-xl font-semibold" style="color: #1275bb;">Residuos sólidos reciclables</div>
+<div class="font-medium my-2 text-{{textSizeTitleCarousel}} font-semibold" style="color: #1275bb;">Residuos sólidos reciclables</div>
 <!--<div class="font-medium my-2 text-md font-semibold" style="color: #1275bb;">Residuos sólidos reciclables</div>-->
-<p-carousel [value]="products" [numVisible]="2" [autoplayInterval]="3000" [numScroll]="2" [showIndicators]="true"
+<p-carousel [value]="products" [numVisible]="numVisibleItemsRecyclables" [autoplayInterval]="3000" [numScroll]="2" [showIndicators]="true"
               [showNavigators]="false">
     <ng-template let-product pTemplate="item">
       <div class="product-item">
