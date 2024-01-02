@@ -1,6 +1,5 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ResponsiveService} from "../responsive/responsive.service";
-import {ProductService2} from "../../service/productservice2";
 
 @Component({
   selector: 'app-home3',
@@ -9,11 +8,6 @@ import {ProductService2} from "../../service/productservice2";
 })
 export class Home3Component implements OnInit{
   logoAlcaldiaMaxHeightCalculated: number = 150;
-  maxHeighCard: any;
-  offsetHeight: any;
-  clientHeight: any;
-  windowInnerHeight: any;
-  windowOuterHeight: any;
   responsiveOptions: any[] = [
     {
       breakpoint: '1024px',
@@ -29,8 +23,7 @@ export class Home3Component implements OnInit{
     }
   ];
 
-  constructor(private responsiveService:ResponsiveService,
-              private productService2: ProductService2,) {
+  constructor(private responsiveService:ResponsiveService) {
   }
 
   ngOnInit(): void {
@@ -38,27 +31,13 @@ export class Home3Component implements OnInit{
   }
 
   private setResponsiveElements(){
-    // this.responsiveService.setElementToScreenHeightCalculated(document.getElementById("cardScreenHeigth"));
-    // this.maxHeighCard = this.responsiveService.getScreenHeightCalculated();
-    // this.logoAlcaldiaMaxHeightCalculated = this.responsiveService.getMaxHeightByPercentageOfElement(0.3);
-    // console.info("logoAlcaldiaMaxHeightCalculated: ", this.logoAlcaldiaMaxHeightCalculated);
-
-
-    this.windowInnerHeight = window.innerHeight;
-    this.windowOuterHeight = window.outerHeight;
-    this.offsetHeight = document.getElementById('cardScreenHeigth').offsetHeight;
-    this.clientHeight = document.getElementById('cardScreenHeigth').clientHeight;
-    this.maxHeighCard = this.offsetHeight;
-    // this.maxHeighCard = this.windowInnerHeight - 462;
-    // this.logoAlcaldiaMaxHeightCalculated = Math.round(this.maxHeighCard * 0.3);
-
-    if(this.offsetHeight < 100 || this.offsetHeight > window.innerHeight){
-      this.logoAlcaldiaMaxHeightCalculated = Math.round((window.innerHeight * 0.3) - 8);
-    }else{
-      this.logoAlcaldiaMaxHeightCalculated = Math.round(this.maxHeighCard * 0.3);
-    }
-
-    console.warn("*** maxHeighCard: ", this.maxHeighCard);
+    let element = document.getElementById("cardScreenHeigth") as HTMLElement;
+    console.warn("getScreenHeightCalculated: ", this.responsiveService.getScreenHeightCalculated());
+    this.logoAlcaldiaMaxHeightCalculated = this.responsiveService.getHeightCalculatedOfElement(element, 0.3)
     console.warn("*** logoAlcaldiaMaxHeightCalculated: ", this.logoAlcaldiaMaxHeightCalculated);
+
+    console.warn("**** this.responsiveService.screenSize: ", this.responsiveService.screenSize);
+    console.warn("**** this.responsiveService.deviceType: ", this.responsiveService.deviceType);
+
   }
 }

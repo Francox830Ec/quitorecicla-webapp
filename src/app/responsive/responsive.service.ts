@@ -12,7 +12,7 @@ import {
 })
 export class ResponsiveService {
     private _screenSize = ScreenSizeType.Unknown;
-    private _elementToScreenHeightCalculated : any;
+    private _screenHeightCalculated : any;
 
     constructor(breakpointObserver: BreakpointObserver) {
         this.checkScreenSize(breakpointObserver);
@@ -20,7 +20,7 @@ export class ResponsiveService {
     }
 
     public setElementToScreenHeightCalculated(element: HTMLElement){
-      this._elementToScreenHeightCalculated = element;
+      this._screenHeightCalculated = element;
     }
 
     public getMaxHeightByPercentageOfElement(percetange: number){
@@ -28,10 +28,24 @@ export class ResponsiveService {
     }
 
     public getScreenHeightCalculated(){
-        if(this._elementToScreenHeightCalculated != undefined){
-            return ((this._elementToScreenHeightCalculated) as HTMLElement).offsetHeight
+        if(this._screenHeightCalculated != undefined){
+            return this._screenHeightCalculated;
         }else{
             return window.innerHeight;
+        }
+    }
+
+    public getHeightCalculatedOfElement(element: HTMLElement, percetange: number){
+        let elementOffsetHeight = element.offsetHeight;
+
+        if(elementOffsetHeight < 100 || elementOffsetHeight > window.innerHeight){
+            console.warn("window.innerHeight: ", window.innerHeight)
+            this._screenHeightCalculated = window.innerHeight;
+            return Math.round((this._screenHeightCalculated * percetange) - 8);
+        }else{
+            this._screenHeightCalculated = elementOffsetHeight;
+            console.warn("elementOffsetHeight: ", elementOffsetHeight)
+            return Math.round(this._screenHeightCalculated * percetange);
         }
     }
 

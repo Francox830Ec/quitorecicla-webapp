@@ -1,14 +1,16 @@
-<div class="">
-<!--  <span class="text-white border-round font-semibold p-1 white-space-nowrap ngx-emgirs-dark-blue" >-->
-<!--        ¿Cuáles son los residuos sólidos reciclables?-->
-<!--  </span>-->
-  <p-carousel [value]="products" [numVisible]="2" [autoplayInterval]="3000" [numScroll]="2" [showIndicators]="true"
+<!--<div class="border-top-3 mt-8" style="color: #1275bb;"></div>-->
+<div class="border-top-3 mt-7" style="color: #1275bb;"></div>
+
+<!--<div class="font-medium my-2 text-xl font-semibold" style="color: #1275bb;">Residuos sólidos reciclables</div>-->
+<div class="font-medium my-2 text-md font-semibold" style="color: #1275bb;">Residuos sólidos reciclables</div>
+<p-carousel [value]="products" [numVisible]="2" [autoplayInterval]="3000" [numScroll]="2" [showIndicators]="true"
               [showNavigators]="false">
     <ng-template let-product pTemplate="item">
       <div class="product-item">
         <div class="product-item-content">
           <div >
-            <img src="./assets/img/pixeled/{{product.image}}" [alt]="product.name" class="product-image" />
+            <img src="./assets/img/pixeled/{{product.image}}" [alt]="product.name" class="product-image"
+                 />
           </div>
           <div>
             <h4 class="">{{ product.name }}</h4>
@@ -17,4 +19,3 @@
       </div>
     </ng-template>
   </p-carousel>
-</div>

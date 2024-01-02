@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {AfterViewInit, Component, Input} from '@angular/core';
 import {ProductService2} from "../../service/productservice2";
 import {Product} from "../../domain/product";
 
@@ -7,7 +7,7 @@ import {Product} from "../../domain/product";
   templateUrl: './material-reciclable-question-carousel.component.html',
   styleUrls: ['./material-reciclable-question-carousel.component.scss']
 })
-export class MaterialReciclableQuestionCarouselComponent {
+export class MaterialReciclableQuestionCarouselComponent implements AfterViewInit{
 
   products: Product[] = [];
 
@@ -46,6 +46,13 @@ export class MaterialReciclableQuestionCarouselComponent {
     this.productService2.getRecycableProducts().then((products) => {
       this.products = products;
     });
+
+
+  }
+
+  ngAfterViewInit(): void {
+    let elementContent = document.getElementById("contentAll") as HTMLElement;
+    console.warn("---- elementContent.offsetHeight: ", elementContent.offsetHeight);
   }
 
 }
