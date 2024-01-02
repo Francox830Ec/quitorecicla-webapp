@@ -43,12 +43,12 @@ export class Home3Component implements OnInit{
 
   private setResponsiveElements(){
       let element = document.getElementById("cardScreenHeigth") as HTMLElement;
-      console.warn("getScreenHeightCalculated: ", this.responsiveService.getScreenHeightCalculated());
+      // console.warn("getScreenHeightCalculated: ", this.responsiveService.getScreenHeightCalculated());
       this.logoAlcaldiaMaxHeightCalculated = this.responsiveService.getHeightCalculatedOfElement(element, 0.3)
 
-      console.warn("*** logoAlcaldiaMaxHeightCalculated: ", this.logoAlcaldiaMaxHeightCalculated);
-      console.warn("**** this.responsiveService.screenSize: ", this.responsiveService.screenSize);
-      console.warn("**** this.responsiveService.deviceType: ", this.responsiveService.deviceType);
+      // console.warn("*** logoAlcaldiaMaxHeightCalculated: ", this.logoAlcaldiaMaxHeightCalculated);
+      // console.warn("**** this.responsiveService.screenSize: ", this.responsiveService.screenSize);
+      // console.warn("**** this.responsiveService.deviceType: ", this.responsiveService.deviceType);
 
       if(this.responsiveService.screenSize == 'XSmall' && this.responsiveService.deviceType == 'Handset'
         && this.responsiveService.getScreenHeightCalculated() < 600
@@ -57,7 +57,7 @@ export class Home3Component implements OnInit{
         this.textSizeTitleCarousel = "md";
         this.marginTopButtonQuieroReciclar = 0;
         this.sizeButtonQuieroReciclar = "small";
-        console.warn("size xsmall to Iphone5 & more less");
+        // console.warn("size xsmall to Iphone5 & more less");
       }else if(this.responsiveService.deviceType == 'Tablet' || this.responsiveService.deviceType == 'Web'){
         this.numVisibleItemsRecyclables = 4;
         this.marginBottomQuitoRecicla = -3.3;

@@ -54,7 +54,7 @@ export class MaterialReciclableQuestionCarouselComponent implements AfterViewIni
 
   ngAfterViewInit(): void {
     let elementContent = document.getElementById("content") as HTMLElement;
-    console.warn("---> elementContent.offsetHeight (div content): ", elementContent.offsetHeight);
+    // console.warn("---> elementContent.offsetHeight (div content): ", elementContent.offsetHeight);
   }
 
 }
